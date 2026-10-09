@@ -5,6 +5,7 @@ using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
 namespace LDY.Script.Editor
@@ -32,6 +33,10 @@ namespace LDY.Script.Editor
         private const string PrefabPath = "Assets/LDY/Prefab/AltPlayer.prefab";
         private const string MaterialPath = "Assets/LDY/Shader/CrtScreen.mat";
         private const string ScenePath = "Assets/Scenes/LDY_TitleScene.unity";
+        private const string MixerPath = "Assets/JJB/JJBAudioMixer.mixer";
+        private const string CreditDataPath = "Assets/LDY/Data/CreditData.asset";
+        // 설정/크레딧 창의 콘텐츠 월드 위치 오프셋(창 중심 기준 -4~4가 바닥(-5.4)과 화면 위(5.4) 안에 들어온다).
+        private const float PanelOffsetY = 0.3f;
         private const string ArtSetPath = TitleArtImporter.Folder + "/TitleArtSet.asset";
 
         // 모니터 쿼드와 겹쳐야 하는 monitor_frame의 화면 구멍(이미지 왼쪽 위 기준 픽셀).
@@ -64,6 +69,8 @@ namespace LDY.Script.Editor
         private Sprite _circle;
         private TMP_FontAsset _font;
         private TitleArtSet _art;
+        private SettingsPanel _settingPanel;
+        private CreditPanel _creditPanel;
         // 책상 쪽 모든 도트가 같은 크기로 보이도록, 화면 구멍 1픽셀이 차지하는 월드 길이를 기준으로 삼는다.
         private float _pixel;
         // 배경 1픽셀의 월드 길이. 카메라 높이 / 배경 높이(px)
@@ -115,8 +122,9 @@ namespace LDY.Script.Editor
             if (crtMaterial == null || playerPrefab == null)
                 return;
 
-            _font = FindKoreanFont();
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+            // NewScene이 참조되지 않은 에셋을 언로드하므로 폰트는 씬을 만든 뒤에 찾는다.
+            _font = FindKoreanFont();
 
             Camera mainCam = CreateMainCamera();
             Camera contentCam = CreateContentCamera();
@@ -128,12 +136,14 @@ namespace LDY.Script.Editor
             var loader = systems.AddComponent<LoggingSceneLoader>();
             var zoom = systems.AddComponent<MonitorZoomRig>();
             var bootstrap = systems.AddComponent<TitleBootstrap>();
+            var audioVolume = systems.AddComponent<MixerAudioVolume>();
+            Wire(audioVolume, "mixer", AssetDatabase.LoadAssetAtPath<AudioMixer>(MixerPath));
 
             MonitorScreenParts monitor = CreateDesk(clock, crtMaterial, mainCam, contentCam);
             var icons = new[]
             {
-                new IconDefinition { Id = "Setting", Label = "Setting.png", Anchor = new Vector2(0.2f, 0.235f), Symbol = _art.symbolSetting, SymbolTint = Color.white },
-                new IconDefinition { Id = "Credit", Label = "Credit.jpg", Anchor = new Vector2(0.78f, 0.48f), Symbol = _art.symbolCredit, SymbolTint = Color.white },
+                new IconDefinition { Id = "Setting", Label = "Setting", Anchor = new Vector2(0.2f, 0.235f), Symbol = _art.symbolSetting, SymbolTint = Color.white },
+                new IconDefinition { Id = "Credit", Label = "Credit", Anchor = new Vector2(0.78f, 0.48f), Symbol = _art.symbolCredit, SymbolTint = Color.white },
                 new IconDefinition { Id = "GameStart", Label = "GameStart", Anchor = new Vector2(0.5f, 0.198f), Symbol = _art.symbolGameStart, SymbolTint = Color.white },
                 new IconDefinition { Id = "Quit", Label = "나가기", Anchor = new Vector2(0.86f, 0.16f), Symbol = _art.symbolExit, SymbolTint = Color.white }
             };
@@ -151,9 +161,14 @@ namespace LDY.Script.Editor
             Wire(bootstrap, "subScreens", subScreens);
             Wire(bootstrap, "transition", transition);
             Wire(bootstrap, "monitorSpace", monitor.Space);
+            Wire(bootstrap, "settingsPanel", _settingPanel);
+            Wire(bootstrap, "creditPanel", _creditPanel);
+            Wire(bootstrap, "audioVolume", audioVolume);
             Wire(player.GetComponent<AltModeController>(), "pointerOverride", monitor.Pointer);
 
             CreateProbe(player);
+            WireWindowAssets(_settingPanel);
+            WireWindowAssets(_creditPanel);
 
             Directory.CreateDirectory("Assets/Scenes");
             EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene(), ScenePath);
@@ -218,7 +233,12 @@ namespace LDY.Script.Editor
             ("fanLarge", "fan_large"), ("fanSmall", "fan_small"), ("keyboard", "keyboard"), ("mouse", "mouse"),
             ("screenWallpaper", "screen_wallpaper"), ("iconTile", "icon_tile"), ("symbolSetting", "symbol_setting"),
             ("symbolCredit", "symbol_credit"), ("symbolGameStart", "symbol_gamestart"), ("symbolExit", "symbol_exit"),
-            ("playerCursor", "player_cursor")
+            ("playerCursor", "player_cursor"),
+            ("windowFrame", "window_frame"), ("windowTitlebar", "window_titlebar"), ("buttonClose", "button_close"),
+            ("buttonPlain", "button_plain"), ("sliderTrack", "slider_track"), ("sliderFill", "slider_fill"),
+            ("sliderHandle", "slider_handle"), ("dropdownBox", "dropdown_box"),
+            ("dropdownArrowButton", "dropdown_arrow_button"), ("dropdownListBg", "dropdown_list_bg"),
+            ("dropdownHighlight", "dropdown_highlight"), ("focusFrame", "focus_frame")
         };
 
         private Camera CreateMainCamera()
@@ -427,17 +447,18 @@ namespace LDY.Script.Editor
                 slots.Add((definition, icon));
             }
 
-            SubScreenPanel settingPanel = CreatePanel(content, "Panel_Setting", "Setting", subScreens);
-            SubScreenPanel creditPanel = CreatePanel(content, "Panel_Credit", "Credit", subScreens);
-            WireArray(subScreens, "panels", new Object[] { settingPanel, creditPanel });
+            _settingPanel = CreateWindowPanel<SettingsPanel>(content, "Panel_Setting");
+            _creditPanel = CreateWindowPanel<CreditPanel>(content, "Panel_Credit");
+            Wire(_creditPanel, "data", LoadOrCreateCreditData());
+            WireArray(subScreens, "panels", new Object[] { _settingPanel, _creditPanel });
 
             foreach ((IconDefinition definition, GameObject icon) in slots)
             {
                 MenuActionBehaviour action = definition.Id switch
                 {
                     "GameStart" => CreateStartAction(icon, transition),
-                    "Setting" => CreateOpenAction(icon, subScreens, settingPanel),
-                    "Credit" => CreateOpenAction(icon, subScreens, creditPanel),
+                    "Setting" => CreateOpenAction(icon, subScreens, _settingPanel),
+                    "Credit" => CreateOpenAction(icon, subScreens, _creditPanel),
                     _ => icon.AddComponent<QuitAction>()
                 };
                 Wire(icon.GetComponent<MenuIcon>(), "action", action);
@@ -503,31 +524,52 @@ namespace LDY.Script.Editor
             return action;
         }
 
-        private SubScreenPanel CreatePanel(Transform content, string name, string title, SubScreenController controller)
+        // 창 내용은 처음 열 때 코드가 만든다(WindowPanel). 여기서는 위치와 에셋 슬롯만 연결하고 꺼 둔다.
+        private T CreateWindowPanel<T>(Transform content, string name) where T : WindowPanel
         {
             var root = new GameObject(name);
             root.transform.SetParent(content, false);
-            root.transform.localPosition = new Vector3(0f, 0.2f, 0f);
+            root.transform.localPosition = new Vector3(0f, PanelOffsetY, 0f);
 
-            Block("Background", root.transform, Vector2.zero, new Vector2(9f, 6f), new Color(0.07f, 0.08f, 0.12f), 10, 0);
-            Text("Title", root.transform, new Vector2(0f, 2.3f), title, 9f, Color.white, 11, new Vector2(8f, 1.5f));
-            var contentRoot = new GameObject("ContentRoot");
-            contentRoot.transform.SetParent(root.transform, false);
-
-            var panel = root.AddComponent<SubScreenPanel>();
-            Wire(panel, "contentRoot", contentRoot.transform);
-
-            GameObject close = CreateIcon(root.transform, "CloseButton", true, true);
-            close.transform.localPosition = new Vector3(3.2f, -3.5f, 0f);
-            var visual = close.GetComponent<MenuIconVisual>();
-            visual.SetContent(new TitleIconSlot { labelText = "Close", tileSprite = _square, tileTint = new Color(0.85f, 0.4f, 0.4f) });
-            visual.Layout(new Vector2(1.4f, 0.7f), 0f, 0.1f, 3f);
-
-            var closeAction = close.AddComponent<CloseSubScreenAction>();
-            Wire(closeAction, "controller", controller);
-            Wire(close.GetComponent<MenuIcon>(), "action", closeAction);
+            var panel = root.AddComponent<T>();
             root.SetActive(false);
             return panel;
+        }
+
+        // 씬을 저장하기 직전에 에셋 슬롯을 연결하고, 실제로 들어갔는지 다시 읽어 확인한다.
+        private void WireWindowAssets(WindowPanel panel)
+        {
+            // NewScene이 참조되지 않은 에셋을 언로드해 처음 불러온 _art가 죽어 있을 수 있으므로 다시 불러온다.
+            _art = AssetDatabase.LoadAssetAtPath<TitleArtSet>(ArtSetPath);
+            var so = new SerializedObject(panel);
+            so.FindProperty("art").objectReferenceValue = _art;
+            so.FindProperty("font").objectReferenceValue = _font;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(panel);
+
+            if (new SerializedObject(panel).FindProperty("art").objectReferenceValue == null)
+                Debug.LogError($"[Title] {panel.name}: TitleArtSet 연결에 실패했습니다 (_art={(_art == null ? "null" : _art.name)}).");
+        }
+
+        // 크레딧 목록은 에셋으로 분리되어 있다. 이미 있으면 손으로 고친 내용을 그대로 둔다.
+        private static CreditData LoadOrCreateCreditData()
+        {
+            var existing = AssetDatabase.LoadAssetAtPath<CreditData>(CreditDataPath);
+            if (existing != null)
+                return existing;
+
+            Directory.CreateDirectory(Path.GetDirectoryName(CreditDataPath));
+            var data = ScriptableObject.CreateInstance<CreditData>();
+            data.entries = new[]
+            {
+                new CreditEntry { role = "기획", names = new[] { "이름 1", "이름 2" } },
+                new CreditEntry { role = "프로그래밍", names = new[] { "이름 3", "이름 4" } },
+                new CreditEntry { role = "아트", names = new[] { "이름 5", "이름 6" } },
+                new CreditEntry { role = "사운드", names = new[] { "이름 7", "이름 8" } },
+                new CreditEntry { role = "Special Thanks", names = new[] { "이름 9" } }
+            };
+            AssetDatabase.CreateAsset(data, CreditDataPath);
+            return data;
         }
 
         // 아이콘 루트 아래에 발판(Platform: 콜라이더, Tile, Symbol), 판정 영역, 이름 라벨을 만든다.
@@ -702,6 +744,7 @@ namespace LDY.Script.Editor
                 return;
 
             var texts = new List<string> { settings.logoText };
+            texts.AddRange(WindowText.All);
             foreach (TitleIconSlot slot in settings.icons)
                 texts.Add(slot.labelText);
 

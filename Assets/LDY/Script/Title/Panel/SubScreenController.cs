@@ -22,8 +22,13 @@ namespace LDY.Script
 
         public void Tick()
         {
-            if (_current != null && _cancel.Pressed)
-                CloseCurrent();
+            if (_current == null || !_cancel.Pressed)
+                return;
+
+            if (_current is ISubScreenCancelHandler handler && handler.HandleCancel())
+                return;
+
+            CloseCurrent();
         }
 
         public bool Open(ISubScreen screen)

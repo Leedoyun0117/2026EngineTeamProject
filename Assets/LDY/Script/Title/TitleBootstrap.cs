@@ -11,6 +11,10 @@ namespace LDY.Script
         [SerializeField] private SubScreenController subScreens;
         [SerializeField] private GameStartTransition transition;
         [SerializeField] private MonitorSpace monitorSpace;
+        [SerializeField] private SettingsPanel settingsPanel;
+        [SerializeField] private CreditPanel creditPanel;
+        [Tooltip("IAudioVolume을 구현한 컴포넌트 (MixerAudioVolume)")]
+        [SerializeField] private MonoBehaviour audioVolume;
 
         private KeyboardCancelInput _cancel;
         private TitleAbilityGuard _abilityGuard;
@@ -37,6 +41,28 @@ namespace LDY.Script
                 new StandingMenuFinder(icons, body, gate), interact, focus);
             _cursorSelector = new MenuSelector(AltPhase.Alt, altStatus,
                 new HoverMenuFinder(icons, altStatus, monitorSpace, gate), new MouseClickInput(), focus);
+
+            BindWindows(altStatus, body, interact, inputLock, icons);
+        }
+
+        private void BindWindows(AltModeController altStatus, Collider2D body, IButtonInput interact,
+            IInputLock inputLock, MenuIcon[] icons)
+        {
+            if (audioVolume is not IAudioVolume volume)
+            {
+                Debug.LogError("[Title] audioVolume에 IAudioVolume 구현체(MixerAudioVolume)를 연결하세요.");
+                return;
+            }
+
+            var screenMode = new ScreenModeSetting();
+            screenMode.ApplySaved();
+
+            var services = new WindowServices(altStatus, monitorSpace, body,
+                new Rigidbody2DPlayerBody(player.GetComponent<Rigidbody2D>()), player.GetComponent<JJBControlGate>(),
+                new PlayerWindowInput(player.GetComponent<PlayerInput>(), inputLock, interact),
+                subScreens.CloseCurrent, new MenuPlatformSwitch(icons));
+            settingsPanel.Bind(services, volume, screenMode);
+            creditPanel.Bind(services);
         }
 
         private void OnEnable()

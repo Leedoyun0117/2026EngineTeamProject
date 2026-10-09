@@ -42,6 +42,12 @@ namespace LDY.Script
         void Close();
     }
 
+    // 보조 화면이 ESC를 먼저 처리하는 확장 지점. true를 돌려주면 ESC를 소비한 것이라 화면을 닫지 않는다.
+    public interface ISubScreenCancelHandler
+    {
+        bool HandleCancel();
+    }
+
     public interface IMonitorSpace
     {
         bool PointerInside { get; }

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03e975f480a7222439e486ac3ae2ad1a, type: 3}
+  m_Name: CreditData
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.CreditData
+  entries:
+  - role: "\uAE30\uD68D"
+    names:
+    - "\uC774\uB984 1"
+    - "\uC774\uB984 2"
+  - role: "\uD504\uB85C\uADF8\uB798\uBC0D"
+    names:
+    - "\uC774\uB984 3"
+    - "\uC774\uB984 4"
+  - role: "\uC544\uD2B8"
+    names:
+    - "\uC774\uB984 5"
+    - "\uC774\uB984 6"
+  - role: "\uC0AC\uC6B4\uB4DC"
+    names:
+    - "\uC774\uB984 7"
+    - "\uC774\uB984 8"
+  - role: Special Thanks
+    names:
+    - "\uC774\uB984 9"

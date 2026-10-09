@@ -26,3 +26,15 @@ MonoBehaviour:
   symbolGameStart: {fileID: 21300000, guid: 851f8c3e7f1049e4b904d8ab8823b390, type: 3}
   symbolExit: {fileID: 21300000, guid: da71c99a27eb45e4bb23121849a73ab9, type: 3}
   playerCursor: {fileID: 21300000, guid: 0bb7fd14455764d47aca2e036b9e385c, type: 3}
+  windowFrame: {fileID: 21300000, guid: 6ba9bca5cb4896343a16d305ab3df84a, type: 3}
+  windowTitlebar: {fileID: 21300000, guid: ee134493684d4bf4481cba5ab435335a, type: 3}
+  buttonClose: {fileID: 21300000, guid: 6f38046f6aadb9c4ababc3b92222c57d, type: 3}
+  buttonPlain: {fileID: 21300000, guid: d2a410b164f4dca4caa70d88a79fd7eb, type: 3}
+  sliderTrack: {fileID: 21300000, guid: 1e945384706ea034b90f2bd80d190617, type: 3}
+  sliderFill: {fileID: 21300000, guid: 7c649c10f1b084a40bdfac0c04af61f5, type: 3}
+  sliderHandle: {fileID: 21300000, guid: ff9630561c6c82248980f9922b0f24b7, type: 3}
+  dropdownBox: {fileID: 21300000, guid: 93304577ee69ce846a5b9768a3d8b140, type: 3}
+  dropdownArrowButton: {fileID: 21300000, guid: a9b8c7ec98c95854d81e2e483592c06b, type: 3}
+  dropdownListBg: {fileID: 21300000, guid: 7640100da8a23414693d67baa20d640c, type: 3}
+  dropdownHighlight: {fileID: 21300000, guid: fbfe00e0938135d459e2c31c9e47c71b, type: 3}
+  focusFrame: {fileID: 21300000, guid: 9f9f0b49bf3949b4b907e8a8d8eabd07, type: 3}

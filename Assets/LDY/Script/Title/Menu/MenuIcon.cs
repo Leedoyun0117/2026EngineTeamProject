@@ -31,6 +31,12 @@ namespace LDY.Script
             return isActiveAndEnabled && (usableWhileBlocked || gate.CanExecute);
         }
 
+        public void SetPlatformEnabled(bool enabled)
+        {
+            if (platform != null)
+                platform.enabled = enabled;
+        }
+
         public bool ContainsPoint(Vector2 worldPoint)
         {
             return hitArea != null && hitArea.OverlapPoint(worldPoint);
@@ -65,6 +71,12 @@ namespace LDY.Script
 
         public void Execute()
         {
+            if (action == null)
+            {
+                Debug.LogError($"[MenuIcon] {name}: action이 연결되어 있지 않습니다.", this);
+                return;
+            }
+
             action.Execute();
             Executed?.Invoke(this);
         }
