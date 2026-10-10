@@ -36,6 +36,10 @@ namespace LDY.Script
             if (_current != null)
                 return false;
 
+            // 열 수 없는 화면이면 _current를 잡지 않아 빈 창이 열린 채 ESC로만 닫히는 상태를 막는다.
+            if (screen is SubScreenPanel panel && !panel.CanOpen)
+                return false;
+
             _current = screen;
             screen.Open();
             return true;

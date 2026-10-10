@@ -7,7 +7,7 @@ namespace LDY.Script
     {
         [Tooltip("true면 Alt(timeScale 0) 중에도 배경 연출이 계속된다")]
         [SerializeField] private bool useUnscaledTime = true;
-        [SerializeField, Min(0.001f)] private float maxDeltaTime = 0.05f;
+        [SerializeField, Min(0.001f)] private float maxDeltaTime = TitleTuning.MaxDeltaTime;
 
         public bool UseUnscaledTime => useUnscaledTime;
         public float Delta => Mathf.Min(useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime, maxDeltaTime);

@@ -16,7 +16,7 @@ namespace LDY.Script
         [SerializeField] private AltReturnSettings returnSettings = new AltReturnSettings();
         [SerializeField] private Color afterimageTint = new Color(0.78f, 0.62f, 0.38f, 0.75f);
         [Tooltip("포커스 복귀 직후 프레임 시간이 튀는 것을 막는 상한(초)")]
-        [SerializeField, Min(0.001f)] private float maxDeltaTime = 0.05f;
+        [SerializeField, Min(0.001f)] private float maxDeltaTime = TitleTuning.MaxDeltaTime;
 
         private AltStateMachine _machine;
         private AltKeyInput _altInput;

@@ -9,6 +9,9 @@ namespace LDY.Script
 
         public Transform ContentRoot => contentRoot != null ? contentRoot : transform;
 
+        // false면 SubScreenController가 열지 않는다(연결 누락 등으로 내용을 만들 수 없는 경우).
+        public virtual bool CanOpen => true;
+
         public void Open()
         {
             gameObject.SetActive(true);

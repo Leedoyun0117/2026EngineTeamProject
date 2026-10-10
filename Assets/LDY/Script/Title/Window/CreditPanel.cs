@@ -10,7 +10,6 @@ namespace LDY.Script
     {
         private const float ViewHalfWidth = 3.7f;
         private const float FadeDistance = 0.45f;
-        private const float MaxDeltaTime = 0.05f;
         private const float WheelStep = 0.8f;
         private const float KeyScrollSpeed = 3f;
         private const float ManualPause = 2f;
@@ -46,6 +45,9 @@ namespace LDY.Script
 
         protected override string TitleText => WindowText.CreditTitle;
         protected override string ControlHint => WindowText.CreditControlHint;
+        protected override WindowLayout Layout => WindowLayout.Credit;
+        // 자동 스크롤 창이라 행 이동을 쓰지 않고 기존 동작(물리 점프 + S 내려가기)을 유지한다.
+        protected override bool UsesRowMovement => false;
 
         private float ViewHeight => _viewTop - _viewBottom;
         // 마지막 줄까지 올라온 위치. 목록이 영역보다 짧으면 0(맨 위 줄이 영역 맨 위에 닿는 위치).
@@ -53,8 +55,8 @@ namespace LDY.Script
 
         protected override void BuildBody(WindowKit kit, Transform root, List<WindowWidget> widgets)
         {
-            _viewTop = WindowStyle.CloseTop - 0.1f;
-            _viewBottom = WindowStyle.FooterTop + 0.7f;
+            _viewTop = Layout.CloseTop - 0.1f;
+            _viewBottom = Layout.FooterTop + 0.7f;
 
             if (data == null)
             {
@@ -86,7 +88,7 @@ namespace LDY.Script
         {
             _offset = -ViewHeight;
             _hold = startDelay;
-            Layout();
+            LayoutLines();
         }
 
         // 자동 스크롤과 대기 시간은 게임 시간(Time.deltaTime)을 따른다. Alt가 timeScale을 0으로 만들면 멈추고, 떼면 이어진다.
@@ -105,15 +107,15 @@ namespace LDY.Script
             }
             else if (_hold > 0f)
             {
-                _hold -= Mathf.Min(Time.deltaTime, MaxDeltaTime);
+                _hold -= Mathf.Min(Time.deltaTime, TitleTuning.MaxDeltaTime);
             }
             else
             {
-                _offset = Mathf.Min(_offset + scrollSpeed * Mathf.Min(Time.deltaTime, MaxDeltaTime), EndOffset);
+                _offset = Mathf.Min(_offset + scrollSpeed * Mathf.Min(Time.deltaTime, TitleTuning.MaxDeltaTime), EndOffset);
             }
 
             if (!Mathf.Approximately(before, _offset))
-                Layout();
+                LayoutLines();
         }
 
         private void AddLine(WindowKit kit, Transform root, string text, float fontSize, Color color, float top,
@@ -125,7 +127,7 @@ namespace LDY.Script
         }
 
         // 스크롤 위치에 맞춰 줄을 옮기고, 영역 가장자리에 가까울수록 투명하게 한다.
-        private void Layout()
+        private void LayoutLines()
         {
             foreach (Line line in _lines)
             {

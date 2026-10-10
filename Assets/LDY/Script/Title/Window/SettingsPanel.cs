@@ -15,6 +15,7 @@ namespace LDY.Script
 
         protected override string TitleText => WindowText.SettingTitle;
         protected override string ControlHint => WindowText.SettingControlHint;
+        protected override WindowLayout Layout => WindowLayout.Settings;
 
         public void Bind(WindowServices services, IAudioVolume volume, IScreenModeSetting screenMode)
         {
@@ -26,18 +27,18 @@ namespace LDY.Script
         protected override void BuildBody(WindowKit kit, Transform root, List<WindowWidget> widgets)
         {
             Vector2 rowX = new Vector2(WindowStyle.InnerLeft, WindowStyle.InnerRight);
-            float top = WindowStyle.SliderTop0;
+            float top = Layout.SliderTop0;
 
             _master = AddSlider(kit, root, widgets, WindowText.MasterVolume, "Slider_Master", top, rowX, VolumeChannel.Master);
-            _bgm = AddSlider(kit, root, widgets, WindowText.BgmVolume, "Slider_Bgm", top - WindowStyle.RowSpacing, rowX,
+            _bgm = AddSlider(kit, root, widgets, WindowText.BgmVolume, "Slider_Bgm", top - Layout.RowSpacing, rowX,
                 VolumeChannel.Bgm);
-            _sfx = AddSlider(kit, root, widgets, WindowText.SfxVolume, "Slider_Sfx", top - WindowStyle.RowSpacing * 2f, rowX,
+            _sfx = AddSlider(kit, root, widgets, WindowText.SfxVolume, "Slider_Sfx", top - Layout.RowSpacing * 2f, rowX,
                 VolumeChannel.Sfx);
 
-            float dropdownTop = top - WindowStyle.RowSpacing * 3f;
+            float dropdownTop = top - Layout.RowSpacing * 3f;
             kit.Platform("Ledge_ScreenMode", root, rowX.x, rowX.y, dropdownTop, true);
             _screen = new DropdownWidget(kit, root, WindowText.ScreenMode, dropdownTop + WindowStyle.RowCenterAbovePlatform,
-                WindowStyle.TrackX, dropdownTop, rowX, new[] { WindowText.FullScreen, WindowText.Windowed },
+                WindowStyle.TrackX, dropdownTop, Layout.ZoneHeight, rowX, new[] { WindowText.FullScreen, WindowText.Windowed },
                 (int)_screenMode.Current, index => _screenMode.Apply((ScreenModeOption)index));
             widgets.Add(_screen);
         }
@@ -56,7 +57,7 @@ namespace LDY.Script
         {
             kit.Platform("Ledge_" + name, root, rowX.x, rowX.y, platformTop, true);
             var slider = new SliderWidget(kit, root, label, name, platformTop + WindowStyle.RowCenterAbovePlatform,
-                WindowStyle.TrackX, platformTop, rowX, _volume.Get(channel), value => _volume.Set(channel, value));
+                WindowStyle.TrackX, platformTop, Layout.ZoneHeight, rowX, _volume.Get(channel), value => _volume.Set(channel, value));
             widgets.Add(slider);
             return slider;
         }

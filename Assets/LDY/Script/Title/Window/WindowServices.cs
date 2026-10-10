@@ -24,7 +24,8 @@ namespace LDY.Script
     public class WindowServices
     {
         public WindowServices(IAltStatus alt, IMonitorSpace monitor, Collider2D playerCollider, IPlayerBody playerBody,
-            IPlayerControl playerControl, IWindowInput input, Action close, MenuPlatformSwitch platforms)
+            IPlayerControl playerControl, IWindowInput input, Action close, MenuPlatformSwitch platforms,
+            IJumpBlock jumpBlock, IInputLock inputLock)
         {
             Alt = alt;
             Monitor = monitor;
@@ -34,6 +35,8 @@ namespace LDY.Script
             Input = input;
             Close = close;
             Platforms = platforms;
+            JumpBlock = jumpBlock;
+            InputLock = inputLock;
         }
 
         public IAltStatus Alt { get; }
@@ -44,6 +47,8 @@ namespace LDY.Script
         public IWindowInput Input { get; }
         public Action Close { get; }
         public MenuPlatformSwitch Platforms { get; }
+        public IJumpBlock JumpBlock { get; }
+        public IInputLock InputLock { get; }
     }
 
     // 창에 보이는 글자. 한글 폰트 글리프 점검(셋업 도구)에도 쓴다.
@@ -52,7 +57,7 @@ namespace LDY.Script
         public const string SettingTitle = "설정";
         public const string CreditTitle = "Credit";
         public const string CloseHint = "ESC 닫기";
-        public const string SettingControlHint = "E 조작 · S 내려가기 · ESC 닫기";
+        public const string SettingControlHint = "Space 위 · S 아래 · E 조작 · ESC 닫기";
         public const string CreditControlHint = "W/S 스크롤 · ESC 닫기";
         public const string MasterVolume = "전체 음량";
         public const string BgmVolume = "배경음";

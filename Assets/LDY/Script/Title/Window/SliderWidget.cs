@@ -21,12 +21,13 @@ namespace LDY.Script
         private readonly TMP_Text _percent;
         // 키보드로 조금씩 움직일 때 반올림에 묻히지 않도록 반올림 전 값을 따로 둔다.
         private float _exact;
-        private float _value;
+        // 첫 SetValue에서 반드시 Refresh가 돌도록 불가능한 값으로 시작한다.
+        private float _value = -1f;
         private bool _dragging;
 
         // trackX: 트랙의 가로 범위, centerY: 행 중심, platformTop/rowLeft/rowRight: 플레이어 발판
         public SliderWidget(WindowKit kit, Transform parent, string label, string name, float centerY,
-            Vector2 trackX, float platformTop, Vector2 rowX, float initial, Action<float> changed)
+            Vector2 trackX, float platformTop, float zoneHeight, Vector2 rowX, float initial, Action<float> changed)
         {
             _kit = kit;
             _changed = changed;
@@ -53,7 +54,7 @@ namespace LDY.Script
             PointerRect = new Rect(trackX.x - HandleWidth * 0.5f, centerY - HandleHeight * 0.5f,
                 trackWidth + HandleWidth, HandleHeight);
             FocusRect = new Rect(rowX.x, centerY - 0.5f, rowX.y - rowX.x, 1f);
-            ProximityRect = new Rect(rowX.x, platformTop - WindowStyle.ZoneBelow, rowX.y - rowX.x, WindowStyle.ZoneHeight);
+            ProximityRect = new Rect(rowX.x, platformTop - WindowStyle.ZoneBelow, rowX.y - rowX.x, zoneHeight);
 
             SetValue(initial, false);
         }
@@ -66,9 +67,12 @@ namespace LDY.Script
             _exact = Mathf.Clamp01(value);
             float rounded = Mathf.Round(_exact * 100f) / 100f;
             bool changed = !Mathf.Approximately(rounded, _value);
+            if (!changed)
+                return;
+
             _value = rounded;
             Refresh();
-            if (notify && changed)
+            if (notify)
                 _changed(_value);
         }
 

@@ -48,7 +48,8 @@ namespace LDY.Script
         public void Tick(float unscaledDeltaTime)
         {
             _elapsed += unscaledDeltaTime;
-            float t = Mathf.Clamp01(_elapsed / _duration);
+            // 지속 시간이 0이면 0/0 NaN이 되므로 즉시 종료로 처리한다.
+            float t = _duration > 0f ? Mathf.Clamp01(_elapsed / _duration) : 1f;
             float eased = 1f - (1f - t) * (1f - t);
             _body.Position = Vector2.Lerp(_from, _session.Snapshot.Position, eased);
 

@@ -36,7 +36,7 @@ namespace LDY.Script.Editor
         private const string MixerPath = "Assets/JJB/JJBAudioMixer.mixer";
         private const string CreditDataPath = "Assets/LDY/Data/CreditData.asset";
         // 설정/크레딧 창의 콘텐츠 월드 위치 오프셋(창 중심 기준 -4~4가 바닥(-5.4)과 화면 위(5.4) 안에 들어온다).
-        private const float PanelOffsetY = 0.3f;
+        private const float PanelOffsetY = 0f;
         private const string ArtSetPath = TitleArtImporter.Folder + "/TitleArtSet.asset";
 
         // 모니터 쿼드와 겹쳐야 하는 monitor_frame의 화면 구멍(이미지 왼쪽 위 기준 픽셀).
@@ -116,6 +116,11 @@ namespace LDY.Script.Editor
             _circle = EnsureSprite("Circle", 64, 64, FilterMode.Bilinear, TempShapes.Circle);
             Sprite wallpaper = _art.screenWallpaper;
             Sprite arrow = _art.playerCursor;
+            // 애니메이션 세트가 있으면 idle 첫 프레임을 초기 스프라이트로 쓴다. 이후에는 PlayerRenderer가 덮어쓴다.
+            var animSet = AssetDatabase.LoadAssetAtPath<PlayerAnimSet>(PlayerAnimSetBuilder.SetPath);
+            Sprite idleFrame = animSet != null ? animSet.FirstFrame(PlayerAnimId.Idle) : null;
+            if (idleFrame != null)
+                arrow = idleFrame;
 
             Material crtMaterial = EnsureCrtMaterial();
             GameObject playerPrefab = EnsurePlayerPrefab(arrow);
@@ -624,6 +629,7 @@ namespace LDY.Script.Editor
             if (existing != null)
             {
                 ApplyJumpTuning();
+                ApplyPlayerAnimation();
                 return existing;
             }
 
@@ -671,7 +677,29 @@ namespace LDY.Script.Editor
             Directory.CreateDirectory(Path.GetDirectoryName(PrefabPath));
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(go, PrefabPath);
             Object.DestroyImmediate(go);
+            ApplyPlayerAnimation();
             return prefab;
+        }
+
+        // 플레이어 애니메이션 컴포넌트를 붙이고 PlayerAnimSet을 연결한다. 이미 만들어진 프리팹에도 적용된다.
+        private static void ApplyPlayerAnimation()
+        {
+            var animSet = AssetDatabase.LoadAssetAtPath<PlayerAnimSet>(PlayerAnimSetBuilder.SetPath);
+            if (animSet == null)
+                Debug.LogWarning($"{PlayerAnimSetBuilder.SetPath} 가 없습니다. 'LDY/Build Player Anim Set'을 먼저 실행한 뒤 다시 설정하세요.");
+
+            GameObject root = PrefabUtility.LoadPrefabContents(PrefabPath);
+            if (root.GetComponent<JJBPlayerMotionSource>() == null)
+                root.AddComponent<JJBPlayerMotionSource>();
+
+            var renderer = root.GetComponent<PlayerRenderer>();
+            if (renderer == null)
+                renderer = root.AddComponent<PlayerRenderer>();
+            if (animSet != null)
+                Wire(renderer, "animSet", animSet);
+
+            PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
+            PrefabUtility.UnloadPrefabContents(root);
         }
 
         // 이미 만들어진 프리팹도 발판 배치 기준 점프 속도로 맞춘다.

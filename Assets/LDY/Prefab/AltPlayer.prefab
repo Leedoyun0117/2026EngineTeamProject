@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 8451857052507934283}
   - component: {fileID: 683449536097138627}
   - component: {fileID: 5307042212544960111}
+  - component: {fileID: 2734564449907927835}
+  - component: {fileID: 2734590950313097097}
   m_Layer: 3
   m_Name: AltPlayer
   m_TagString: Untagged
@@ -324,6 +326,42 @@ MonoBehaviour:
     afterimageFadeTime: 0.1
   afterimageTint: {r: 0.78, g: 0.62, b: 0.38, a: 0.75}
   maxDeltaTime: 0.05
+--- !u!114 &2734564449907927835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285373521417979638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14bcabcf84c45634dad50e46bd834f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.JJBPlayerMotionSource
+  facingDeadZone: 0.05
+--- !u!114 &2734590950313097097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285373521417979638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1219848246245eb47978ba5c1f6539e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.PlayerRenderer
+  animSet: {fileID: 11400000, guid: 54debd8ca794fd24e90004f053cc89ed, type: 2}
+  target: {fileID: 0}
+  rules:
+    idleSpeedThreshold: 0.1
+    runEnterSpeed: 3.5
+    runExitSpeed: 3
+    sitDelay: 5
+    speedScaleReference: 5
+    speedScaleMin: 0.7
+    speedScaleMax: 1.3
+    standUpEntryBySitFrame: ffffffff0100000000000000
 --- !u!1 &6297898987790287682
 GameObject:
   m_ObjectHideFlags: 0

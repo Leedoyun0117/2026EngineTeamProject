@@ -28,21 +28,31 @@ namespace LDY.Script
             for (int i = 0; i < _values.Length; i++)
             {
                 var channel = (VolumeChannel)i;
-                _values[i] = PlayerPrefs.GetFloat(KeyPrefix + channel, defaultVolume);
+                _values[i] = Mathf.Clamp01(PlayerPrefs.GetFloat(KeyPrefix + channel, defaultVolume));
                 Apply(channel);
             }
         }
 
-        // 믹서 값이 있으면 믹서를 기준으로 읽는다. 다른 곳에서 바뀐 값도 슬라이더에 반영된다.
+        // Awake의 mixer.SetFloat은 믹서가 초기화되기 전이라 무시되는 일이 있다. 첫 프레임 전에 한 번 더 적용한다.
+        private void Start()
+        {
+            for (int i = 0; i < _values.Length; i++)
+                Apply((VolumeChannel)i);
+        }
+
+        // 슬라이더에 보이는 값의 기준은 이 어댑터가 가진 값이다. 믹서 값을 되읽으면 SetFloat이 무시됐을 때 0dB(100%)로 보인다.
         public float Get(VolumeChannel channel)
         {
-            if (channel == VolumeChannel.Master)
-                return AudioListener.volume;
-
-            if (mixer != null && mixer.GetFloat(ParameterOf(channel), out float decibel))
-                return DecibelToLinear(decibel);
-
             return _values[(int)channel];
+        }
+
+        [ContextMenu("저장된 음량 지우기")]
+        private void ClearSaved()
+        {
+            for (int i = 0; i < _values.Length; i++)
+                PlayerPrefs.DeleteKey(KeyPrefix + (VolumeChannel)i);
+
+            PlayerPrefs.Save();
         }
 
         public void Set(VolumeChannel channel, float value)
@@ -103,9 +113,5 @@ namespace LDY.Script
             return linear <= 0.0001f ? MinDecibel : Mathf.Max(MinDecibel, 20f * Mathf.Log10(linear));
         }
 
-        private static float DecibelToLinear(float decibel)
-        {
-            return decibel <= MinDecibel ? 0f : Mathf.Pow(10f, decibel / 20f);
-        }
     }
 }

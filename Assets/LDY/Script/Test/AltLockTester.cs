@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -38,3 +39,4 @@ namespace LDY.Script
         }
     }
 }
+#endif

@@ -16,7 +16,7 @@ namespace LDY.Script
         private readonly Rect _boxRect;
         private readonly Rect _listRect;
         private readonly GameObject _list;
-        private readonly Transform _highlight;
+        private readonly SpriteRenderer _highlight;
         private readonly TMP_Text _selectedText;
         private int _selected;
         private int _highlighted;
@@ -24,7 +24,7 @@ namespace LDY.Script
         private bool _byPointer;
 
         public DropdownWidget(WindowKit kit, Transform parent, string label, float centerY, Vector2 boxX,
-            float platformTop, Vector2 rowX, string[] options, int initial, Action<int> changed)
+            float platformTop, float zoneHeight, Vector2 rowX, string[] options, int initial, Action<int> changed)
         {
             _options = options;
             _changed = changed;
@@ -50,7 +50,7 @@ namespace LDY.Script
             _list = kit.Group("List", root, Vector2.zero).gameObject;
             Transform list = _list.transform;
             kit.Sliced("ListBg", list, art.dropdownListBg, _listRect, 16);
-            _highlight = kit.Stretched("Highlight", list, art.dropdownHighlight, ItemRect(0, true), 17).transform;
+            _highlight = kit.Stretched("Highlight", list, art.dropdownHighlight, ItemRect(0, true), 17);
             for (int i = 0; i < _options.Length; i++)
             {
                 kit.Text($"Item{i}", list, new Vector2(_boxRect.xMin + 0.25f, ItemRect(i, false).center.y), _options[i],
@@ -62,7 +62,7 @@ namespace LDY.Script
 
             PointerRect = _boxRect;
             FocusRect = new Rect(_boxRect.xMin - 0.1f, _boxRect.yMin - 0.1f, _boxRect.width + 0.2f, _boxRect.height + 0.2f);
-            ProximityRect = new Rect(rowX.x, platformTop - WindowStyle.ZoneBelow, rowX.y - rowX.x, WindowStyle.ZoneHeight);
+            ProximityRect = new Rect(rowX.x, platformTop - WindowStyle.ZoneBelow, rowX.y - rowX.x, zoneHeight);
 
             SetIndex(initial);
         }
@@ -165,9 +165,11 @@ namespace LDY.Script
 
         private void SetHighlight(int index)
         {
+            if (_highlighted == index)
+                return;
+
             _highlighted = index;
-            Rect item = ItemRect(index, true);
-            _kit.Resize(_highlight.GetComponent<SpriteRenderer>(), item);
+            _kit.Resize(_highlight, ItemRect(index, true));
         }
 
         private int ItemAt(Vector2 local)

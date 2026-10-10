@@ -56,6 +56,12 @@ namespace LDY.Script
         Vector2 ScreenToContentWorld(Vector2 screenPosition, out bool inside);
     }
 
+    // 플레이어의 물리 점프를 막는다. 창의 행 이동이 Jump 입력을 대신 쓰는 동안 쓴다.
+    public interface IJumpBlock
+    {
+        void SetJumpBlocked(bool blocked);
+    }
+
     // 손 오브젝트 등 후속 연출이 구독할 확장 지점.
     public interface IDeskMouse
     {

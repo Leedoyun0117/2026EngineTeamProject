@@ -104,22 +104,20 @@ namespace LDY.Script
             renderer.sprite = settings.playerSprite;
             renderer.color = settings.playerColor;
 
-            // 충돌체를 스프라이트 크기에 맞추고, 바닥 판정 위치를 충돌체 아래쪽 끝으로 옮긴다.
+            // 충돌체는 스프라이트와 무관하게 몸통 크기로 고정한다. 바닥 판정 위치는 충돌체 아래쪽 끝이다.
             var body = player.GetComponent<BoxCollider2D>();
-            if (settings.playerSprite != null)
-            {
-                body.size = settings.playerSprite.bounds.size;
-                body.offset = Vector2.zero;
-                Transform groundCheck = player.transform.Find("GroundCheck");
-                if (groundCheck != null)
-                    groundCheck.localPosition = new Vector3(0f, -body.size.y * 0.5f, 0f);
-            }
+            body.size = settings.playerBodySize;
+            body.offset = settings.playerBodyOffset;
+            Transform groundCheck = player.transform.Find("GroundCheck");
+            if (groundCheck != null)
+                groundCheck.localPosition = new Vector3(0f, body.offset.y - body.size.y * 0.5f, 0f);
 
             if (!placePlayer)
                 return;
 
-            float halfHeight = body.size.y * 0.5f * player.transform.lossyScale.y;
-            player.transform.position = at(settings.playerStartRatio) + Vector3.up * halfHeight;
+            // 스프라이트 피벗이 발이므로 transform 원점이 곧 발이다. 충돌체 바닥을 시작 위치에 맞춘다.
+            float bottom = (body.offset.y - body.size.y * 0.5f) * player.transform.lossyScale.y;
+            player.transform.position = at(settings.playerStartRatio) - Vector3.up * bottom;
         }
     }
 }

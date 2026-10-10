@@ -8,8 +8,6 @@ namespace LDY.Script
     // 모양과 크기는 MenuIconVisual이 정하고, 이 클래스는 판정과 실행만 담당한다.
     public class MenuIcon : MonoBehaviour
     {
-        private const float StandTolerance = 0.1f;
-
         [SerializeField] private MenuActionBehaviour action;
         [SerializeField] private Collider2D platform;
         [SerializeField] private Collider2D hitArea;
@@ -47,7 +45,7 @@ namespace LDY.Script
             if (platform == null || !platform.IsTouching(body))
                 return false;
 
-            return body.bounds.min.y >= platform.bounds.max.y - StandTolerance;
+            return body.bounds.min.y >= platform.bounds.max.y - TitleTuning.StandTolerance;
         }
 
         // 강조 직전의 색을 저장했다가 되돌리므로, 강조 중이 아닐 때 바뀐 색(이미지 교체 등)을 그대로 따른다.

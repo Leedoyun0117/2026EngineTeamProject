@@ -28,7 +28,7 @@ namespace LDY.Script
             float elapsed = 0f;
             while (elapsed < duration)
             {
-                elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.05f);
+                elapsed += Mathf.Min(Time.unscaledDeltaTime, TitleTuning.MaxDeltaTime);
                 float t = ease.Evaluate(Mathf.Clamp01(elapsed / duration));
                 cam.position = Vector3.LerpUnclamped(startPosition, endPosition, t);
                 viewCamera.orthographicSize = Mathf.LerpUnclamped(startSize, endSize, t);

@@ -11,6 +11,8 @@ namespace LDY.Script
         private readonly WindowServices _services;
         private readonly Transform _window;
         private readonly FocusFrame _focus;
+        // 행 이동 창이면 _rows, 아니면(크레딧) 기존 내려가기 _dropper를 쓴다. 둘 중 하나는 null이다.
+        private readonly PlayerRowMover _rows;
         private readonly PlatformDropper _dropper;
         private readonly IButtonInput _dropInput;
 
@@ -19,8 +21,9 @@ namespace LDY.Script
         private WindowWidget _dragging;
 
         public WindowInteraction(IReadOnlyList<WindowWidget> widgets, WindowServices services, Transform window,
-            FocusFrame focus, PlatformDropper dropper, IButtonInput dropInput)
+            FocusFrame focus, PlayerRowMover rows, PlatformDropper dropper, IButtonInput dropInput)
         {
+            _rows = rows;
             _dropper = dropper;
             _dropInput = dropInput;
             _widgets = widgets;
@@ -38,6 +41,8 @@ namespace LDY.Script
                 _phase = phase;
             }
 
+            _rows?.Tick(dt);
+
             switch (phase)
             {
                 case AltPhase.Alt:
@@ -54,7 +59,7 @@ namespace LDY.Script
 
         public void FixedTick(float fixedDeltaTime)
         {
-            _dropper.FixedTick(fixedDeltaTime);
+            _dropper?.FixedTick(fixedDeltaTime);
         }
 
         // ESC를 소비했으면 true. 잡고 있는 조작이나 열린 드롭다운이 있으면 그것만 취소하고 창은 닫지 않는다.
@@ -68,11 +73,11 @@ namespace LDY.Script
                 return true;
             }
 
-            foreach (WindowWidget widget in _widgets)
+            for (int i = 0; i < _widgets.Count; i++)
             {
-                if (widget.PointerEngaged)
+                if (_widgets[i].PointerEngaged)
                 {
-                    widget.PointerCancel();
+                    _widgets[i].PointerCancel();
                     return true;
                 }
             }
@@ -91,12 +96,25 @@ namespace LDY.Script
             }
 
             ReleaseDrag();
-            foreach (WindowWidget widget in _widgets)
-                widget.PointerCancel();
+            for (int i = 0; i < _widgets.Count; i++)
+                _widgets[i].PointerCancel();
 
-            _dropper.Clear();
+            _dropper?.Clear();
             _focus.Hide();
             _phase = _services.Alt.Phase;
+            _rows?.Cancel();
+        }
+
+        // 창이 열린 직후. 행을 계산하고 플레이어를 바닥(0행)으로 보낸다.
+        public void Opened()
+        {
+            _rows?.Open();
+        }
+
+        // 창이 꺼지거나 씬이 바뀔 때. 진행 중인 행 이동을 정상 상태로 되돌린다(오브젝트를 건드리지 않는다).
+        public void Abort()
+        {
+            _rows?.Cancel();
         }
 
         private void HandlePhaseChanged(AltPhase phase)
@@ -110,15 +128,18 @@ namespace LDY.Script
             }
 
             if (phase != AltPhase.Normal)
-                _dropper.ReleaseAll();
+            {
+                _rows?.Cancel();
+                _dropper?.ReleaseAll();
+            }
 
             if (phase != AltPhase.Alt)
             {
                 ReleaseDrag();
-                foreach (WindowWidget widget in _widgets)
+                for (int i = 0; i < _widgets.Count; i++)
                 {
-                    if (widget.PointerEngaged)
-                        widget.PointerCancel();
+                    if (_widgets[i].PointerEngaged)
+                        _widgets[i].PointerCancel();
                 }
             }
         }
@@ -168,14 +189,36 @@ namespace LDY.Script
                 return;
             }
 
-            // 슬라이더를 잡거나 드롭다운이 열린 동안(위 분기)에는 S가 UI 조작이라 내려가기가 동작하지 않는다.
-            if (_dropInput.Pressed)
+            // 슬라이더를 잡거나 드롭다운이 열린 동안(위 분기)에는 Jump/S가 UI 조작이라 행 이동이 동작하지 않는다.
+            if (_rows != null)
+            {
+                if (_rows.IsMoving)
+                {
+                    _focus.Hide();
+                    return;
+                }
+
+                bool down = DropPressed();
+                if (input.JumpPressed)
+                    _rows.TryStep(1);
+                else if (down)
+                    _rows.TryStep(-1);
+            }
+            else if (DropPressed())
+            {
                 _dropper.TryDrop();
+            }
 
             WindowWidget near = FindNear();
             ShowFocus(near);
             if (near != null && input.InteractPressed && near.PlayerActivate())
                 BeginCapture(near);
+        }
+
+        // 다른 창 입력(Horizontal/Jump/Interact)과 같이 입력 잠금 중에는 S 내려가기도 받지 않는다.
+        private bool DropPressed()
+        {
+            return !_services.InputLock.IsLocked && _dropInput.Pressed;
         }
 
         private void BeginCapture(WindowWidget widget)
@@ -218,10 +261,10 @@ namespace LDY.Script
 
         private WindowWidget FindEngaged()
         {
-            foreach (WindowWidget widget in _widgets)
+            for (int i = 0; i < _widgets.Count; i++)
             {
-                if (widget.PointerEngaged)
-                    return widget;
+                if (_widgets[i].PointerEngaged)
+                    return _widgets[i];
             }
 
             return null;
@@ -229,10 +272,10 @@ namespace LDY.Script
 
         private WindowWidget FindPointed(Vector2 local)
         {
-            foreach (WindowWidget widget in _widgets)
+            for (int i = 0; i < _widgets.Count; i++)
             {
-                if (widget.PointerRect.Contains(local))
-                    return widget;
+                if (_widgets[i].PointerRect.Contains(local))
+                    return _widgets[i];
             }
 
             return null;
@@ -245,8 +288,9 @@ namespace LDY.Script
             Vector2 feet = _window.InverseTransformPoint(new Vector3(bounds.center.x, bounds.min.y, 0f));
             WindowWidget best = null;
             float bestDistance = float.MaxValue;
-            foreach (WindowWidget widget in _widgets)
+            for (int i = 0; i < _widgets.Count; i++)
             {
+                WindowWidget widget = _widgets[i];
                 if (!widget.ProximityRect.Contains(feet))
                     continue;
 
@@ -280,6 +324,8 @@ namespace LDY.Script
     {
         private readonly WindowKit _kit;
         private readonly SpriteRenderer _renderer;
+        private Rect _shown;
+        private bool _visible;
 
         public FocusFrame(WindowKit kit, Transform parent)
         {
@@ -290,12 +336,21 @@ namespace LDY.Script
 
         public void Show(Rect rect)
         {
+            if (_visible && _shown == rect)
+                return;
+
+            _visible = true;
+            _shown = rect;
             _renderer.gameObject.SetActive(true);
             _kit.Resize(_renderer, rect);
         }
 
         public void Hide()
         {
+            if (!_visible)
+                return;
+
+            _visible = false;
             _renderer.gameObject.SetActive(false);
         }
     }

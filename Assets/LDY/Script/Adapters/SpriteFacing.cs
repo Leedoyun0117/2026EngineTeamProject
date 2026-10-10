@@ -20,8 +20,12 @@ namespace LDY.Script
 
         public void Restore(FacingState state)
         {
+            if (_transform == null)
+                return;
+
             _transform.localScale = state.LocalScale;
-            _sprite.flipX = state.FlipX;
+            if (_sprite != null)
+                _sprite.flipX = state.FlipX;
         }
     }
 }

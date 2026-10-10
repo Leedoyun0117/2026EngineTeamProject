@@ -57,6 +57,10 @@ namespace LDY.Script
         [Header("Player")]
         public Sprite playerSprite;
         public Color playerColor = Color.white;
+        [Tooltip("충돌체(몸통) 크기. 스프라이트 크기와 무관하게 고정한다")]
+        public Vector2 playerBodySize = new Vector2(0.7f, 1.5f);
+        [Tooltip("충돌체 중심의 위치. 스프라이트 피벗이 발(아래 중앙)이므로 y는 몸통 높이의 절반")]
+        public Vector2 playerBodyOffset = new Vector2(0f, 0.75f);
         [Tooltip("시작 위치(화면 대비). y=0이 바닥에 서 있는 위치")]
         public Vector2 playerStartRatio = new Vector2(0.08f, 0f);
     }
