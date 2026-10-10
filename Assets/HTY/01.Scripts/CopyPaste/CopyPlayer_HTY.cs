@@ -27,9 +27,10 @@ public class CopyPlayer_HTY : MonoBehaviour,IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (_currentCopyObj != null) return;
+        //알려주기?
         if (CanCopy())
         {
-            Destroy(_currentCopyObj);
             _currentCopyObj = Instantiate(_copyObj,Utils_HTY.GetMousePos(),Quaternion.identity);
             _currentCopyObj.GetComponent<TestPlayerMove_HTY>().SetPlay(false);
             FindAnyObjectByType<PastePlayer_HTY>()._otherObj = _currentCopyObj;
