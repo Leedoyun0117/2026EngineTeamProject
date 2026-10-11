@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 205403534}
   - component: {fileID: 205403533}
   - component: {fileID: 205403532}
+  - component: {fileID: 205403535}
   m_Layer: 5
   m_Name: TpScreen
   m_TagString: Untagged
@@ -169,7 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4242f2635eb59d4f95cf46b0c53be89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TpPlayer_HTY
-  _player: {fileID: 5489362120985841336}
   _panel: {fileID: 205403530}
 --- !u!114 &205403533
 MonoBehaviour:
@@ -209,6 +209,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 205403530}
   m_CullTransparentMesh: 1
+--- !u!114 &205403535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205403530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aebe517d7e00d54fa9c5103b70ed307, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TpObj_HTY
+  _tpCompo: {fileID: 205403532}
+  _player: {fileID: 5489362120985841336}
 --- !u!1 &306167935
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +369,6 @@ RectTransform:
   - {fileID: 780041171}
   - {fileID: 1077568870}
   - {fileID: 1806430743}
-  - {fileID: 916710944}
   - {fileID: 815315535}
   - {fileID: 205403531}
   m_Father: {fileID: 0}
@@ -377,7 +390,6 @@ GameObject:
   - component: {fileID: 472597713}
   - component: {fileID: 472597712}
   - component: {fileID: 472597711}
-  - component: {fileID: 472597715}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -517,33 +529,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &472597715
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 472597710}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &479934095
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,7 +888,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 205403532}
         m_TargetAssemblyTypeName: TpPlayer_HTY, Assembly-CSharp
-        m_MethodName: Tp
+        m_MethodName: UseSkill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1105,152 +1090,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815315534}
   m_CullTransparentMesh: 1
---- !u!1 &916710943
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 916710944}
-  - component: {fileID: 916710948}
-  - component: {fileID: 916710947}
-  - component: {fileID: 916710946}
-  - component: {fileID: 916710945}
-  m_Layer: 5
-  m_Name: OffOpacityBt
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &916710944
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 916710943}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 372620721}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 823, y: 202}
-  m_SizeDelta: {x: 194.7395, y: 181.5898}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &916710945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 916710943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9fcec66cf86a884f95831ac87a06077, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OpacityPlayer_HTY
-  _spCompo: {fileID: 9014826586126181127}
---- !u!114 &916710946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 916710943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 916710947}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 916710945}
-        m_TargetAssemblyTypeName: OpacityPlayer_HTY, Assembly-CSharp
-        m_MethodName: OffOpacity
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &916710947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 916710943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.41560596, g: 0.645283, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &916710948
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 916710943}
-  m_CullTransparentMesh: 1
 --- !u!1 &960051275
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,7 +1251,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1077568874}
         m_TargetAssemblyTypeName: PastePlayer_HTY, Assembly-CSharp
-        m_MethodName: Paste
+        m_MethodName: UseSkill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1557,7 +1396,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1609492081}
         m_TargetAssemblyTypeName: CopyPlayer_HTY, Assembly-CSharp
-        m_MethodName: Copy
+        m_MethodName: UseSkill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1617,6 +1456,7 @@ GameObject:
   - component: {fileID: 1609492083}
   - component: {fileID: 1609492082}
   - component: {fileID: 1609492081}
+  - component: {fileID: 1609492084}
   m_Layer: 5
   m_Name: CopyScreen
   m_TagString: Untagged
@@ -1656,6 +1496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CopyPlayer_HTY
   _copyObj: {fileID: 7177957612396834437, guid: 18c5c0e3e1cc58445a0c75fc93ebf747, type: 3}
+  _canCopy: 0
 --- !u!114 &1609492082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1694,6 +1535,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609492079}
   m_CullTransparentMesh: 1
+--- !u!114 &1609492084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609492079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fd6c102a5497b24dbc40a4d8614cce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CopyObj_HTY
+  _copySkill: {fileID: 1609492081}
 --- !u!1 &1781346414
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,7 +1692,6 @@ GameObject:
   - component: {fileID: 1806430746}
   - component: {fileID: 1806430745}
   - component: {fileID: 1806430744}
-  - component: {fileID: 1806430747}
   m_Layer: 5
   m_Name: OpacityBt
   m_TagString: Untagged
@@ -1909,9 +1762,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1806430747}
+      - m_Target: {fileID: 9014826586126181129}
         m_TargetAssemblyTypeName: OpacityPlayer_HTY, Assembly-CSharp
-        m_MethodName: OnOpacity
+        m_MethodName: UseSkill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1959,19 +1812,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1806430742}
   m_CullTransparentMesh: 1
---- !u!114 &1806430747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806430742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9fcec66cf86a884f95831ac87a06077, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OpacityPlayer_HTY
-  _spCompo: {fileID: 9014826586126181127}
 --- !u!114 &220923316435335753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2042,6 +1882,7 @@ GameObject:
   - component: {fileID: 2938489531853668539}
   - component: {fileID: 7875683207563775330}
   - component: {fileID: 9014826586126181128}
+  - component: {fileID: 9014826586126181129}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2158,6 +1999,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TimeStopSkill_HTY
   _selectRangeObj: {fileID: 0}
+--- !u!114 &9014826586126181129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5489362120985841336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9fcec66cf86a884f95831ac87a06077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OpacityPlayer_HTY
+  _spCompo: {fileID: 9014826586126181127}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

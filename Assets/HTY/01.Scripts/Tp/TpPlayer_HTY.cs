@@ -1,19 +1,18 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class TpPlayer_HTY : MonoBehaviour,IPointerDownHandler
+public class TpPlayer_HTY : MonoBehaviour,ISkill_HTY
 {
-    [SerializeField] private GameObject _player;
-    [SerializeField] private GameObject _panel;
+    
+    public GameObject _panel;
 
-    public void Tp()
+    public bool CanUse()
     {
-        _panel.SetActive(true);
+        throw new System.NotImplementedException();
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void UseSkill()
     {
-        _player.transform.position = Utils_HTY.GetMousePos();
-        _panel.SetActive(false);
+        _panel.SetActive(true);
     }
 }

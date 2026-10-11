@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CopyPlayer_HTY : MonoBehaviour,IPointerDownHandler
+public class CopyPlayer_HTY : MonoBehaviour, ISkill_HTY
 {
-    [SerializeField] private GameObject _copyObj;
-    private bool _canCopy = false;
-    private GameObject _currentCopyObj;
+    public GameObject _copyObj;
+    public bool _canCopy = false;
+    
 
 
     private void Start()
@@ -13,29 +13,12 @@ public class CopyPlayer_HTY : MonoBehaviour,IPointerDownHandler
         gameObject.SetActive(false);
     }
 
-    public bool CanCopy()
-    {
-        return _canCopy;
-    }
+    public bool CanUse() => _canCopy;
 
-    public void Copy()
+    public void UseSkill()
     {
         _canCopy = !_canCopy;
         if (_canCopy) gameObject.SetActive(true);
         else gameObject.SetActive(false);
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (_currentCopyObj != null) return;
-        //알려주기?
-        if (CanCopy())
-        {
-            _currentCopyObj = Instantiate(_copyObj,Utils_HTY.GetMousePos(),Quaternion.identity);
-            _currentCopyObj.GetComponent<TestPlayerMove_HTY>().SetPlay(false);
-            FindAnyObjectByType<PastePlayer_HTY>()._otherObj = _currentCopyObj;
-            _canCopy = false;
-            gameObject.SetActive(false);
-        }
     }
 }
