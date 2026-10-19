@@ -1,7 +1,7 @@
 using System.Net.NetworkInformation;
 using UnityEngine;
 
-public class PastePlayer_HTY : MonoBehaviour
+public class PastePlayer_HTY : MonoBehaviour,ISkill_HTY
 {
     private GameObject _playObj;
     public GameObject _otherObj;
@@ -11,9 +11,11 @@ public class PastePlayer_HTY : MonoBehaviour
         _playObj = GameManager_HTY.instance._player;
     }
 
-    public void Paste()
+    public bool CanUse() => _otherObj != null;
+
+    public void UseSkill()
     {
-        if(_otherObj != null)
+        if (CanUse())
         {
             if (_playObj.TryGetComponent<TestPlayerMove_HTY>(out TestPlayerMove_HTY moveCompo))
             {
@@ -31,6 +33,5 @@ public class PastePlayer_HTY : MonoBehaviour
         {
             //나중에 효과 넣을듯
         }
-        
     }
 }
