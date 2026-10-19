@@ -28,17 +28,25 @@ namespace LDY.Script
         public Sprite playerCursor;
 
         [Header("Window UI (설정/크레딧 창)")]
-        [Tooltip("9-slice, border 12")] public Sprite windowFrame;
+        public Sprite windowFrame;
         public Sprite windowTitlebar;
         public Sprite buttonClose;
         public Sprite buttonPlain;
-        [Tooltip("9-slice, border 8")] public Sprite sliderTrack;
+        public Sprite sliderTrack;
         public Sprite sliderFill;
         public Sprite sliderHandle;
-        [Tooltip("9-slice, border 8")] public Sprite dropdownBox;
+        public Sprite dropdownBox;
         public Sprite dropdownArrowButton;
-        [Tooltip("9-slice, border 8")] public Sprite dropdownListBg;
+        public Sprite dropdownListBg;
         public Sprite dropdownHighlight;
-        [Tooltip("9-slice, border 8")] public Sprite focusFrame;
+        public Sprite focusFrame;
+
+        [Header("Transition")]
+        public const int HourglassFrameCount = 4;
+
+        public Sprite iconHourglass;
+        
+        public Sprite[] hourglassFrames = new Sprite[HourglassFrameCount];
+        public LoadingOverlay loadingOverlayPrefab;
     }
 }

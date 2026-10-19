@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 클립 하나를 재생한다. 시간은 호출한 쪽이 넘긴 dt를 그대로 쓴다.
     public class SpriteFramePlayer
     {
         private const float MinFrameTime = 0.001f;

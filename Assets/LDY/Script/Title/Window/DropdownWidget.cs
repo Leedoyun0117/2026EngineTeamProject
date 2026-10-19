@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 라벨 + 선택 상자 + 아래로 펼쳐지는 목록. 마우스는 클릭으로 열고 고르며, 플레이어는 E로 열고 W/S로 고르고 E로 확정한다.
     public class DropdownWidget : WindowWidget
     {
         private const float BoxHeight = 56f * WindowKit.Pixel;
@@ -71,7 +70,7 @@ namespace LDY.Script
 
         public override bool PointerEngaged => _open && _byPointer;
 
-        // 외부(설정창 열기)에서 선택을 맞출 때는 콜백을 부르지 않는다.
+        // 외부에서 맞출 땐 콜백 안 부름
         public void SetIndex(int index)
         {
             _selected = Mathf.Clamp(index, 0, _options.Length - 1);
@@ -124,7 +123,6 @@ namespace LDY.Script
                 return false;
             }
 
-            // W가 위, S가 아래
             int step = -input.VerticalStep;
             if (step != 0)
                 SetHighlight(Mathf.Clamp(_highlighted + step, 0, _options.Length - 1));
@@ -183,7 +181,7 @@ namespace LDY.Script
             return -1;
         }
 
-        // inset이 true면 목록 배경 테두리 안쪽 폭(하이라이트/판정용), false면 글자 위치 계산용.
+        // inset이면 테두리 안쪽 폭(하이라이트/판정용), 아니면 글자 위치용
         private Rect ItemRect(int index, bool inset)
         {
             float x = inset ? _listRect.xMin + Border : _listRect.xMin;

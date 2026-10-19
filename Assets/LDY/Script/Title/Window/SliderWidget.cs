@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 라벨 + 트랙/채움/핸들 + 오른쪽 % 표시. 값은 0~1이고 1% 단위로 맞춘다.
     public class SliderWidget : WindowWidget
     {
         private const float KeyboardSpeed = 0.5f;
@@ -19,13 +18,12 @@ namespace LDY.Script
         private readonly SpriteRenderer _fill;
         private readonly Transform _handle;
         private readonly TMP_Text _percent;
-        // 키보드로 조금씩 움직일 때 반올림에 묻히지 않도록 반올림 전 값을 따로 둔다.
+        // 키보드로 조금씩 움직일 때 반올림에 묻히지 않게 반올림 전 값을 따로 둠
         private float _exact;
-        // 첫 SetValue에서 반드시 Refresh가 돌도록 불가능한 값으로 시작한다.
+        // 첫 SetValue에서 Refresh가 돌도록 불가능한 값으로 시작
         private float _value = -1f;
         private bool _dragging;
 
-        // trackX: 트랙의 가로 범위, centerY: 행 중심, platformTop/rowLeft/rowRight: 플레이어 발판
         public SliderWidget(WindowKit kit, Transform parent, string label, string name, float centerY,
             Vector2 trackX, float platformTop, float zoneHeight, Vector2 rowX, float initial, Action<float> changed)
         {
@@ -61,7 +59,7 @@ namespace LDY.Script
 
         public float Value => _value;
 
-        // 외부(설정창 열기)에서 값을 맞출 때는 콜백을 부르지 않는다.
+        // 외부에서 맞출 땐 콜백 안 부름
         public void SetValue(float value, bool notify)
         {
             _exact = Mathf.Clamp01(value);

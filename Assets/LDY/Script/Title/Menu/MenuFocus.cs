@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 강조 중인 메뉴 항목 하나를 관리한다. 선택 방식(owner)이 바뀌어도 서로의 강조를 덮어쓰지 않는다.
+    // owner로 구분해서 선택 방식끼리 서로 강조를 덮어쓰지 않게 함
     public class MenuFocus
     {
         private MenuIcon _current;

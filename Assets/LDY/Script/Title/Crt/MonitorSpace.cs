@@ -3,8 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace LDY.Script
 {
-    // 화면 픽셀 -> 모니터 쿼드 UV -> 곡률 왜곡 -> 콘텐츠 카메라 월드 좌표.
-    // 쿼드는 -0.5~0.5 로컬 범위의 기본 Quad 메시여야 한다.
+    // screenQuad는 -0.5~0.5 로컬 범위의 기본 Quad여야 함
     public class MonitorSpace : MonoBehaviour, IMonitorSpace
     {
         [SerializeField] private Camera viewCamera;

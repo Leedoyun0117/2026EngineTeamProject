@@ -1,6 +1,5 @@
 namespace LDY.Script
 {
-    // 지정한 Alt 단계에서만 동작한다. 대상 탐색 방식과 실행 입력을 주입받아 플레이어/커서 방식이 공유한다.
     public class MenuSelector
     {
         private readonly AltPhase _phase;

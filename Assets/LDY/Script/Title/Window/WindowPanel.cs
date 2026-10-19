@@ -4,13 +4,16 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 설정/크레딧 창이 공유하는 틀. SubScreenPanel의 OnOpened/OnClosed 확장 지점 위에 창 프레임, 제목 줄, 닫기(X),
-    // 하단 "ESC 닫기", 발판, 입력 처리를 얹는다. 내용은 하위 클래스가 BuildBody에서 채운다.
-    // 창 오브젝트는 처음 열 때 코드로 만든다. 스프라이트는 TitleArtSet, 글꼴은 font 슬롯에서 바꾼다.
+    // 창 오브젝트는 처음 열 때 코드로 만듦. 내용은 하위 클래스가 BuildBody에서 채움
     public abstract class WindowPanel : SubScreenPanel, ISubScreenCancelHandler
     {
         private const float CloseButtonWidth = 0.8f;
         private const float CloseButtonHeight = 0.7f;
+        // 벽 세로 범위의 여유(맨 아래 발판 아래, 맨 위 발판 위)
+        private const float WallBelow = 1.5f;
+        private const float WallAbove = 2.5f;
+        // 물리 점프 창 위쪽 경계의 여유
+        private const float CeilingMargin = 0.1f;
 
         [SerializeField] private TitleArtSet art;
         [SerializeField] private TMP_FontAsset font;
@@ -21,20 +24,23 @@ namespace LDY.Script
         [SerializeField, Range(-20f, 0f)] private float dropDownSpeed = -4f;
         [Tooltip("내려가기 복구 판정과 행 이동을 콘솔에 남긴다(에디터 전용)")]
         [SerializeField] private bool debugDropper;
+        [Header("창 경계 벽")]
+        [Tooltip("벽 레이어 이름. 비우면 발판과 같은 Ground 레이어. 벽에 붙은 채 땅 판정이 켜지면 땅 판정에서 제외된 레이어로 바꾼다(충돌 매트릭스에서 Player와 충돌해야 함)")]
+        [SerializeField] private string wallLayerName = "";
 
         private readonly List<WindowWidget> _widgets = new List<WindowWidget>();
         private WindowServices _services;
         private WindowInteraction _interaction;
         private KeyboardButtonInput _dropInput;
+        private WindowSideWalls _walls;
         private int _openedFrame = -1;
         private bool _jumpBlocked;
 
         protected WindowServices Services => _services;
         protected abstract string TitleText { get; }
         protected abstract string ControlHint { get; }
-        // 창마다 행 간격이 달라 높이와 발판 높이를 따로 가진다.
         protected abstract WindowLayout Layout { get; }
-        // true면 Jump/S로 한 칸씩 행 이동하고 물리 점프와 내려가기는 쓰지 않는다. 크레딧처럼 서 있기만 하는 창은 false.
+        // false면 행 이동 대신 물리 점프 + S 내려가기(크레딧)
         protected virtual bool UsesRowMovement => true;
 
         public void Bind(WindowServices services)
@@ -53,13 +59,13 @@ namespace LDY.Script
             {
                 if (_services == null)
                 {
-                    Debug.LogError($"[Window] {name}: Bind가 호출되지 않았습니다. TitleBootstrap 연결을 확인하세요.");
+                    Debug.LogError($"[Window] {name}: Bind가 호출 안 됨, TitleBootstrap 연결 확인");
                     return false;
                 }
 
                 if (art == null)
                 {
-                    Debug.LogError($"[Window] {name}: art(TitleArtSet)가 비어 있습니다. 인스펙터에서 TitleArtSet을 연결하거나 Setup Title Scene을 다시 실행하세요.");
+                    Debug.LogError($"[Window] {name}: art(TitleArtSet)가 비어 있음, 연결하거나 Setup Title Scene 다시 실행");
                     return false;
                 }
 
@@ -83,6 +89,7 @@ namespace LDY.Script
             }
 
             _interaction.Opened();
+            _walls.SetActive(true);
             OnWindowOpened();
         }
 
@@ -94,7 +101,6 @@ namespace LDY.Script
             ReleaseRowControl();
         }
 
-        // 창이 꺼지거나 씬이 바뀌면 진행 중인 이동과 점프 차단을 정상으로 되돌린다.
         private void OnDisable()
         {
             ReleaseRowControl();
@@ -109,6 +115,8 @@ namespace LDY.Script
         private void ReleaseRowControl()
         {
             _interaction?.Abort();
+            if (_walls != null)
+                _walls.SetActive(false);
             if (!_jumpBlocked)
                 return;
 
@@ -116,7 +124,7 @@ namespace LDY.Script
             _services?.JumpBlock.SetJumpBlocked(false);
         }
 
-        // 아이콘을 눌러 연 프레임의 입력(E, 클릭)이 창 안에서 다시 처리되지 않게 한다.
+        // 아이콘을 눌러 연 프레임의 입력(E, 클릭)이 창에서 또 처리되지 않게 건너뜀
         private void Update()
         {
             if (_interaction == null || Time.frameCount == _openedFrame)
@@ -127,7 +135,6 @@ namespace LDY.Script
             OnWindowTick(dt);
         }
 
-        // 내려가기 복구는 물리 판정이라 FixedUpdate에서 검사한다.
         private void FixedUpdate()
         {
             _interaction?.FixedTick(Time.fixedDeltaTime);
@@ -165,7 +172,7 @@ namespace LDY.Script
             kit.Platform("CloseLedge", root, WindowStyle.InnerLeft, WindowStyle.InnerRight, Layout.CloseTop, true);
             kit.Platform("FooterLedge", root, WindowStyle.InnerLeft, WindowStyle.InnerRight, Layout.FooterTop, true);
 
-            // 내용 위젯을 먼저 등록한다. 드롭다운 목록이 "ESC 닫기" 줄과 겹칠 때 목록이 먼저 판정되도록.
+            // 드롭다운 목록이 ESC 닫기 줄과 겹칠 때 목록이 먼저 판정되게 내용 위젯부터 등록
             BuildBody(kit, root, _widgets);
 
             _widgets.Add(new WindowButton(closeButton, Expand(closeButton, 0.08f),
@@ -177,14 +184,14 @@ namespace LDY.Script
                 new Rect(-3.5f, Layout.FooterTop - WindowStyle.ZoneBelow, 7f, Layout.ZoneHeight),
                 _services.Close));
 
-            // S(아래 행 / 내려가기)는 JJBInput을 쓰지 않고 LDY 쪽 InputAction으로 따로 읽는다.
+            // S는 JJBInput 대신 LDY 쪽 InputAction으로 따로 읽음
             _dropInput = new KeyboardButtonInput("DropDown", "<Keyboard>/s");
             PlayerRowMover rows = null;
             PlatformDropper dropper = null;
             if (UsesRowMovement)
             {
-                rows = new PlayerRowMover(_services.PlayerBody, _services.PlayerCollider, _services.InputLock, root,
-                    kit.Platforms, Layout.Height, debugDropper);
+                rows = new PlayerRowMover(_services.PlayerBody, _services.PlayerCollider, _services.InputLock,
+                    kit.Platforms, debugDropper);
             }
             else
             {
@@ -192,7 +199,37 @@ namespace LDY.Script
                     dropIgnoreSeconds, dropDownSpeed, debugDropper);
             }
 
-            _interaction = new WindowInteraction(_widgets, _services, root, new FocusFrame(kit, root), rows, dropper, _dropInput);
+            var floor = new WindowFloorGuard(_services.PlayerBody, _services.PlayerCollider, kit.Platforms, debugDropper);
+            _interaction = new WindowInteraction(_widgets, _services, root, new FocusFrame(kit, root), rows, dropper,
+                _dropInput, floor);
+            BuildWalls(kit, root);
+        }
+
+        // 위쪽 경계는 물리 점프 창에만 만듦. 열릴 때까지는 꺼 둠
+        private void BuildWalls(WindowKit kit, Transform root)
+        {
+            int layer = string.IsNullOrEmpty(wallLayerName) ? -1 : LayerMask.NameToLayer(wallLayerName);
+            if (layer < 0)
+                layer = kit.GroundLayer;
+
+            float yMin = Layout.FooterTop - WallBelow;
+            float yMax = Layout.CloseTop + WallAbove;
+            float? ceiling = null;
+            if (!UsesRowMovement)
+            {
+                // 맨 위 발판에 선 몸 높이는 확보하되 프레임 위쪽보다 낮게 안 잡음
+                float bodyHeight = _services.PlayerCollider.bounds.size.y / Mathf.Max(0.0001f, root.lossyScale.y);
+                float frameTop = Layout.InnerTop + WindowStyle.FrameBorder;
+                ceiling = Mathf.Max(frameTop, Layout.CloseTop + bodyHeight + CeilingMargin);
+                yMax = ceiling.Value + 1f;
+            }
+
+            var go = new GameObject("WindowWalls");
+            go.transform.SetParent(root, false);
+            _walls = go.AddComponent<WindowSideWalls>();
+            _walls.Configure(layer, WindowStyle.InnerLeft, WindowStyle.InnerRight, yMin, yMax, ceiling,
+                _services.PlayerCollider, _services.PlayerBody, debugDropper);
+            _walls.SetActive(false);
         }
 
         private static Rect Expand(Rect rect, float amount)

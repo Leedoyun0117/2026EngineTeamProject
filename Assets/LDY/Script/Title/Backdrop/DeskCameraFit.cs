@@ -2,8 +2,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 화면 비율이 바뀌어도 방 배경 바깥이 보이지 않도록 메인 카메라 크기를 맞춘다.
-    // 16:9는 배경이 화면에 딱 맞고, 그보다 좁으면 좌우가, 넓으면 위아래가 잘린다. 줌 연출이 시작되면 꺼진다.
     [RequireComponent(typeof(Camera))]
     public class DeskCameraFit : MonoBehaviour
     {

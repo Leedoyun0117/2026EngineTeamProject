@@ -2,12 +2,10 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 부품 조립과 Update 위임만 담당한다. 애니메이션 시간은 scaled Time.deltaTime이라 Alt(timeScale 0) 중에는 멈춘다.
     [DisallowMultipleComponent]
     public class PlayerRenderer : MonoBehaviour
     {
         [SerializeField] private PlayerAnimSet animSet;
-        [Tooltip("비우면 AltModeController와 같은 방식(GetComponentInChildren)으로 찾는다")]
         [SerializeField] private SpriteRenderer target;
         [SerializeField] private PlayerAnimRules rules = new PlayerAnimRules();
 
@@ -30,7 +28,7 @@ namespace LDY.Script
 
             if (animSet == null || _source == null)
             {
-                Debug.LogError("[PlayerRenderer] PlayerAnimSet 또는 IPlayerMotionSource가 없어 비활성화합니다.", this);
+                Debug.LogError("[PlayerRenderer] PlayerAnimSet 또는 IPlayerMotionSource 없음, 비활성화", this);
                 enabled = false;
                 return;
             }
@@ -40,8 +38,6 @@ namespace LDY.Script
 
         private void Update()
         {
-            // Alt/복귀 중에는 틱을 멈추고 눈 감은 스프라이트를 보여준다. Normal로 돌아오면 아래 ApplySprite가 현재 프레임을 되돌린다.
-            // 방향(flipX)은 건드리지 않아 그대로 유지된다.
             if (_alt != null && _alt.Phase != AltPhase.Normal)
             {
                 if (animSet.AltSprite != null)

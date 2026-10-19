@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 설정창: 음량 슬라이더 3개와 화면 모드 드롭다운. 값은 바꾸는 즉시 적용되고 저장은 각 구현체가 맡는다.
     public class SettingsPanel : WindowPanel
     {
         private IAudioVolume _volume;
@@ -43,7 +42,7 @@ namespace LDY.Script
             widgets.Add(_screen);
         }
 
-        // 열 때마다 현재 값을 읽어 표시한다. 다른 곳에서 바뀐 값도 따라간다.
+        // 다른 곳에서 바뀐 값도 따라가게 열 때마다 다시 읽음
         protected override void OnWindowOpened()
         {
             _master.SetValue(_volume.Get(VolumeChannel.Master), false);

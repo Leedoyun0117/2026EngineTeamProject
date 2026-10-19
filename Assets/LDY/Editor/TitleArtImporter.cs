@@ -9,6 +9,11 @@ namespace LDY.Script.Editor
     {
         public const string Folder = "Assets/LDY/Art/Title";
 
+        // 모래시계 프레임. 도트 임포트 대상 폴더는 ArtFolders 한 곳에서만 늘린다.
+        public const string HourglassFolder = "Assets/LDY/Art/HourGlass";
+
+        public static readonly string[] ArtFolders = { Folder, HourglassFolder };
+
         private const int DefaultPixelsPerUnit = 100;
         // 창 UI 도트는 2배 확대된 키트라 1픽셀이 1/60유닛이 되게 맞춘다 (WindowKit.Pixel과 같은 값).
         private const int UiPixelsPerUnit = 60;
@@ -38,13 +43,22 @@ namespace LDY.Script.Editor
         [MenuItem("LDY/Title/Reimport Title Art")]
         public static void ReimportAll()
         {
-            AssetDatabase.ImportAsset(Folder, ImportAssetOptions.ImportRecursive | ImportAssetOptions.ForceUpdate);
+            foreach (string folder in ArtFolders)
+                AssetDatabase.ImportAsset(folder, ImportAssetOptions.ImportRecursive | ImportAssetOptions.ForceUpdate);
         }
 
         private static bool IsTitleArt(string path)
         {
-            return path.StartsWith(Folder + "/", System.StringComparison.OrdinalIgnoreCase) &&
-                   path.EndsWith(".png", System.StringComparison.OrdinalIgnoreCase);
+            if (!path.EndsWith(".png", System.StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            foreach (string folder in ArtFolders)
+            {
+                if (path.StartsWith(folder + "/", System.StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+
+            return false;
         }
 
         private static void Apply(TextureImporter importer, string path)

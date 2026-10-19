@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 플레이어가 올라서는 발판(platform)과 커서 hover 영역(hitArea, 아이콘+이름)을 가진 메뉴 항목.
-    // 모양과 크기는 MenuIconVisual이 정하고, 이 클래스는 판정과 실행만 담당한다.
     public class MenuIcon : MonoBehaviour
     {
         [SerializeField] private MenuActionBehaviour action;
@@ -48,7 +46,7 @@ namespace LDY.Script
             return body.bounds.min.y >= platform.bounds.max.y - TitleTuning.StandTolerance;
         }
 
-        // 강조 직전의 색을 저장했다가 되돌리므로, 강조 중이 아닐 때 바뀐 색(이미지 교체 등)을 그대로 따른다.
+        // 강조 직전 색을 저장해 뒀다가 되돌림(강조 전에 바뀐 색도 따라가게)
         public void SetHighlighted(bool highlighted)
         {
             if (_highlighted == highlighted)
@@ -71,7 +69,7 @@ namespace LDY.Script
         {
             if (action == null)
             {
-                Debug.LogError($"[MenuIcon] {name}: action이 연결되어 있지 않습니다.", this);
+                Debug.LogError($"[MenuIcon] {name}: action 연결 안 됨", this);
                 return;
             }
 

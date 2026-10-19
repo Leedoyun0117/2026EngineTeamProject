@@ -3,26 +3,28 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 창 하나의 입력 처리. Alt 단계면 커서(마우스), Normal 단계면 플레이어(발판 + E)로 위젯을 조작한다.
-    // 조작 상태(잡은 위젯, 드래그 중인 위젯)는 모두 여기서만 갖는다.
+    // Alt면 커서(마우스), Normal이면 플레이어(발판 + E)로 위젯을 조작
     public sealed class WindowInteraction
     {
         private readonly IReadOnlyList<WindowWidget> _widgets;
         private readonly WindowServices _services;
         private readonly Transform _window;
         private readonly FocusFrame _focus;
-        // 행 이동 창이면 _rows, 아니면(크레딧) 기존 내려가기 _dropper를 쓴다. 둘 중 하나는 null이다.
+        // 행 이동 창이면 _rows, 크레딧처럼 아니면 _dropper. 하나는 null
         private readonly PlayerRowMover _rows;
         private readonly PlatformDropper _dropper;
         private readonly IButtonInput _dropInput;
+        private readonly WindowFloorGuard _floor;
 
         private AltPhase _phase;
         private WindowWidget _captured;
         private WindowWidget _dragging;
 
         public WindowInteraction(IReadOnlyList<WindowWidget> widgets, WindowServices services, Transform window,
-            FocusFrame focus, PlayerRowMover rows, PlatformDropper dropper, IButtonInput dropInput)
+            FocusFrame focus, PlayerRowMover rows, PlatformDropper dropper, IButtonInput dropInput,
+            WindowFloorGuard floor)
         {
+            _floor = floor;
             _rows = rows;
             _dropper = dropper;
             _dropInput = dropInput;
@@ -60,9 +62,13 @@ namespace LDY.Script
         public void FixedTick(float fixedDeltaTime)
         {
             _dropper?.FixedTick(fixedDeltaTime);
+
+            // Alt 중엔 플레이어가 창 밖에 있을 수 있고, 행 이동 중엔 위치를 직접 옮겨서 검사 안 함
+            if (_services.Alt.Phase == AltPhase.Normal && (_rows == null || !_rows.IsMoving))
+                _floor.FixedTick();
         }
 
-        // ESC를 소비했으면 true. 잡고 있는 조작이나 열린 드롭다운이 있으면 그것만 취소하고 창은 닫지 않는다.
+        // 잡은 조작이나 열린 드롭다운이 있으면 그것만 취소하고 창은 안 닫음(소비하면 true)
         public bool HandleCancel()
         {
             if (_captured != null)
@@ -85,7 +91,6 @@ namespace LDY.Script
             return false;
         }
 
-        // 창이 열리거나 닫힐 때 모든 조작 상태를 정리한다.
         public void Reset()
         {
             if (_captured != null)
@@ -103,23 +108,26 @@ namespace LDY.Script
             _focus.Hide();
             _phase = _services.Alt.Phase;
             _rows?.Cancel();
+            _floor.Deactivate();
         }
 
-        // 창이 열린 직후. 행을 계산하고 플레이어를 바닥(0행)으로 보낸다.
         public void Opened()
         {
             _rows?.Open();
+            _floor.Activate();
+            _dropper?.SetUndroppable(_floor.Lowest);
         }
 
-        // 창이 꺼지거나 씬이 바뀔 때. 진행 중인 행 이동을 정상 상태로 되돌린다(오브젝트를 건드리지 않는다).
+        // 꺼지거나 씬이 바뀔 때 호출. 오브젝트는 안 건드리고 상태만 복구
         public void Abort()
         {
             _rows?.Cancel();
+            _floor.Deactivate();
         }
 
         private void HandlePhaseChanged(AltPhase phase)
         {
-            // Alt가 시작되면 키보드 조작은 풀린다. 플레이어 정지/복귀는 Alt 상태가 맡으므로 건드리지 않는다.
+            // 플레이어 정지/복귀는 Alt 상태가 맡아서 여기선 SetSuspended 안 함
             if (_captured != null && phase != AltPhase.Normal)
             {
                 WindowWidget widget = _captured;
@@ -167,7 +175,7 @@ namespace LDY.Script
             if (!input.PointerPressed || !inside)
                 return;
 
-            // 열린 드롭다운이 있으면 어디를 눌러도 그 위젯이 먼저 받는다.
+            // 열린 드롭다운은 어디를 눌러도 먼저 받음
             if (hover != null && hover.PointerPress(local))
                 _dragging = hover;
         }
@@ -189,7 +197,7 @@ namespace LDY.Script
                 return;
             }
 
-            // 슬라이더를 잡거나 드롭다운이 열린 동안(위 분기)에는 Jump/S가 UI 조작이라 행 이동이 동작하지 않는다.
+            // 잡는 동안(위 분기)엔 Jump/S가 UI 조작이라 행 이동 안 됨
             if (_rows != null)
             {
                 if (_rows.IsMoving)
@@ -215,7 +223,7 @@ namespace LDY.Script
                 BeginCapture(near);
         }
 
-        // 다른 창 입력(Horizontal/Jump/Interact)과 같이 입력 잠금 중에는 S 내려가기도 받지 않는다.
+        // 다른 입력처럼 잠금 중엔 S 내려가기도 막음
         private bool DropPressed()
         {
             return !_services.InputLock.IsLocked && _dropInput.Pressed;
@@ -230,7 +238,7 @@ namespace LDY.Script
             FollowAnchor();
         }
 
-        // Normal 단계에서만 조작을 되돌려 준다. Alt/Return 중에는 그쪽 상태가 정지와 복귀를 맡는다.
+        // Alt/Return 중엔 그쪽 상태가 정지와 복귀를 맡아서 Normal일 때만 풀어줌
         private void EndCapture()
         {
             _captured = null;
@@ -238,7 +246,7 @@ namespace LDY.Script
                 _services.PlayerControl.SetSuspended(false);
         }
 
-        // 잡는 동안 플레이어(커서)가 슬라이더 핸들에 붙어 따라간다. 높이는 물리가 그대로 정한다.
+        // x만 핸들에 붙이고 높이는 물리에 맡김
         private void FollowAnchor()
         {
             if (_captured == null || !_captured.TryGetPlayerAnchor(out Vector2 anchor))
@@ -281,7 +289,6 @@ namespace LDY.Script
             return null;
         }
 
-        // 플레이어 발바닥 점이 발판 구역 안에 있는 위젯.
         private WindowWidget FindNear()
         {
             Bounds bounds = _services.PlayerCollider.bounds;
@@ -319,7 +326,6 @@ namespace LDY.Script
         }
     }
 
-    // 하이라이트용 focus_frame. 위젯 범위에 맞춰 크기와 위치를 바꾼다.
     public sealed class FocusFrame
     {
         private readonly WindowKit _kit;

@@ -11,6 +11,8 @@ Shader "LDY/CrtScreen"
         _FlickerIntensity ("Flicker Intensity", Float) = 0.008
         _NoiseIntensity ("Noise Intensity", Float) = 0.006
         _CrtTime ("CRT Time", Float) = 0
+        _PowerOff ("Power Off (0 on, 1 off)", Range(0, 1)) = 0
+        _PowerFill ("Power Fill", Vector) = (1, 1, 0, 0)
     }
 
     SubShader
@@ -43,6 +45,8 @@ Shader "LDY/CrtScreen"
                 float _FlickerIntensity;
                 float _NoiseIntensity;
                 float _CrtTime;
+                float _PowerOff;
+                float4 _PowerFill;
             CBUFFER_END
 
             struct Attributes
@@ -72,6 +76,29 @@ Shader "LDY/CrtScreen"
                 return frac(p.x * p.y);
             }
 
+            // 전원 꺼짐 마스크. 곡률 변환 전의 화면 UV로 계산하는 출력 마스킹이라 콘텐츠 좌표(클릭 판정)에 영향이 없다.
+            // 세로로 줄어 가로선이 되고, 가로로 줄어 점이 된다. 켜질 때는 같은 값을 거꾸로 지난다.
+            float PowerMask(float2 screenUv, float p, float2 fill, out float glow)
+            {
+                glow = 0.0;
+                if (p <= 0.0)
+                    return 1.0;
+                if (p >= 1.0)
+                    return 0.0;
+
+                const float split = 0.65;
+                const float lineHalf = 0.004;
+                float a = saturate(p / split);
+                float b = saturate((p - split) / (1.0 - split));
+                float2 ext = float2(lerp(0.5 * fill.x, lineHalf, b * b), lerp(0.5 * fill.y, lineHalf, a * a));
+                float2 edge = max(ext * 0.15, 0.0015);
+                float2 d = abs(screenUv - 0.5);
+                float mask = (1.0 - smoothstep(ext.x - edge.x, ext.x, d.x)) * (1.0 - smoothstep(ext.y - edge.y, ext.y, d.y));
+
+                glow = smoothstep(0.25, 0.7, p) * (1.0 - smoothstep(0.85, 1.0, p));
+                return mask * (1.0 - smoothstep(0.92, 1.0, p));
+            }
+
             Varyings vert(Attributes input)
             {
                 Varyings output;
@@ -99,6 +126,10 @@ Shader "LDY/CrtScreen"
 
                 float noise = Hash21(floor(input.uv * float2(320.0, 240.0)) + floor(_CrtTime * 24.0));
                 color += (noise - 0.5) * _NoiseIntensity;
+
+                float glow;
+                float power = PowerMask(input.uv, _PowerOff, _PowerFill.xy, glow);
+                color = saturate(color + glow * power) * power;
 
                 return half4(saturate(color), 1);
             }

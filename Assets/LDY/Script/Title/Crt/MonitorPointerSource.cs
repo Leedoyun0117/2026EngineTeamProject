@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace LDY.Script
 {
-    // AltModeController.pointerOverride에 연결한다. 마우스를 모니터 콘텐츠 월드 좌표로 바꿔 Alt 커서로 쓴다.
+    // AltModeController.pointerOverride에 연결해서 씀
     public class MonitorPointerSource : MonoBehaviour, IPointerSource
     {
         [SerializeField] private MonitorSpace space;

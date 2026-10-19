@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 창 UI를 월드 오브젝트(SpriteRenderer, TextMeshPro, Collider2D)로 만드는 도우미. uGUI Canvas는 쓰지 않는다.
-    // 모든 길이는 월드 유닛이고, 도트 키트 1픽셀은 Pixel(1/60)이다.
+    // uGUI 대신 월드 오브젝트로 창을 만듦. 길이는 월드 유닛, 도트 1픽셀 = Pixel(1/60)
     public sealed class WindowKit
     {
         public const float Pixel = 1f / 60f;
@@ -24,17 +23,17 @@ namespace LDY.Script
             _groundLayer = LayerMask.NameToLayer("Ground");
             if (_groundLayer < 0)
             {
-                Debug.LogWarning("[Window] Ground 레이어가 없어 발판이 Default 레이어에 만들어집니다.");
+                Debug.LogWarning("[Window] Ground 레이어가 없어서 발판을 Default 레이어에 만듦");
                 _groundLayer = 0;
             }
         }
 
         public TitleArtSet Art { get; }
+        public int GroundLayer => _groundLayer;
 
-        // 이 키트로 만든 모든 발판. S로 내려갈 수 있는 대상이다.
         public IReadOnlyList<Collider2D> Platforms => _platforms;
 
-        // 크기 1x1유닛의 흰 사각형. 스프라이트 슬롯이 비어 있을 때와 단색 선에 쓴다.
+        // 스프라이트 슬롯이 비었을 때 쓰는 1x1 흰 사각형
         private static Sprite PixelSprite
         {
             get
@@ -58,7 +57,6 @@ namespace LDY.Script
             return go.transform;
         }
 
-        // 9-slice 스프라이트를 rect 크기로 그린다. rect는 부모 로컬 좌표.
         public SpriteRenderer Sliced(string name, Transform parent, Sprite sprite, Rect rect, int order)
         {
             SpriteRenderer sr = NewRenderer(name, parent, rect.center, order);
@@ -76,7 +74,6 @@ namespace LDY.Script
             return sr;
         }
 
-        // 일반 스프라이트를 rect 크기로 늘려 그린다. sprite가 null이면 color로 칠한 사각형이 된다.
         public SpriteRenderer Stretched(string name, Transform parent, Sprite sprite, Rect rect, int order)
         {
             SpriteRenderer sr = NewRenderer(name, parent, rect.center, order);
@@ -116,8 +113,8 @@ namespace LDY.Script
             return tmp;
         }
 
-        // 위쪽 면이 top에 오는 얇은 발판. 아래에서 점프하면 통과하고 위에서는 선다 (PlatformEffector2D 단방향).
-        // 플레이어의 바닥 판정이 쓰는 Ground 레이어에 둔다.
+        // 아래에서 점프하면 통과하는 단방향 발판(PlatformEffector2D)
+        // 플레이어 바닥 판정이 쓰는 Ground 레이어에 둬야 함
         public BoxCollider2D Platform(string name, Transform parent, float xMin, float xMax, float top, bool visible)
         {
             var go = new GameObject(name) { layer = _groundLayer };

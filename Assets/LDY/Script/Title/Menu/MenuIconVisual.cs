@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 메뉴 아이콘의 모양(타일, 심볼, 이름)과 크기를 정하고, 발판/판정 영역을 타일 크기에 맞춘다.
     public class MenuIconVisual : MonoBehaviour
     {
         [SerializeField] private BoxCollider2D platform;

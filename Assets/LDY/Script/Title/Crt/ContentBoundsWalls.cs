@@ -2,8 +2,7 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 콘텐츠 카메라가 보는 영역 가장자리에 벽을 만들어 플레이어가 화면 밖으로 나가지 못하게 한다.
-    // 이 오브젝트의 레이어를 벽이 그대로 쓴다(플레이어 ground check 레이어와 맞출 것).
+    // 벽이 이 오브젝트 레이어를 그대로 씀(플레이어 ground check 레이어와 맞출 것)
     public class ContentBoundsWalls : MonoBehaviour
     {
         [SerializeField] private Camera contentCamera;

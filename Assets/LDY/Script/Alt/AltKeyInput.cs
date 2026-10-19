@@ -18,7 +18,7 @@ namespace LDY.Script
         public bool Pressed => Available && _action.WasPressedThisFrame();
         public bool Held => Available && _action.IsPressed();
 
-        // 잠금 중이거나 포커스를 잃은 뒤 Alt를 완전히 뗄 때까지는 입력이 없는 것으로 본다.
+        // 잠금 중이거나, 포커스 잃은 뒤 Alt를 뗄 때까지는 입력 없음으로 침
         private bool Available
         {
             get
