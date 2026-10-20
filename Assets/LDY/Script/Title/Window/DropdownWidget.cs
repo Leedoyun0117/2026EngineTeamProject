@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 라벨 + 선택 상자 + 아래로 펼쳐지는 목록. 마우스는 클릭으로 열고 고르며, 플레이어는 E로 열고 W/S로 고르고 E로 확정한다.
     public class DropdownWidget : WindowWidget
     {
         private const float BoxHeight = 56f * WindowKit.Pixel;
@@ -33,35 +32,39 @@ namespace LDY.Script
             TitleArtSet art = kit.Art;
 
             kit.Text("Label", root, new Vector2(WindowStyle.LabelX, centerY), label, WindowStyle.RowFont,
-                WindowStyle.Text, 12, TextAlignmentOptions.Left, 3f);
+                WindowStyle.Text, WindowStyle.Order.Content, TextAlignmentOptions.Left, WindowStyle.LabelWidth);
 
             _boxRect = new Rect(boxX.x, centerY - BoxHeight * 0.5f, boxX.y - boxX.x, BoxHeight);
-            kit.Sliced("Box", root, art.dropdownBox, _boxRect, 12);
+            kit.Sliced("Box", root, art.dropdownBox, _boxRect, WindowStyle.Order.Content);
 
             float arrowSize = BoxHeight - Border * 2f;
             kit.Stretched("Arrow", root, art.dropdownArrowButton,
-                new Rect(_boxRect.xMax - Border - arrowSize, _boxRect.center.y - arrowSize * 0.5f, arrowSize, arrowSize), 13);
-            _selectedText = kit.Text("Selected", root, new Vector2(_boxRect.xMin + 0.25f, centerY), "",
-                WindowStyle.RowFont, WindowStyle.Text, 13, TextAlignmentOptions.Left, _boxRect.width - 1f);
+                new Rect(_boxRect.xMax - Border - arrowSize, _boxRect.center.y - arrowSize * 0.5f, arrowSize, arrowSize), WindowStyle.Order.ContentRaised);
+            _selectedText = kit.Text("Selected", root, new Vector2(_boxRect.xMin + WindowStyle.TextInset, centerY), "",
+                WindowStyle.RowFont, WindowStyle.Text, WindowStyle.Order.ContentRaised, TextAlignmentOptions.Left,
+                _boxRect.width - WindowStyle.TextWidthTrim);
 
             float listHeight = _options.Length * ItemHeight + Border * 2f;
-            _listRect = new Rect(_boxRect.xMin, _boxRect.yMin - 0.02f - listHeight, _boxRect.width, listHeight);
+            _listRect = new Rect(_boxRect.xMin, _boxRect.yMin - WindowStyle.DropdownListGap - listHeight, _boxRect.width, listHeight);
 
             _list = kit.Group("List", root, Vector2.zero).gameObject;
             Transform list = _list.transform;
-            kit.Sliced("ListBg", list, art.dropdownListBg, _listRect, 16);
-            _highlight = kit.Stretched("Highlight", list, art.dropdownHighlight, ItemRect(0, true), 17);
+            kit.Sliced("ListBg", list, art.dropdownListBg, _listRect, WindowStyle.Order.DropdownList);
+            _highlight = kit.Stretched("Highlight", list, art.dropdownHighlight, ItemRect(0, true),
+                WindowStyle.Order.DropdownHighlight);
             for (int i = 0; i < _options.Length; i++)
             {
-                kit.Text($"Item{i}", list, new Vector2(_boxRect.xMin + 0.25f, ItemRect(i, false).center.y), _options[i],
-                    WindowStyle.RowFont, WindowStyle.Text, 18, TextAlignmentOptions.Left, _boxRect.width - 1f);
+                kit.Text($"Item{i}", list, new Vector2(_boxRect.xMin + WindowStyle.TextInset, ItemRect(i, false).center.y),
+                    _options[i], WindowStyle.RowFont, WindowStyle.Text, WindowStyle.Order.DropdownText,
+                    TextAlignmentOptions.Left, _boxRect.width - WindowStyle.TextWidthTrim);
             }
 
             _kit = kit;
             _list.SetActive(false);
 
             PointerRect = _boxRect;
-            FocusRect = new Rect(_boxRect.xMin - 0.1f, _boxRect.yMin - 0.1f, _boxRect.width + 0.2f, _boxRect.height + 0.2f);
+            FocusRect = new Rect(_boxRect.xMin - WindowStyle.DropdownFocusPad, _boxRect.yMin - WindowStyle.DropdownFocusPad,
+                _boxRect.width + WindowStyle.DropdownFocusPad * 2f, _boxRect.height + WindowStyle.DropdownFocusPad * 2f);
             ProximityRect = new Rect(rowX.x, platformTop - WindowStyle.ZoneBelow, rowX.y - rowX.x, zoneHeight);
 
             SetIndex(initial);
@@ -71,7 +74,7 @@ namespace LDY.Script
 
         public override bool PointerEngaged => _open && _byPointer;
 
-        // 외부(설정창 열기)에서 선택을 맞출 때는 콜백을 부르지 않는다.
+        // 외부에서 맞출 땐 콜백 안 부름
         public void SetIndex(int index)
         {
             _selected = Mathf.Clamp(index, 0, _options.Length - 1);
@@ -124,7 +127,6 @@ namespace LDY.Script
                 return false;
             }
 
-            // W가 위, S가 아래
             int step = -input.VerticalStep;
             if (step != 0)
                 SetHighlight(Mathf.Clamp(_highlighted + step, 0, _options.Length - 1));
@@ -183,7 +185,7 @@ namespace LDY.Script
             return -1;
         }
 
-        // inset이 true면 목록 배경 테두리 안쪽 폭(하이라이트/판정용), false면 글자 위치 계산용.
+        // inset이면 테두리 안쪽 폭(하이라이트/판정용), 아니면 글자 위치용
         private Rect ItemRect(int index, bool inset)
         {
             float x = inset ? _listRect.xMin + Border : _listRect.xMin;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 모니터 콘텐츠 카메라의 RenderTexture 수명을 관리한다. 편집 모드에서도 화면이 보이도록 ExecuteAlways로 동작한다.
+    // 편집 모드에서도 화면이 보이게 ExecuteAlways
     [ExecuteAlways]
     public class CrtScreen : MonoBehaviour
     {

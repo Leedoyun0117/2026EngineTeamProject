@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 플레이어가 발판 위에 올라선 항목.
     public class StandingMenuFinder : IMenuTargetFinder
     {
         private readonly IReadOnlyList<MenuIcon> _icons;
@@ -30,7 +29,6 @@ namespace LDY.Script
         }
     }
 
-    // Alt 커서가 아이콘+이름 영역 위에 있는 항목. 마우스가 모니터 밖이면 없음.
     public class HoverMenuFinder : IMenuTargetFinder
     {
         private readonly IReadOnlyList<MenuIcon> _icons;

@@ -15,10 +15,8 @@ namespace LDY.Script
         }
 
         [SerializeField] private Entry[] clips = Array.Empty<Entry>();
-        [Tooltip("Jump/Fall 클립이 없을 때 고정해서 보여줄 Run 클립의 프레임 번호")]
         [SerializeField, Min(0)] private int airHoldRunFrame;
 
-        [Tooltip("Alt 중 고정해서 보여줄 스프라이트(눈 감은 모습)")]
         [SerializeField] private Sprite altSprite;
 
         private Dictionary<PlayerAnimId, PlayerAnimClip> _lookup;

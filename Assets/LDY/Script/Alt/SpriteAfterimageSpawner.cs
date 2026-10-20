@@ -13,7 +13,6 @@ namespace LDY.Script
             _tint = tint;
         }
 
-        // 스프라이트만 복제하므로 콜라이더와 스크립트는 포함되지 않는다.
         public IAfterimage Spawn()
         {
             Transform src = _source.transform;

@@ -15,20 +15,13 @@ MonoBehaviour:
   entries:
   - role: "\uAE30\uD68D"
     names:
-    - "\uC774\uB984 1"
-    - "\uC774\uB984 2"
+    - "\uAE40\uBCF4\uADFC"
+    - "\uC774\uB3C4\uC724"
   - role: "\uD504\uB85C\uADF8\uB798\uBC0D"
     names:
-    - "\uC774\uB984 3"
-    - "\uC774\uB984 4"
+    - "\uC804\uC9C0\uBE48"
+    - "\uD55C\uD0DC\uC601"
+    - "\uC774\uB3C4\uC724"
   - role: "\uC544\uD2B8"
     names:
-    - "\uC774\uB984 5"
-    - "\uC774\uB984 6"
-  - role: "\uC0AC\uC6B4\uB4DC"
-    names:
-    - "\uC774\uB984 7"
-    - "\uC774\uB984 8"
-  - role: Special Thanks
-    names:
-    - "\uC774\uB984 9"
+    - "\uC774\uB3C4\uC724"

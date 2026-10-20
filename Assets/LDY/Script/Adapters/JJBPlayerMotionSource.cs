@@ -9,7 +9,6 @@ namespace LDY.Script
     {
         private const float GroundNormalY = 0.5f;
 
-        [Tooltip("이 속도 이하의 가로 속도는 방향 변경으로 보지 않는다")]
         [SerializeField, Min(0f)] private float facingDeadZone = 0.05f;
 
         private Rigidbody2D _rb;

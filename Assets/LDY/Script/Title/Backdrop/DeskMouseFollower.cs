@@ -9,7 +9,6 @@ namespace LDY.Script
         [SerializeField] private TitleClock clock;
         [SerializeField] private Transform source;
         [Header("Gain (플레이어 이동량에 곱함)")]
-        [Tooltip("세로는 가로보다 약하게 둔다. 점프할 때 마우스가 위로 따라가지 않게 한다")]
         [SerializeField] private Vector2 gain = new Vector2(0.03f, 0.008f);
 
         [Header("Range (시작 위치 기준 직사각형)")]
@@ -18,9 +17,7 @@ namespace LDY.Script
         [SerializeField, Min(0f)] private float downRange = 0.4f;
 
         [Header("Obstacles (좌우 범위를 이 사이로 제한)")]
-        [Tooltip("마우스 왼쪽에 있는 물체(키보드)")]
         [SerializeField] private Renderer leftObstacle;
-        [Tooltip("마우스 오른쪽에 있는 물체(본체)")]
         [SerializeField] private Renderer rightObstacle;
         [SerializeField, Min(0f)] private float obstacleMargin = 0.1f;
 
@@ -68,19 +65,5 @@ namespace LDY.Script
             transform.position = new Vector3(next.x, next.y, transform.position.z);
             Moved?.Invoke(next);
         }
-
-#if UNITY_EDITOR
-        // 기준점(플레이 중에는 시작 위치) 기준의 이동 범위를 사각형으로 보여 준다.
-        private void OnDrawGizmosSelected()
-        {
-            Vector2 origin = Application.isPlaying ? _mouseOrigin : (Vector2)transform.position;
-            HorizontalLimits(origin, out float left, out float right);
-            var size = new Vector3(left + right, upRange + downRange, 0f);
-            var center = new Vector3(origin.x + (right - left) * 0.5f, origin.y + (upRange - downRange) * 0.5f,
-                transform.position.z);
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(center, size);
-        }
-#endif
     }
 }

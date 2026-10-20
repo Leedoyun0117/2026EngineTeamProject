@@ -38,3 +38,10 @@ MonoBehaviour:
   dropdownListBg: {fileID: 21300000, guid: 7640100da8a23414693d67baa20d640c, type: 3}
   dropdownHighlight: {fileID: 21300000, guid: fbfe00e0938135d459e2c31c9e47c71b, type: 3}
   focusFrame: {fileID: 21300000, guid: 9f9f0b49bf3949b4b907e8a8d8eabd07, type: 3}
+  iconHourglass: {fileID: 0}
+  hourglassFrames:
+  - {fileID: 21300000, guid: 25f9d60b37c7ce447b3200474f3c366e, type: 3}
+  - {fileID: 21300000, guid: 9aba4f360e13a754f96a08894581dd28, type: 3}
+  - {fileID: 21300000, guid: 6a0b4d7b501915949a8199fe1abbc0c2, type: 3}
+  - {fileID: 21300000, guid: d9f37b3425fce52489feaa3e0cb1658c, type: 3}
+  loadingOverlayPrefab: {fileID: 1435281253600071353, guid: 96256688884f31f4e84854422c2ce3b0, type: 3}

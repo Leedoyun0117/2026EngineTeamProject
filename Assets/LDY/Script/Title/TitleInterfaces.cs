@@ -24,6 +24,13 @@ namespace LDY.Script
         bool Pressed { get; }
     }
 
+    // 쓰는 동안에만 켜 두는 입력
+    public interface IToggleableButtonInput : IButtonInput
+    {
+        void Enable();
+        void Disable();
+    }
+
     // 현재 선택 가능한 메뉴 항목을 찾는다. 플레이어 발판 방식과 커서 hover 방식이 각각 구현한다.
     public interface IMenuTargetFinder
     {

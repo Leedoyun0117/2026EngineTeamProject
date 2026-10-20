@@ -48,9 +48,8 @@ namespace LDY.Script
         public void Tick(float unscaledDeltaTime)
         {
             _elapsed += unscaledDeltaTime;
-            // 지속 시간이 0이면 0/0 NaN이 되므로 즉시 종료로 처리한다.
-            float t = _duration > 0f ? Mathf.Clamp01(_elapsed / _duration) : 1f;
-            float eased = 1f - (1f - t) * (1f - t);
+            float t = UnscaledTween.Progress(_elapsed, _duration);
+            float eased = UnscaledTween.EaseOutQuad(t);
             _body.Position = Vector2.Lerp(_from, _session.Snapshot.Position, eased);
 
             float remaining = _duration - _elapsed;
@@ -60,8 +59,8 @@ namespace LDY.Script
                 _switcher.Switch<NormalState>();
         }
 
-        // timeScale 0인 상태에서 한 번의 Update 안에서 끝난다. 순서 변경 금지.
-        // 앞 단계가 실패해도 시간, 잠금은 반드시 복구되도록 finally에 둔다.
+        // timeScale 0인 채로 한 Update 안에 끝남. 순서 바꾸면 안 됨
+        // 앞에서 예외 나도 시간/잠금은 풀려야 해서 finally
         public void Exit()
         {
             try

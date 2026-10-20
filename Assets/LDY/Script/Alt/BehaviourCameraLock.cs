@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 카메라 추적 스크립트를 Alt 동안 비활성화한다. 추적 스크립트는 인스펙터에 등록.
+    // Alt 동안 카메라 추적 스크립트를 꺼둠. 대상은 인스펙터에서 등록
     [Serializable]
     public class BehaviourCameraLock : ICameraLock
     {

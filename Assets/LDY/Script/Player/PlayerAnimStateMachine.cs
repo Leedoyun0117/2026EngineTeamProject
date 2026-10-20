@@ -8,7 +8,6 @@ namespace LDY.Script
         public readonly bool Grounded;
         public readonly bool Locked;
         public readonly float DeltaTime;
-        // 지금 재생 중인 클립이 끝났는지, 그리고 현재 프레임 번호
         public readonly bool ClipFinished;
         public readonly int ClipFrame;
 
@@ -35,7 +34,6 @@ namespace LDY.Script
         }
 
         public PlayerAnimId Current { get; private set; } = PlayerAnimId.Idle;
-        // 이번 Tick에서 상태가 바뀌었는지와, 새 클립을 시작할 프레임
         public bool Changed { get; private set; }
         public int EntryFrame { get; private set; }
 
@@ -90,7 +88,7 @@ namespace LDY.Script
                 return;
             }
 
-            // 땅에 있고 잠금이 없을 때만 센다. 잠금 중에는 멈춘다.
+            // 잠금 중에는 앉기 타이머가 멈춤
             if (input.Locked)
                 return;
 
@@ -112,7 +110,7 @@ namespace LDY.Script
             EntryFrame = entry;
         }
 
-        // 공중이면 Jump/Fall, 땅이면 속도로 Idle/Walk/Run을 고른다. Run은 진입/이탈 속도가 다르다.
+        // Run은 진입/이탈 속도가 달라서 깜빡이지 않음
         private PlayerAnimId Locomotion(in PlayerAnimInput input, float speed)
         {
             if (!input.Grounded)

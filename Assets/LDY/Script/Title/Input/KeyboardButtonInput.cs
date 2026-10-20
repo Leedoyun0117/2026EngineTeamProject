@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 namespace LDY.Script
 {
     // 지정한 키 하나를 LDY 쪽 InputAction으로 읽는다. JJBInput 액션은 건드리지 않는다.
-    public class KeyboardButtonInput : IButtonInput, IDisposable
+    public class KeyboardButtonInput : IToggleableButtonInput, IDisposable
     {
         private readonly InputAction _action;
 

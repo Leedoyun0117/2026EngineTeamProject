@@ -3,19 +3,16 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 조립과 Update 위임만 담당한다. FixedUpdate는 사용하지 않는다.
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody2D), typeof(PlayerInputLock), typeof(JJBControlGate))]
     public class AltModeController : MonoBehaviour, IAltStatus
     {
         [SerializeField] private SpriteRenderer playerSprite;
         [SerializeField] private Camera targetCamera;
-        [Tooltip("IPointerSource를 구현한 컴포넌트. 비우면 마우스 월드 좌표를 사용한다")]
         [SerializeField] private MonoBehaviour pointerOverride;
         [SerializeField] private BehaviourCameraLock cameraLock = new BehaviourCameraLock();
         [SerializeField] private AltReturnSettings returnSettings = new AltReturnSettings();
         [SerializeField] private Color afterimageTint = new Color(0.78f, 0.62f, 0.38f, 0.75f);
-        [Tooltip("포커스 복귀 직후 프레임 시간이 튀는 것을 막는 상한(초)")]
         [SerializeField, Min(0.001f)] private float maxDeltaTime = TitleTuning.MaxDeltaTime;
 
         private AltStateMachine _machine;
@@ -73,12 +70,12 @@ namespace LDY.Script
 
         private void Update()
         {
-            // 포커스가 없는 동안은 연출을 진행시키지 않는다. timeScale은 그대로 유지된다.
+            // 포커스 없는 동안은 연출을 멈춤(timeScale은 그대로)
             float dt = Application.isFocused ? Mathf.Min(Time.unscaledDeltaTime, maxDeltaTime) : 0f;
             _machine.Tick(dt);
         }
 
-        // Alt 도중 비활성화/파괴되어도 timeScale, 물리, 잔상, 잠금 토큰을 복구한다.
+        // Alt 도중 꺼져도 timeScale/물리/잔상/잠금 토큰은 복구해야 해서
         private void Recover()
         {
             if (_machine == null)

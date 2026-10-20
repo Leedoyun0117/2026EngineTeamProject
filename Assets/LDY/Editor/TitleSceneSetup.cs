@@ -40,6 +40,7 @@ namespace LDY.Script.Editor
         private const string ArtSetPath = TitleArtImporter.Folder + "/TitleArtSet.asset";
 
         // 모니터 쿼드와 겹쳐야 하는 monitor_frame의 화면 구멍(이미지 왼쪽 위 기준 픽셀).
+        private static readonly Vector2 ExpectedHourglassSize = new Vector2(68f, 68f);
         private static readonly Rect MonitorHolePx = new Rect(48f, 56f, 480f, 360f);
         // room_background의 책상 윗면 선: 이미지 위에서부터의 픽셀.
         private const float RoomDeskLinePx = 520f;
@@ -83,6 +84,7 @@ namespace LDY.Script.Editor
             public MonitorSpace Space;
             public MonitorPointerSource Pointer;
             public CrtScreen Screen;
+            public CrtMaterialDriver Crt;
         }
 
         private sealed class IconDefinition
@@ -138,7 +140,7 @@ namespace LDY.Script.Editor
             var clock = systems.AddComponent<TitleClock>();
             var subScreens = systems.AddComponent<SubScreenController>();
             var transition = systems.AddComponent<GameStartTransition>();
-            var loader = systems.AddComponent<LoggingSceneLoader>();
+            var loader = systems.AddComponent<AsyncSceneLoader>();
             var zoom = systems.AddComponent<MonitorZoomRig>();
             var bootstrap = systems.AddComponent<TitleBootstrap>();
             var audioVolume = systems.AddComponent<MixerAudioVolume>();
@@ -158,6 +160,7 @@ namespace LDY.Script.Editor
 
             Wire(transition, "zoomRig", zoom);
             Wire(transition, "sceneLoader", loader);
+            WireTransition(transition, zoom, monitor, contentCam);
             Wire(zoom, "viewCamera", mainCam);
             Wire(zoom, "screenQuad", monitor.Quad);
             Wire(mainCam.gameObject.AddComponent<DeskCameraFit>(), "background",
@@ -181,6 +184,29 @@ namespace LDY.Script.Editor
             Debug.Log("타이틀 씬 세팅 완료 (Assets/Scenes/LDY_TitleScene.unity). 이미지/배치는 TitleVisual 오브젝트의 " +
                       "TitleVisualSettings에서 교체하세요. Play 후 A/D, Space, E, Alt+클릭, ESC로 확인합니다.");
             WarnMissingGlyphs();
+        }
+
+        // 시작 연출 단계가 쓰는 씬 오브젝트를 연결한다. 비어 있는 연결은 해당 단계만 건너뛴다.
+        private void WireTransition(GameStartTransition transition, MonitorZoomRig zoom, MonitorScreenParts monitor,
+            Camera contentCam)
+        {
+            SetFloat(zoom, "duration", 0.8f);
+            Wire(transition, "crt", monitor.Crt);
+            Wire(transition, "art", _art);
+            Wire(transition, "overlayFont", _font);
+            Wire(transition, "contentCamera", contentCam);
+
+            GameObject content = GameObject.Find("MonitorContent");
+            GameObject startIcon = GameObject.Find("Icon_GameStart");
+            if (content != null)
+                Wire(transition, "frameParent", content.transform);
+            if (startIcon == null)
+                return;
+
+            Wire(transition, "startIcon", startIcon.transform);
+            Transform hit = startIcon.transform.Find("HitArea");
+            if (hit != null)
+                Wire(transition, "startIconBounds", hit.GetComponent<Collider2D>());
         }
 
         // 설정 에셋을 불러오거나 만들고, 비어 있는 슬롯을 Art/Title 폴더의 같은 이름 PNG로 채운다.
@@ -208,6 +234,20 @@ namespace LDY.Script.Editor
                     missing.Add($"{field} ({file}.png)");
             }
 
+            // 로딩 모래시계는 에셋이 들어오기 전에는 임시 도형을 쓰므로 비어 있어도 셋업을 막지 않는다.
+            SerializedProperty hourglass = so.FindProperty("iconHourglass");
+            if (hourglass.objectReferenceValue == null)
+                hourglass.objectReferenceValue = FindArtSprite("icon_hourglass");
+
+            LinkHourglassFrames(so);
+
+            SerializedProperty overlay = so.FindProperty("loadingOverlayPrefab");
+            if (overlay.objectReferenceValue == null)
+            {
+                var first = so.FindProperty("hourglassFrames").GetArrayElementAtIndex(0).objectReferenceValue as Sprite;
+                overlay.objectReferenceValue = LoadingOverlayPrefabBuilder.EnsurePrefab(first);
+            }
+
             so.ApplyModifiedPropertiesWithoutUndo();
             AssetDatabase.SaveAssets();
 
@@ -219,9 +259,46 @@ namespace LDY.Script.Editor
             return null;
         }
 
+        // 비어 있는 모래시계 프레임 슬롯만 hourglass_0..3으로 채운다. 못 찾아도 셋업은 계속되고(임시 도형 사용) 에러만 모아 낸다.
+        private static void LinkHourglassFrames(SerializedObject so)
+        {
+            SerializedProperty frames = so.FindProperty("hourglassFrames");
+            if (frames.arraySize < TitleArtSet.HourglassFrameCount)
+                frames.arraySize = TitleArtSet.HourglassFrameCount;
+
+            var errors = new List<string>();
+            var sizes = new List<Vector2>();
+            for (int i = 0; i < TitleArtSet.HourglassFrameCount; i++)
+            {
+                string file = $"hourglass_{i}";
+                SerializedProperty slot = frames.GetArrayElementAtIndex(i);
+                if (slot.objectReferenceValue == null)
+                    slot.objectReferenceValue = FindArtSprite(file);
+
+                var sprite = slot.objectReferenceValue as Sprite;
+                if (sprite == null)
+                    errors.Add($"hourglassFrames[{i}] ({file}.png)");
+                else
+                    sizes.Add(sprite.rect.size);
+            }
+
+            if (errors.Count > 0)
+                Debug.LogError($"모래시계 프레임을 찾지 못했습니다: {string.Join(", ", errors)}\n" +
+                               $"{TitleArtImporter.HourglassFolder} 아래에 PNG를 넣거나 TitleArtSet 슬롯에 직접 연결하세요. 임시 도형으로 계속합니다.");
+
+            foreach (Vector2 size in sizes)
+            {
+                if (size == ExpectedHourglassSize)
+                    continue;
+
+                Debug.LogWarning($"모래시계 프레임은 {ExpectedHourglassSize.x}x{ExpectedHourglassSize.y}여야 합니다: {string.Join(", ", sizes)}");
+                break;
+            }
+        }
+
         private static Sprite FindArtSprite(string fileName)
         {
-            foreach (string guid in AssetDatabase.FindAssets($"{fileName} t:Sprite", new[] { TitleArtImporter.Folder }))
+            foreach (string guid in AssetDatabase.FindAssets($"{fileName} t:Sprite", TitleArtImporter.ArtFolders))
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 if (Path.GetFileNameWithoutExtension(path) == fileName)
@@ -331,7 +408,7 @@ namespace LDY.Script.Editor
             CreateKeyboard(desk, baseBottom);
             CreateCase(desk, clock);
 
-            return new MonitorScreenParts { Quad = quad.transform, Space = space, Pointer = pointer, Screen = screen };
+            return new MonitorScreenParts { Quad = quad.transform, Space = space, Pointer = pointer, Screen = screen, Crt = driver };
         }
 
         // 키보드는 기존 X 위치에 두고, 윗면이 받침대 바닥 바로 아래에 오게 한다.
@@ -363,7 +440,6 @@ namespace LDY.Script.Editor
                 new Color(0.25f, 0.15f, 0.03f), false);
 
             root.AddComponent<AudioSource>().playOnAwake = false;
-            Wire(root.AddComponent<FanSoundLoop>(), "clock", clock);
         }
 
         // 이미지 왼쪽 위 기준 픽셀 -> 이미지 중심 기준 로컬 좌표(월드 길이)

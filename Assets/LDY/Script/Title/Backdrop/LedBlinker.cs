@@ -8,7 +8,6 @@ namespace LDY.Script
         [SerializeField] private SpriteRenderer led;
         [SerializeField] private Color onColor = Color.green;
         [SerializeField] private Color offColor = new Color(0.1f, 0.2f, 0.1f);
-        [Tooltip("true면 점멸하지 않고 켜진 채로 둔다 (전원 LED)")]
         [SerializeField] private bool steady;
         [SerializeField, Min(0.01f)] private float minInterval = 0.08f;
         [SerializeField, Min(0.01f)] private float maxInterval = 0.8f;

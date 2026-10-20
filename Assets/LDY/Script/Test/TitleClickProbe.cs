@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 테스트용: Alt 중(timeScale 0) 커서 클릭이 메뉴를 실행하는지 로그와 화면 표시로 확인한다.
     public class TitleClickProbe : MonoBehaviour
     {
         [SerializeField] private AltModeController alt;

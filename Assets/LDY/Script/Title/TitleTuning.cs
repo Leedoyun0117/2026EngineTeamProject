@@ -7,5 +7,11 @@ namespace LDY.Script
         public const float MaxDeltaTime = 0.05f;
         // 발판 윗면에 "서 있다"고 보는 허용 오차
         public const float StandTolerance = 0.1f;
+        // 정지한 것으로 보는 세로 속도
+        public const float RestSpeed = 0.1f;
+        // 발판 위에 놓을 때 겹침 없이 시작하려고 띄우는 높이(이후 중력이 내려앉힘)
+        public const float StandGap = 0.02f;
+        // 0으로 나누지 않으려고 스케일에 거는 하한
+        public const float MinScale = 0.0001f;
     }
 }

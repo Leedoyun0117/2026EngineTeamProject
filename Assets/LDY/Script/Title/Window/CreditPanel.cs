@@ -4,8 +4,7 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 크레딧 창: CreditData의 역할/이름 목록을 보여 준다. 목록이 보이는 영역보다 길면 천천히 자동으로 올라가고,
-    // 마우스 휠이나 W/S로 직접 넘길 수 있다. 영역 밖 줄은 마스크 대신 가장자리에서 서서히 투명해진다.
+    // 영역 밖 줄은 마스크 대신 알파로 서서히 투명하게 처리
     public class CreditPanel : WindowPanel
     {
         private const float ViewHalfWidth = 3.7f;
@@ -24,6 +23,12 @@ namespace LDY.Script
         private static readonly Color RoleColor = new Color(0.1f, 0.2f, 0.5f);
 
         [SerializeField] private CreditData data;
+        [Header("S 내려가기")]
+        [Tooltip("발판에서 겹침이 풀리기를 기다리는 시간(초). 지나면 아래 행에 착지해 멈춘 경우 복구한다. 하드 캡은 2초")]
+        [SerializeField, Min(0.1f)] private float dropIgnoreSeconds = 1f;
+        [Tooltip("내려가기 시작할 때 주는 아래 방향 속도")]
+        [SerializeField, Range(-20f, 0f)] private float dropDownSpeed = -4f;
+        [Header("스크롤")]
         [Tooltip("자동 스크롤 속도 (유닛/초). 0이면 자동으로 올라가지 않는다")]
         [SerializeField, Min(0f)] private float scrollSpeed = 0.6f;
         [Tooltip("창이 열린 뒤 자동 스크롤이 시작되기까지의 시간(초)")]
@@ -46,21 +51,23 @@ namespace LDY.Script
         protected override string TitleText => WindowText.CreditTitle;
         protected override string ControlHint => WindowText.CreditControlHint;
         protected override WindowLayout Layout => WindowLayout.Credit;
-        // 자동 스크롤 창이라 행 이동을 쓰지 않고 기존 동작(물리 점프 + S 내려가기)을 유지한다.
+        // 자동 스크롤 창이라 행 이동 없이 물리 점프 + S 내려가기
         protected override bool UsesRowMovement => false;
+        protected override float DropIgnoreSeconds => dropIgnoreSeconds;
+        protected override float DropDownSpeed => dropDownSpeed;
 
         private float ViewHeight => _viewTop - _viewBottom;
-        // 마지막 줄까지 올라온 위치. 목록이 영역보다 짧으면 0(맨 위 줄이 영역 맨 위에 닿는 위치).
+        // 마지막 줄까지 올라온 위치(목록이 짧으면 0)
         private float EndOffset => Mathf.Max(0f, _contentHeight - ViewHeight);
 
         protected override void BuildBody(WindowKit kit, Transform root, List<WindowWidget> widgets)
         {
-            _viewTop = Layout.CloseTop - 0.1f;
-            _viewBottom = Layout.FooterTop + 0.7f;
+            _viewTop = Layout.CloseTop - WindowStyle.CreditViewTopGap;
+            _viewBottom = Layout.FooterTop + WindowStyle.CreditViewBottomGap;
 
             if (data == null)
             {
-                Debug.LogWarning("[Credit] CreditData가 연결되어 있지 않습니다.");
+                Debug.LogWarning("[Credit] CreditData 연결 안 됨");
                 return;
             }
 
@@ -80,10 +87,10 @@ namespace LDY.Script
 
             _contentHeight = y;
             if (_lines.Count == 0)
-                Debug.LogWarning("[Credit] CreditData에 표시할 항목이 없습니다.");
+                Debug.LogWarning("[Credit] 표시할 항목 없음");
         }
 
-        // 목록의 맨 위 줄이 영역 아래 끝에 닿은 위치에서 시작해 아래에서 위로 올라온다. 짧은 목록도 같다.
+        // 맨 위 줄이 영역 아래 끝에 닿은 위치에서 시작(짧은 목록도 같음)
         protected override void OnWindowOpened()
         {
             _offset = -ViewHeight;
@@ -91,8 +98,8 @@ namespace LDY.Script
             LayoutLines();
         }
 
-        // 자동 스크롤과 대기 시간은 게임 시간(Time.deltaTime)을 따른다. Alt가 timeScale을 0으로 만들면 멈추고, 떼면 이어진다.
-        // 휠과 W/S는 Alt 중에도 동작한다. 끝(마지막 줄)에 닿으면 멈추고 반복하지 않는다.
+        // 자동 스크롤은 Time.deltaTime이라 Alt(timeScale 0) 동안 멈추고 떼면 이어짐
+        // 휠, W/S는 Alt 중에도 동작. 끝에 닿으면 멈추고 반복 없음
         protected override void OnWindowTick(float dt)
         {
             IWindowInput input = Services.Input;
@@ -101,7 +108,7 @@ namespace LDY.Script
 
             if (manual != 0f)
             {
-                // 위로 올리면(휠 위, W) 목록이 아래로 내려온다.
+                // 휠 위/W는 목록이 아래로 내려옴
                 _offset = Mathf.Clamp(_offset - manual, -ViewHeight, EndOffset);
                 _hold = ManualPause;
             }
@@ -121,12 +128,11 @@ namespace LDY.Script
         private void AddLine(WindowKit kit, Transform root, string text, float fontSize, Color color, float top,
             float height)
         {
-            TextMeshPro tmp = kit.Text("Line", root, Vector2.zero, text, fontSize, color, 12,
+            TextMeshPro tmp = kit.Text("Line", root, Vector2.zero, text, fontSize, color, WindowStyle.Order.Content,
                 TextAlignmentOptions.Center, ViewHalfWidth * 2f);
             _lines.Add(new Line { Text = tmp, Top = top, Height = height });
         }
 
-        // 스크롤 위치에 맞춰 줄을 옮기고, 영역 가장자리에 가까울수록 투명하게 한다.
         private void LayoutLines()
         {
             foreach (Line line in _lines)

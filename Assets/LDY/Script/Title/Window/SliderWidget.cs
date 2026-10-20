@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace LDY.Script
 {
-    // 라벨 + 트랙/채움/핸들 + 오른쪽 % 표시. 값은 0~1이고 1% 단위로 맞춘다.
     public class SliderWidget : WindowWidget
     {
         private const float KeyboardSpeed = 0.5f;
@@ -19,13 +18,12 @@ namespace LDY.Script
         private readonly SpriteRenderer _fill;
         private readonly Transform _handle;
         private readonly TMP_Text _percent;
-        // 키보드로 조금씩 움직일 때 반올림에 묻히지 않도록 반올림 전 값을 따로 둔다.
+        // 키보드로 조금씩 움직일 때 반올림에 묻히지 않게 반올림 전 값을 따로 둠
         private float _exact;
-        // 첫 SetValue에서 반드시 Refresh가 돌도록 불가능한 값으로 시작한다.
+        // 첫 SetValue에서 Refresh가 돌도록 불가능한 값으로 시작
         private float _value = -1f;
         private bool _dragging;
 
-        // trackX: 트랙의 가로 범위, centerY: 행 중심, platformTop/rowLeft/rowRight: 플레이어 발판
         public SliderWidget(WindowKit kit, Transform parent, string label, string name, float centerY,
             Vector2 trackX, float platformTop, float zoneHeight, Vector2 rowX, float initial, Action<float> changed)
         {
@@ -36,24 +34,24 @@ namespace LDY.Script
             TitleArtSet art = kit.Art;
             Color textColor = WindowStyle.Text;
 
-            kit.Text("Label", root, new Vector2(WindowStyle.LabelX, centerY), label, WindowStyle.RowFont, textColor, 12,
-                TextAlignmentOptions.Left, 3f);
+            kit.Text("Label", root, new Vector2(WindowStyle.LabelX, centerY), label, WindowStyle.RowFont, textColor,
+                WindowStyle.Order.Content, TextAlignmentOptions.Left, WindowStyle.LabelWidth);
 
             float trackWidth = trackX.y - trackX.x;
             kit.Sliced("Track", root, art.sliderTrack,
-                new Rect(trackX.x, centerY - TrackHeight * 0.5f, trackWidth, TrackHeight), 12);
+                new Rect(trackX.x, centerY - TrackHeight * 0.5f, trackWidth, TrackHeight), WindowStyle.Order.Content);
 
             _inner = new Rect(trackX.x + TrackBorder, centerY - (TrackHeight - TrackBorder * 2f) * 0.5f,
                 trackWidth - TrackBorder * 2f, TrackHeight - TrackBorder * 2f);
-            _fill = kit.Stretched("Fill", root, art.sliderFill, _inner, 13);
+            _fill = kit.Stretched("Fill", root, art.sliderFill, _inner, WindowStyle.Order.ContentRaised);
             _handle = kit.Stretched("Handle", root, art.sliderHandle,
-                new Rect(0f, centerY - HandleHeight * 0.5f, HandleWidth, HandleHeight), 14).transform;
+                new Rect(0f, centerY - HandleHeight * 0.5f, HandleWidth, HandleHeight), WindowStyle.Order.SliderHandle).transform;
             _percent = kit.Text("Percent", root, new Vector2(WindowStyle.PercentX, centerY), "", WindowStyle.RowFont,
-                textColor, 12, TextAlignmentOptions.Right, 1.6f);
+                textColor, WindowStyle.Order.Content, TextAlignmentOptions.Right, WindowStyle.PercentWidth);
 
             PointerRect = new Rect(trackX.x - HandleWidth * 0.5f, centerY - HandleHeight * 0.5f,
                 trackWidth + HandleWidth, HandleHeight);
-            FocusRect = new Rect(rowX.x, centerY - 0.5f, rowX.y - rowX.x, 1f);
+            FocusRect = new Rect(rowX.x, centerY - WindowStyle.RowFocusHeight * 0.5f, rowX.y - rowX.x, WindowStyle.RowFocusHeight);
             ProximityRect = new Rect(rowX.x, platformTop - WindowStyle.ZoneBelow, rowX.y - rowX.x, zoneHeight);
 
             SetValue(initial, false);
@@ -61,11 +59,11 @@ namespace LDY.Script
 
         public float Value => _value;
 
-        // 외부(설정창 열기)에서 값을 맞출 때는 콜백을 부르지 않는다.
+        // 외부에서 맞출 땐 콜백 안 부름
         public void SetValue(float value, bool notify)
         {
             _exact = Mathf.Clamp01(value);
-            float rounded = Mathf.Round(_exact * 100f) / 100f;
+            float rounded = Mathf.Round(_exact * WindowStyle.PercentScale) / WindowStyle.PercentScale;
             bool changed = !Mathf.Approximately(rounded, _value);
             if (!changed)
                 return;
@@ -126,10 +124,10 @@ namespace LDY.Script
 
         private void Refresh()
         {
-            var fillRect = new Rect(_inner.xMin, _inner.yMin, Mathf.Max(_inner.width * _value, 0.001f), _inner.height);
+            var fillRect = new Rect(_inner.xMin, _inner.yMin, Mathf.Max(_inner.width * _value, WindowStyle.MinFillWidth), _inner.height);
             _kit.Resize(_fill, fillRect);
             _handle.localPosition = new Vector3(_inner.xMin + _inner.width * _value, _inner.center.y, 0f);
-            _percent.text = $"{Mathf.RoundToInt(_value * 100f)}%";
+            _percent.text = $"{Mathf.RoundToInt(_value * WindowStyle.PercentScale)}%";
         }
     }
 }
