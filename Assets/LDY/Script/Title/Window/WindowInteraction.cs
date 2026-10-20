@@ -325,39 +325,4 @@ namespace LDY.Script
             return _window.InverseTransformPoint(new Vector3(world.x, world.y, _window.position.z));
         }
     }
-
-    public sealed class FocusFrame
-    {
-        private readonly WindowKit _kit;
-        private readonly SpriteRenderer _renderer;
-        private Rect _shown;
-        private bool _visible;
-
-        public FocusFrame(WindowKit kit, Transform parent)
-        {
-            _kit = kit;
-            _renderer = kit.Sliced("FocusFrame", parent, kit.Art.focusFrame, new Rect(0f, 0f, 1f, 1f), 15);
-            _renderer.gameObject.SetActive(false);
-        }
-
-        public void Show(Rect rect)
-        {
-            if (_visible && _shown == rect)
-                return;
-
-            _visible = true;
-            _shown = rect;
-            _renderer.gameObject.SetActive(true);
-            _kit.Resize(_renderer, rect);
-        }
-
-        public void Hide()
-        {
-            if (!_visible)
-                return;
-
-            _visible = false;
-            _renderer.gameObject.SetActive(false);
-        }
-    }
 }

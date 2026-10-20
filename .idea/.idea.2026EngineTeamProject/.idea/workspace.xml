@@ -12,40 +12,24 @@
   <component name="ChangeListManager">
     <list default="true" id="6fe23d18-7e65-450d-b817-a0888c4ceaa1" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Art/Title/TitleArtSet.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Art/Title/TitleArtSet.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Editor/TitleArtImporter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Editor/TitleArtImporter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Editor/TitleSceneSetup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Editor/TitleSceneSetup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Prefab/AltPlayer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Prefab/AltPlayer.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Ability/PlayerAbilityGate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Ability/PlayerAbilityGate.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Alt/AltModeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Alt/AltModeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Player/IPlayerMotionSource.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Player/IPlayerMotionSource.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Player/PlayerAnimId.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Player/PlayerAnimId.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Player/PlayerAnimRules.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Player/PlayerAnimRules.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Player/PlayerAnimSet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Player/PlayerAnimSet.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Player/PlayerRenderer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Player/PlayerRenderer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Player/SpriteFlipDriver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Player/SpriteFlipDriver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Player/SpriteFramePlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Player/SpriteFramePlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/DeskCameraFit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/DeskCameraFit.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/DeskMouseFollower.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/DeskMouseFollower.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/FanSoundLoop.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/FanSoundLoop.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/LedBlinker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/LedBlinker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/TitleClock.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Backdrop/TitleClock.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Crt/CrtCurvature.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Crt/CrtCurvature.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Crt/CrtMaterialDriver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Crt/CrtMaterialDriver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/GameStartTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/GameStartTransition.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/MonitorZoomRig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/MonitorZoomRig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Visual/TitleArtSet.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Visual/TitleArtSet.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Alt/ReturnState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Alt/ReturnState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Input/KeyboardButtonInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Input/KeyboardButtonInput.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleBootstrap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleBootstrap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleInterfaces.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleInterfaces.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleTuning.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleTuning.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/Carrier/LoadingOverlay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/Carrier/LoadingOverlay.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/UnscaledTween.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/UnscaledTween.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/CreditPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/CreditPanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/DropdownWidget.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/DropdownWidget.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlatformDropper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlatformDropper.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlayerRowMover.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlayerRowMover.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/SliderWidget.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/SliderWidget.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowFloorGuard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowFloorGuard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowInteraction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowInteraction.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowKit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowKit.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowPanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowWidget.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowWidget.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Shader/CrtScreen.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Shader/CrtScreen.shader" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LDY_TitleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LDY_TitleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowServices.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowStyle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowStyle.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,6 +120,7 @@
       <workItem from="1791858022169" duration="6184000" />
       <workItem from="1792135574005" duration="3074000" />
       <workItem from="1792330615581" duration="1735000" />
+      <workItem from="1792462052158" duration="3104000" />
     </task>
     <servers />
   </component>

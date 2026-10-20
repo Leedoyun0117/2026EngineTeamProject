@@ -22,7 +22,7 @@ namespace LDY.Script
     {
         public WindowServices(IAltStatus alt, IMonitorSpace monitor, Collider2D playerCollider, IPlayerBody playerBody,
             IPlayerControl playerControl, IWindowInput input, Action close, MenuPlatformSwitch platforms,
-            IJumpBlock jumpBlock, IInputLock inputLock)
+            IJumpBlock jumpBlock, IInputLock inputLock, IToggleableButtonInput dropInput)
         {
             Alt = alt;
             Monitor = monitor;
@@ -34,6 +34,7 @@ namespace LDY.Script
             Platforms = platforms;
             JumpBlock = jumpBlock;
             InputLock = inputLock;
+            DropInput = dropInput;
         }
 
         public IAltStatus Alt { get; }
@@ -46,6 +47,8 @@ namespace LDY.Script
         public MenuPlatformSwitch Platforms { get; }
         public IJumpBlock JumpBlock { get; }
         public IInputLock InputLock { get; }
+        // S 내려가기. 창이 열려 있는 동안만 켠다
+        public IToggleableButtonInput DropInput { get; }
     }
 
     // 한글 폰트 글리프 점검(셋업 도구)에도 씀

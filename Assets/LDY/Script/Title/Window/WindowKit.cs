@@ -34,7 +34,7 @@ namespace LDY.Script
         public IReadOnlyList<Collider2D> Platforms => _platforms;
 
         // 스프라이트 슬롯이 비었을 때 쓰는 1x1 흰 사각형
-        private static Sprite PixelSprite
+        public static Sprite PixelSprite
         {
             get
             {
@@ -108,7 +108,7 @@ namespace LDY.Script
             tmp.sortingOrder = order;
             tmp.textWrappingMode = TextWrappingModes.NoWrap;
             tmp.overflowMode = TextOverflowModes.Overflow;
-            tmp.rectTransform.sizeDelta = new Vector2(width, fontSize * 0.12f);
+            tmp.rectTransform.sizeDelta = new Vector2(width, fontSize * WindowStyle.TextHeightRatio);
             tmp.rectTransform.pivot = new Vector2(PivotX(alignment), 0.5f);
             return tmp;
         }
@@ -126,15 +126,16 @@ namespace LDY.Script
             box.usedByEffector = true;
             var effector = go.AddComponent<PlatformEffector2D>();
             effector.useOneWay = true;
-            effector.surfaceArc = 170f;
+            effector.surfaceArc = WindowStyle.PlatformSurfaceArc;
             _platforms.Add(box);
 
             if (!visible)
                 return box;
 
             SpriteRenderer line = Stretched("Line", go.transform, null,
-                new Rect(-(xMax - xMin) * 0.5f, PlatformThickness * 0.5f - 0.06f, xMax - xMin, 0.06f), 11);
-            line.color = new Color(0.4f, 0.4f, 0.45f);
+                new Rect(-(xMax - xMin) * 0.5f, PlatformThickness * 0.5f - WindowStyle.PlatformLineThickness, xMax - xMin,
+                    WindowStyle.PlatformLineThickness), WindowStyle.Order.PlatformLine);
+            line.color = WindowStyle.PlatformLine;
             return box;
         }
 

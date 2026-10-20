@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 namespace LDY.Script
 {
-    // 카메라에 안 묶인 Overlay 캔버스라 타이틀 카메라가 사라져도, 새 씬 카메라가 생기기 전에도 보임
-    // UI 배치는 LoadingOverlay.prefab에서 편집
     public class LoadingOverlay : MonoBehaviour
     {
         [SerializeField] private Canvas canvas;
@@ -30,14 +28,12 @@ namespace LDY.Script
 
         private void Awake()
         {
-            // 회전 기준점은 항상 Image 정중앙. 회전은 이 Image의 RectTransform에만 적용된다
             hourglass.rectTransform.pivot = new Vector2(0.5f, 0.5f);
             _animator = new HourglassAnimator(hourglass);
             _dots = LoadingDots.Attach(label);
             canvas.enabled = false;
         }
 
-        // frames, hourglass, 임시 모양 순으로 있는 것을 씀
         public void Show(string text, Sprite hourglassSprite, Sprite[] frames, float frameDuration,
             float flipDuration, AnimationCurve flipCurve, TMP_FontAsset font)
         {
@@ -84,10 +80,6 @@ namespace LDY.Script
                 return;
 
             _animator.Tick();
-#if UNITY_EDITOR
-            if (verifyHourglassCenter)
-                TrackDrift();
-#endif
         }
 
 #if UNITY_EDITOR
@@ -105,10 +97,8 @@ namespace LDY.Script
                 return;
 
             _driftWarned = true;
-            Debug.LogWarning($"[LoadingOverlay] 회전 중 모래시계 중심이 {drift:0.###}px 움직임 (피벗 {hourglass.rectTransform.pivot})", this);
         }
 
-        // 인스펙터 컴포넌트 메뉴에서 실행. 프리팹 편집 화면이나 씬 인스턴스에서도 동작한다
         [ContextMenu("Check Hourglass Pivot And Center")]
         private void CheckHourglass()
         {
@@ -124,15 +114,11 @@ namespace LDY.Script
 
             rect.localRotation = saved;
             string parentRotation = rect.parent != null ? rect.parent.localEulerAngles.ToString() : "-";
-            Debug.Log($"[LoadingOverlay] 회전 대상: {rect.name} (부모 {(rect.parent != null ? rect.parent.name : "-")}, 부모 회전 {parentRotation})\n" +
-                      $"pivot {rect.pivot} (0.5, 0.5여야 함), 크기 {rect.rect.size}, 화면 중심 {baseline}\n" +
-                      $"0~180도 스윕 중 중심 최대 이동 {worst:0.###}px → {(worst <= CenterTolerance && rect.pivot == new Vector2(0.5f, 0.5f) ? "OK" : "문제 있음")}", this);
         }
 
         private void OnValidate()
         {
-            if (hourglass != null && hourglass.rectTransform.pivot != new Vector2(0.5f, 0.5f))
-                Debug.LogWarning("[LoadingOverlay] Hourglass 피벗이 (0.5, 0.5)가 아님. 실행 시 강제로 맞춰짐", this);
+            if (hourglass != null && hourglass.rectTransform.pivot != new Vector2(0.5f, 0.5f));
         }
 #endif
 
@@ -158,8 +144,6 @@ namespace LDY.Script
                 Destroy(_temporarySprite);
             }
         }
-
-        // icon_hourglass가 연결되기 전까지 쓰는 임시 도형
         private static Sprite CreateTemporaryHourglass()
         {
             const int size = 16;

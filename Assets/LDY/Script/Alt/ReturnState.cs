@@ -49,7 +49,7 @@ namespace LDY.Script
         {
             _elapsed += unscaledDeltaTime;
             float t = UnscaledTween.Progress(_elapsed, _duration);
-            float eased = 1f - (1f - t) * (1f - t);
+            float eased = UnscaledTween.EaseOutQuad(t);
             _body.Position = Vector2.Lerp(_from, _session.Snapshot.Position, eased);
 
             float remaining = _duration - _elapsed;

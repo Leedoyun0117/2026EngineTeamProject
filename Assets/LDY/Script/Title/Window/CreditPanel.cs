@@ -23,6 +23,12 @@ namespace LDY.Script
         private static readonly Color RoleColor = new Color(0.1f, 0.2f, 0.5f);
 
         [SerializeField] private CreditData data;
+        [Header("S 내려가기")]
+        [Tooltip("발판에서 겹침이 풀리기를 기다리는 시간(초). 지나면 아래 행에 착지해 멈춘 경우 복구한다. 하드 캡은 2초")]
+        [SerializeField, Min(0.1f)] private float dropIgnoreSeconds = 1f;
+        [Tooltip("내려가기 시작할 때 주는 아래 방향 속도")]
+        [SerializeField, Range(-20f, 0f)] private float dropDownSpeed = -4f;
+        [Header("스크롤")]
         [Tooltip("자동 스크롤 속도 (유닛/초). 0이면 자동으로 올라가지 않는다")]
         [SerializeField, Min(0f)] private float scrollSpeed = 0.6f;
         [Tooltip("창이 열린 뒤 자동 스크롤이 시작되기까지의 시간(초)")]
@@ -47,6 +53,8 @@ namespace LDY.Script
         protected override WindowLayout Layout => WindowLayout.Credit;
         // 자동 스크롤 창이라 행 이동 없이 물리 점프 + S 내려가기
         protected override bool UsesRowMovement => false;
+        protected override float DropIgnoreSeconds => dropIgnoreSeconds;
+        protected override float DropDownSpeed => dropDownSpeed;
 
         private float ViewHeight => _viewTop - _viewBottom;
         // 마지막 줄까지 올라온 위치(목록이 짧으면 0)
@@ -54,8 +62,8 @@ namespace LDY.Script
 
         protected override void BuildBody(WindowKit kit, Transform root, List<WindowWidget> widgets)
         {
-            _viewTop = Layout.CloseTop - 0.1f;
-            _viewBottom = Layout.FooterTop + 0.7f;
+            _viewTop = Layout.CloseTop - WindowStyle.CreditViewTopGap;
+            _viewBottom = Layout.FooterTop + WindowStyle.CreditViewBottomGap;
 
             if (data == null)
             {
@@ -120,7 +128,7 @@ namespace LDY.Script
         private void AddLine(WindowKit kit, Transform root, string text, float fontSize, Color color, float top,
             float height)
         {
-            TextMeshPro tmp = kit.Text("Line", root, Vector2.zero, text, fontSize, color, 12,
+            TextMeshPro tmp = kit.Text("Line", root, Vector2.zero, text, fontSize, color, WindowStyle.Order.Content,
                 TextAlignmentOptions.Center, ViewHalfWidth * 2f);
             _lines.Add(new Line { Text = tmp, Top = top, Height = height });
         }

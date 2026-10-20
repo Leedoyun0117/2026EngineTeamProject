@@ -32,35 +32,39 @@ namespace LDY.Script
             TitleArtSet art = kit.Art;
 
             kit.Text("Label", root, new Vector2(WindowStyle.LabelX, centerY), label, WindowStyle.RowFont,
-                WindowStyle.Text, 12, TextAlignmentOptions.Left, 3f);
+                WindowStyle.Text, WindowStyle.Order.Content, TextAlignmentOptions.Left, WindowStyle.LabelWidth);
 
             _boxRect = new Rect(boxX.x, centerY - BoxHeight * 0.5f, boxX.y - boxX.x, BoxHeight);
-            kit.Sliced("Box", root, art.dropdownBox, _boxRect, 12);
+            kit.Sliced("Box", root, art.dropdownBox, _boxRect, WindowStyle.Order.Content);
 
             float arrowSize = BoxHeight - Border * 2f;
             kit.Stretched("Arrow", root, art.dropdownArrowButton,
-                new Rect(_boxRect.xMax - Border - arrowSize, _boxRect.center.y - arrowSize * 0.5f, arrowSize, arrowSize), 13);
-            _selectedText = kit.Text("Selected", root, new Vector2(_boxRect.xMin + 0.25f, centerY), "",
-                WindowStyle.RowFont, WindowStyle.Text, 13, TextAlignmentOptions.Left, _boxRect.width - 1f);
+                new Rect(_boxRect.xMax - Border - arrowSize, _boxRect.center.y - arrowSize * 0.5f, arrowSize, arrowSize), WindowStyle.Order.ContentRaised);
+            _selectedText = kit.Text("Selected", root, new Vector2(_boxRect.xMin + WindowStyle.TextInset, centerY), "",
+                WindowStyle.RowFont, WindowStyle.Text, WindowStyle.Order.ContentRaised, TextAlignmentOptions.Left,
+                _boxRect.width - WindowStyle.TextWidthTrim);
 
             float listHeight = _options.Length * ItemHeight + Border * 2f;
-            _listRect = new Rect(_boxRect.xMin, _boxRect.yMin - 0.02f - listHeight, _boxRect.width, listHeight);
+            _listRect = new Rect(_boxRect.xMin, _boxRect.yMin - WindowStyle.DropdownListGap - listHeight, _boxRect.width, listHeight);
 
             _list = kit.Group("List", root, Vector2.zero).gameObject;
             Transform list = _list.transform;
-            kit.Sliced("ListBg", list, art.dropdownListBg, _listRect, 16);
-            _highlight = kit.Stretched("Highlight", list, art.dropdownHighlight, ItemRect(0, true), 17);
+            kit.Sliced("ListBg", list, art.dropdownListBg, _listRect, WindowStyle.Order.DropdownList);
+            _highlight = kit.Stretched("Highlight", list, art.dropdownHighlight, ItemRect(0, true),
+                WindowStyle.Order.DropdownHighlight);
             for (int i = 0; i < _options.Length; i++)
             {
-                kit.Text($"Item{i}", list, new Vector2(_boxRect.xMin + 0.25f, ItemRect(i, false).center.y), _options[i],
-                    WindowStyle.RowFont, WindowStyle.Text, 18, TextAlignmentOptions.Left, _boxRect.width - 1f);
+                kit.Text($"Item{i}", list, new Vector2(_boxRect.xMin + WindowStyle.TextInset, ItemRect(i, false).center.y),
+                    _options[i], WindowStyle.RowFont, WindowStyle.Text, WindowStyle.Order.DropdownText,
+                    TextAlignmentOptions.Left, _boxRect.width - WindowStyle.TextWidthTrim);
             }
 
             _kit = kit;
             _list.SetActive(false);
 
             PointerRect = _boxRect;
-            FocusRect = new Rect(_boxRect.xMin - 0.1f, _boxRect.yMin - 0.1f, _boxRect.width + 0.2f, _boxRect.height + 0.2f);
+            FocusRect = new Rect(_boxRect.xMin - WindowStyle.DropdownFocusPad, _boxRect.yMin - WindowStyle.DropdownFocusPad,
+                _boxRect.width + WindowStyle.DropdownFocusPad * 2f, _boxRect.height + WindowStyle.DropdownFocusPad * 2f);
             ProximityRect = new Rect(rowX.x, platformTop - WindowStyle.ZoneBelow, rowX.y - rowX.x, zoneHeight);
 
             SetIndex(initial);

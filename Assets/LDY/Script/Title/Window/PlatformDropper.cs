@@ -7,7 +7,6 @@ namespace LDY.Script
     public sealed class PlatformDropper
     {
         private const float RisingSpeed = 0.1f;
-        private const float RestSpeed = 0.1f;
         // defaultContactOffset(0.01)보다 확실히 크게
         private const float SeparatedDistance = 0.05f;
         // 시작 직후엔 접촉 오프셋 때문에 분리된 것처럼 보여서, 이만큼 지난 뒤부터 판정
@@ -128,7 +127,7 @@ namespace LDY.Script
 
                 // 위 행 발판에 머리가 걸친 채 아래 행에 착지하면 겹침이 안 풀릴 수 있음
                 // 그래서 제한 시간 뒤 중심이 아래에서 멈춰 있으면 복구
-                bool atRest = Mathf.Abs(_body.Velocity.y) < RestSpeed;
+                bool atRest = Mathf.Abs(_body.Velocity.y) < TitleTuning.RestSpeed;
                 if (entry.Elapsed >= _maxIgnoreSeconds && centerBelow && atRest)
                     Restore(i, "착지 정지");
             }

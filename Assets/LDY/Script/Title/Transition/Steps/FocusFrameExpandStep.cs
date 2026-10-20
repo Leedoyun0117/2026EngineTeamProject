@@ -5,12 +5,12 @@ namespace LDY.Script
 {
     public class FocusFrameExpandStep : ITransitionStep
     {
-        private readonly FocusFrameView _view;
+        private readonly FocusFrame _view;
         private readonly Collider2D _from;
         private readonly Camera _contentCamera;
         private readonly float _duration;
 
-        public FocusFrameExpandStep(FocusFrameView view, Collider2D from, Camera contentCamera, float duration)
+        public FocusFrameExpandStep(FocusFrame view, Collider2D from, Camera contentCamera, float duration)
         {
             _view = view;
             _from = from;
@@ -24,7 +24,7 @@ namespace LDY.Script
             var start = Rect.MinMaxRect(b.min.x, b.min.y, b.max.x, b.max.y);
             Rect end = ContentRect();
 
-            yield return UnscaledTween.Run(_duration, t => _view.SetRect(new Rect(
+            yield return UnscaledTween.Run(_duration, t => _view.ShowWorld(new Rect(
                 Vector2.Lerp(start.position, end.position, t), Vector2.Lerp(start.size, end.size, t))));
         }
 
@@ -40,9 +40,9 @@ namespace LDY.Script
 
     public class HideFocusFrameStep : ITransitionStep
     {
-        private readonly FocusFrameView _view;
+        private readonly FocusFrame _view;
 
-        public HideFocusFrameStep(FocusFrameView view)
+        public HideFocusFrameStep(FocusFrame view)
         {
             _view = view;
         }

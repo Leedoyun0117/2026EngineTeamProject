@@ -18,6 +18,7 @@ namespace LDY.Script
         [SerializeField] private MonoBehaviour audioVolume;
 
         private KeyboardCancelInput _cancel;
+        private KeyboardButtonInput _dropInput;
         private TitleAbilityGuard _abilityGuard;
         private MenuSelector _playerSelector;
         private MenuSelector _cursorSelector;
@@ -93,11 +94,14 @@ namespace LDY.Script
             var screenMode = new ScreenModeSetting();
             screenMode.ApplySaved();
 
+            // S는 JJBInput 대신 LDY 쪽 InputAction으로 따로 읽음
+            _dropInput = new KeyboardButtonInput("DropDown", "<Keyboard>/s");
+
             var services = new WindowServices(altStatus, monitorSpace, body,
                 new Rigidbody2DPlayerBody(player.GetComponent<Rigidbody2D>()), player.GetComponent<JJBControlGate>(),
                 new PlayerWindowInput(player.GetComponent<PlayerInput>(), inputLock, interact),
                 subScreens.CloseCurrent, new MenuPlatformSwitch(icons),
-                player.GetComponent<JJBControlGate>(), inputLock);
+                player.GetComponent<JJBControlGate>(), inputLock, _dropInput);
             settingsPanel.Bind(services, volume, screenMode);
             creditPanel.Bind(services);
         }
@@ -117,6 +121,7 @@ namespace LDY.Script
         private void OnDestroy()
         {
             _cancel?.Dispose();
+            _dropInput?.Dispose();
         }
 
         private void Update()

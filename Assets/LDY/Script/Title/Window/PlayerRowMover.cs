@@ -9,11 +9,8 @@ namespace LDY.Script
     public sealed class PlayerRowMover
     {
         private const float Duration = 0.12f;
-        // 착지로 보는 속도, 행 높이 허용 오차
-        private const float RestSpeed = 0.1f;
+        // 행 높이 허용 오차
         private const float RowTolerance = 0.15f;
-        // 겹침 없이 시작하려고 살짝 띄움(이후 중력이 내려앉힘)
-        private const float StandGap = 0.02f;
         private const float MergeDistance = 0.05f;
 
         private readonly IPlayerBody _body;
@@ -57,7 +54,7 @@ namespace LDY.Script
             if (_moving || _tops.Count == 0 || _lock.IsLocked)
                 return false;
 
-            if (Mathf.Abs(_body.Velocity.y) >= RestSpeed)
+            if (Mathf.Abs(_body.Velocity.y) >= TitleTuning.RestSpeed)
                 return false;
 
             int row = CurrentRow();
@@ -166,7 +163,7 @@ namespace LDY.Script
             float bestDistance = RowTolerance;
             for (int i = 0; i < _tops.Count; i++)
             {
-                float distance = Mathf.Abs(foot - (_tops[i] + StandGap));
+                float distance = Mathf.Abs(foot - (_tops[i] + TitleTuning.StandGap));
                 if (distance <= bestDistance)
                 {
                     best = i;
@@ -194,7 +191,7 @@ namespace LDY.Script
                     x = Mathf.Clamp(x, min, max);
             }
 
-            return new Vector2(x, _tops[row] + StandGap + pivotToFoot);
+            return new Vector2(x, _tops[row] + TitleTuning.StandGap + pivotToFoot);
         }
 
         private void RebuildRows()

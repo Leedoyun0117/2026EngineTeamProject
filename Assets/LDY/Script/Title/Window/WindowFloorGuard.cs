@@ -6,8 +6,6 @@ namespace LDY.Script
     // 열린 동안 맨 아래 발판 밑(모니터 바닥)으로 못 내려가게 함
     public sealed class WindowFloorGuard
     {
-        // 겹침 없이 시작하려고 살짝 띄움(이후 중력이 내려앉힘)
-        private const float StandGap = 0.02f;
         private const float FallTolerance = 0.15f;
 
         private readonly IPlayerBody _body;
@@ -74,7 +72,7 @@ namespace LDY.Script
             float x = min <= max ? Mathf.Clamp(position.x, min, max) : position.x;
 
             _body.Velocity = Vector2.zero;
-            _body.Position = new Vector2(x, Lowest.bounds.max.y + StandGap + pivotToFoot);
+            _body.Position = new Vector2(x, Lowest.bounds.max.y + TitleTuning.StandGap + pivotToFoot);
             _body.SyncTransforms();
             Log($"{reason}: 맨 아래 발판({Lowest.name}) 위로 이동 x={x:F2}");
         }

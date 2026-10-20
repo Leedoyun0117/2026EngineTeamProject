@@ -14,6 +14,13 @@ namespace LDY.Script
             return duration > 0f ? Mathf.Clamp01(elapsed / duration) : 1f;
         }
 
+        // 감속 곡선 1 - (1 - t)^2
+        public static float EaseOutQuad(float t)
+        {
+            float inv = 1f - t;
+            return 1f - inv * inv;
+        }
+
         // apply는 마지막에 반드시 1로 한 번 호출됨
         public static IEnumerator Run(float duration, Action<float> apply, AnimationCurve ease = null)
         {
