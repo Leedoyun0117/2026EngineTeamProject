@@ -5,7 +5,7 @@ public class OpacityPlayer_HTY : MonoBehaviour,ISkill_HTY
 {
     [SerializeField] private SpriteRenderer _spCompo;
     private bool _canOpacity = true;
-    private bool _isOpacity = false;
+    public bool _isOpacity = false;
 
     public bool CanUse()
     {
@@ -27,6 +27,5 @@ public class OpacityPlayer_HTY : MonoBehaviour,ISkill_HTY
             _spCompo.color = alpha;
         }
         _isOpacity = !_isOpacity;
-        
     }
 }

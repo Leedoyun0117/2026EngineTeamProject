@@ -43,6 +43,7 @@ namespace JJB.Script
         private void FixedUpdate()
         {
             PlayerMovement.Move(PlayerInput.MoveDir.x);
+            PlayerJump.Tick(PlayerInput.IsJumpHold);
         }
     }
 }

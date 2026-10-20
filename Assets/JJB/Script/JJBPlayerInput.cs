@@ -7,6 +7,7 @@ namespace JJB.Script
     public class JJBPlayerInput : MonoBehaviour
     {
         public Vector2 MoveDir { get; private set; }
+        public bool IsJumpHold { get; private set; }
         
         public event Action OnJumpKeyPressed;
         
@@ -17,6 +18,8 @@ namespace JJB.Script
         
         private void OnJump(InputValue value)
         {
+            IsJumpHold = value.isPressed;
+            
             if (value.isPressed)
             {
                 OnJumpKeyPressed?.Invoke();
@@ -26,6 +29,7 @@ namespace JJB.Script
         private void OnDisable()
         {
             MoveDir = Vector2.zero;
+            IsJumpHold = false;
         }
     }
 }
