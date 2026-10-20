@@ -12,24 +12,10 @@
   <component name="ChangeListManager">
     <list default="true" id="6fe23d18-7e65-450d-b817-a0888c4ceaa1" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Alt/ReturnState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Alt/ReturnState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Input/KeyboardButtonInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Input/KeyboardButtonInput.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleBootstrap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleBootstrap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleInterfaces.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleInterfaces.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleTuning.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/TitleTuning.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBPlayerMotionSource.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBPlayerMotionSource.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/MixerAudioVolume.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/MixerAudioVolume.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/Carrier/LoadingOverlay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/Carrier/LoadingOverlay.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/UnscaledTween.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/UnscaledTween.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/CreditPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/CreditPanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/DropdownWidget.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/DropdownWidget.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlatformDropper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlatformDropper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlayerRowMover.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlayerRowMover.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/SliderWidget.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/SliderWidget.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowFloorGuard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowFloorGuard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowInteraction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowInteraction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowKit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowKit.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowPanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowServices.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowStyle.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowStyle.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/GameStartTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/GameStartTransition.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +106,7 @@
       <workItem from="1791858022169" duration="6184000" />
       <workItem from="1792135574005" duration="3074000" />
       <workItem from="1792330615581" duration="1735000" />
-      <workItem from="1792462052158" duration="3104000" />
+      <workItem from="1792462052158" duration="3755000" />
     </task>
     <servers />
   </component>

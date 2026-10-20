@@ -33,6 +33,7 @@ namespace LDY.Script
         [SerializeField] private MonoBehaviour notifierHook;
 
         private IInputLock _lock;
+        private FocusFrame _frame;
         private bool _started;
 
         public bool Blocking => _started;
@@ -89,6 +90,8 @@ namespace LDY.Script
                 restore.Add(press.Restore);
             }
 
+            AddFrameSteps(steps, restore);
+
             if (zoomRig != null)
                 steps.Add(new ZoomStep(zoomRig));
             if (crt != null)
@@ -102,6 +105,27 @@ namespace LDY.Script
             steps.Add(new ActivateSceneStep(loading, carrier));
 
             return new TransitionSequence(steps);
+        }
+
+        // 눌림 다음, 줌 전에 점선이 아이콘 영역에서 모니터 화면 전체로 커졌다가 줌이 시작되기 전에 숨겨짐
+        // 줌과 씬 전환은 프레임 부모(타이틀 콘텐츠)를 건드리지 않고, 실패하면 restore에서 숨김
+        private void AddFrameSteps(List<ITransitionStep> steps, List<Action> restore)
+        {
+            if (frameParent == null || startIconBounds == null || contentCamera == null)
+                return;
+
+            if (art == null || art.focusFrame == null)
+            {
+                Debug.LogError("[Transition] TitleArtSet의 focusFrame 스프라이트가 비어 있어 점선 단계를 건너뜀", this);
+                return;
+            }
+
+            if (_frame == null)
+                _frame = FocusFrame.Create(frameParent, art.focusFrame, FocusFrameStyle.DefaultSortingOrder);
+
+            steps.Add(new FocusFrameExpandStep(_frame, startIconBounds, contentCamera, settings.frameDuration));
+            steps.Add(new HideFocusFrameStep(_frame));
+            restore.Add(_frame.Hide);
         }
     }
 }

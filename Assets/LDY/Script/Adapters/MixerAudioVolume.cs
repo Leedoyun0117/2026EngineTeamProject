@@ -3,11 +3,6 @@ using UnityEngine.Audio;
 
 namespace LDY.Script
 {
-    // 설정창 음량과 JJB 오디오가 닿는 유일한 지점. AudioManager 코드는 건드리지 않는다.
-    // AudioManager에는 볼륨 API가 없으므로, 팀이 만든 AudioMixer(JJBAudioMixer)의 노출 파라미터로 BGM/SFX를 조절한다.
-    // 이 값이 실제로 들리려면 AudioManager의 두 AudioSource 출력이 믹서의 BGM/SFX 그룹으로 연결되어 있어야 한다(에디터 설정).
-    // 전체 음량은 AudioListener.volume에 적용하므로 연결 여부와 상관없이 항상 들린다.
-    // AudioManager는 값을 저장하지 않으므로 저장은 이 어댑터가 PlayerPrefs로 한 번만 한다.
     public class MixerAudioVolume : MonoBehaviour, IAudioVolume
     {
         private const string KeyPrefix = "Settings.Volume.";
