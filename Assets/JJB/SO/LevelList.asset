@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 787eff55fbff4348b873f51ab89d1633, type: 3}
+  m_Name: LevelList
+  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.Level.LevelListSO
+  levels:
+  - {fileID: 11400000, guid: 1627d12d2229d124bac3e200127283b0, type: 2}
+  - {fileID: 11400000, guid: 857696baba0892d42bf5bf7e4b096b25, type: 2}
+  - {fileID: 11400000, guid: c3a63318ab5534f4d975e5cf4e73f752, type: 2}
+  - {fileID: 11400000, guid: fb2c07c3929904640a60b073926c9dcd, type: 2}
