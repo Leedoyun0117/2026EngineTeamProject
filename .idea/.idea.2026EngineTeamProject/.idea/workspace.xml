@@ -11,17 +11,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6fe23d18-7e65-450d-b817-a0888c4ceaa1" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelInstance.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelInstance.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelListSO.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelListSO.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelSO.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelSO.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Audio/IAudioService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Audio/IAudioService.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/JJBGameManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/JJBGameManager.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelManager.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/Iinteract.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/Iinteract.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerInput.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerInteract.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerInteract.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerJump.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerMovement.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerRenderer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerRenderer.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/JJBInput.inputactions" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/JJBInput.inputactions" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/JJBLevel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/JJBLevel.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/JJB/JJBScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/JJBScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerInput.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerJump.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerJump.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/Audio/AudioManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/Audio/AudioManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayer.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerInput.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerInput.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerJump.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerJump.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerMovement.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/JJBPlayerMovement.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelInstance.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/Level/LevelInstance.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Editor/AltTestSceneSetup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Editor/AltTestSceneSetup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Editor/TitleSceneSetup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Editor/TitleSceneSetup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBPlayerMotionSource.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBPlayerMotionSource.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,17 +60,84 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/HTY/01.Scripts/CopyPlayer_HTY.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5f090eb1a7e34d67aa21ae2946e2433c8e600/f8/965b9794/Physics2D.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f14a369973b548758cab792edd81bcc6212a00/bf/36956d18/PlayerPrefs.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/JJB/Script/Audio/IAudioService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/JJB/Script/Level/LevelManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/JJB/Script/Player/Iinteract.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerInteract.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.7905358459219552E-78" />
+      <entry key="MS500" value="2.822257303562905E-16" />
+      <entry key="S2" value="1.306300854204762E-4" />
+      <entry key="S5" value="0.032706377002793316" />
+      <entry key="S10" value="0.2978468787665725" />
+      <entry key="S30" value="3.5015724150447807" />
+      <entry key="S60" value="10.460984354754709" />
+      <entry key="M2" value="20.717520523137864" />
+      <entry key="M5" value="35.1746634678147" />
+      <entry key="M10" value="46.70207156095385" />
+      <entry key="M15" value="56.477709752102356" />
+      <entry key="M30" value="84.63344873304592" />
+      <entry key="H1" value="121.11056615143855" />
+      <entry key="H2" value="152.28511489718733" />
+      <entry key="H4" value="172.93603085645807" />
+      <entry key="D1" value="193.47608156488533" />
+      <entry key="W1" value="197.3446582937042" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.000000000028308" />
+      <entry key="MS500" value="1.0077692981927595" />
+      <entry key="S2" value="1.2968899485101684" />
+      <entry key="S5" value="1.6167470376031825" />
+      <entry key="S10" value="1.8498759355590022" />
+      <entry key="S30" value="2.965490624326595" />
+      <entry key="S60" value="4.490792761871677" />
+      <entry key="M2" value="6.550843874142883" />
+      <entry key="M5" value="9.942501883430017" />
+      <entry key="M10" value="13.62271456597592" />
+      <entry key="M15" value="17.204948743061042" />
+      <entry key="M30" value="27.634787638684802" />
+      <entry key="H1" value="41.422197267510654" />
+      <entry key="H2" value="53.57238805547502" />
+      <entry key="H4" value="61.809414556710294" />
+      <entry key="D1" value="70.14540240171182" />
+      <entry key="W1" value="71.73093119661247" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="4.696655225759006E-11" />
+      <entry key="MS500" value="0.010287599615203643" />
+      <entry key="S2" value="0.5073822626926939" />
+      <entry key="S5" value="1.1780842770335078" />
+      <entry key="S10" value="1.8269048444024825" />
+      <entry key="S30" value="6.185305933045989" />
+      <entry key="S60" value="14.701409472951216" />
+      <entry key="M2" value="27.0727969881213" />
+      <entry key="M5" value="44.99296346674513" />
+      <entry key="M10" value="60.23872904164408" />
+      <entry key="M15" value="73.60987689678939" />
+      <entry key="M30" value="112.2099247159994" />
+      <entry key="H1" value="162.48986655250386" />
+      <entry key="H2" value="205.83027317978517" />
+      <entry key="H4" value="234.72992696912746" />
+      <entry key="D1" value="263.61858286775106" />
+      <entry key="W1" value="269.0751665901714" />
+    </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4,
   &quot;fromUser&quot;: false
 }</component>
   <component name="ProjectId" id="3KMyvjMOOt4ZM5ozxdZTFxhK0kH" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -124,6 +216,12 @@
       <workItem from="1792052520332" duration="21000" />
       <workItem from="1792052734142" duration="2864000" />
       <workItem from="1792058537178" duration="614000" />
+      <workItem from="1792418584569" duration="2795000" />
+      <workItem from="1792463732295" duration="4653000" />
+      <workItem from="1792507873937" duration="25000" />
+      <workItem from="1792590804607" duration="1574000" />
+      <workItem from="1792592667815" duration="431000" />
+      <workItem from="1792593128129" duration="927000" />
     </task>
     <servers />
   </component>

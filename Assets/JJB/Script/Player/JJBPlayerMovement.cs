@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace JJB.Script
 {
@@ -7,16 +8,16 @@ namespace JJB.Script
     {
         [SerializeField, Min(1)] private float moveSpeed;
         
-        private Rigidbody2D _rb;
+        public Rigidbody2D rb;
         
         private void Awake()
         {
-            _rb = GetComponent<Rigidbody2D>();
+            rb = GetComponent<Rigidbody2D>();
         }
 
         public void Move(float direction)
         {
-            _rb.linearVelocityX = direction * moveSpeed;
+            rb.linearVelocityX = direction * moveSpeed;
         }
     }
 }

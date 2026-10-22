@@ -1,4 +1,5 @@
 using JJB.Script;
+using JJB.Script.Player;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
