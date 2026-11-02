@@ -53,7 +53,6 @@ namespace LDY.Script
 
     public interface IGameSceneLoader
     {
-        // 활성화 없이 불러만 둠. 이미 대기 중이면 같은 핸들 반환
         ISceneLoadHandle Begin();
     }
 }

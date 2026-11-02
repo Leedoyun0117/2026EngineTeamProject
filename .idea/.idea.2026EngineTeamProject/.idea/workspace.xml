@@ -12,10 +12,11 @@
   <component name="ChangeListManager">
     <list default="true" id="6fe23d18-7e65-450d-b817-a0888c4ceaa1" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBPlayerMotionSource.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBPlayerMotionSource.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/MixerAudioVolume.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/MixerAudioVolume.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/Carrier/LoadingOverlay.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/Carrier/LoadingOverlay.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/GameStartTransition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/GameStartTransition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/Rigidbody2DPlayerBody.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/Rigidbody2DPlayerBody.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/AsyncSceneLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/AsyncSceneLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/TransitionInterfaces.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Transition/TransitionInterfaces.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Shader/CrtScreen.shader" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Shader/CrtScreen.shader" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +28,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/61339efb240547e991d3aef546e3afd3a6e400/8b/9c58b219/ChangeAssetObjectPropertiesEventArgs.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f14a369973b548758cab792edd81bcc6212a00/32/adbfc7a3/AsyncOperation.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4,
@@ -37,26 +39,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;LDY&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "cidr.known.project.marker": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "LDY",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Unity 에디터에 연결.Unity 에디터에 연결">
     <configuration name="유닛 테스트(배치 모드)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.3.16f1\Editor\Unity.exe" />
@@ -107,6 +110,8 @@
       <workItem from="1792135574005" duration="3074000" />
       <workItem from="1792330615581" duration="1735000" />
       <workItem from="1792462052158" duration="3755000" />
+      <workItem from="1793067485448" duration="1423000" />
+      <workItem from="1793178720937" duration="2341000" />
     </task>
     <servers />
   </component>
