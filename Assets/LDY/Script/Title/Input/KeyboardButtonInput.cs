@@ -1,34 +1,27 @@
 using System;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // 지정한 키 하나를 LDY 쪽 InputAction으로 읽는다. JJBInput 액션은 건드리지 않는다.
-    public class KeyboardButtonInput : IToggleableButtonInput, IDisposable
-    {
+    public class KeyboardButtonInput : IToggleableButtonInput, IDisposable {
         private readonly InputAction _action;
 
-        public KeyboardButtonInput(string name, string binding)
-        {
+        public KeyboardButtonInput(string name, string binding) {
             _action = new InputAction(name, InputActionType.Button, binding);
+        }
+
+        public void Dispose() {
+            _action.Dispose();
         }
 
         public bool Pressed => _action.WasPressedThisFrame();
 
-        public void Enable()
-        {
+        public void Enable() {
             _action.Enable();
         }
 
-        public void Disable()
-        {
+        public void Disable() {
             _action.Disable();
-        }
-
-        public void Dispose()
-        {
-            _action.Dispose();
         }
     }
 }

@@ -1,29 +1,29 @@
 using System;
 using UnityEngine;
 
-namespace LDY.Script
-{
-    public interface IWindowInput
-    {
+namespace LDY.Script {
+    public interface IWindowInput {
         float Horizontal { get; }
         bool InteractPressed { get; }
+
         bool JumpPressed { get; }
+
         // 이번 프레임에 눌린 W(+1) / S(-1), 없으면 0
         int VerticalStep { get; }
+
         // 누르고 있는 W(+1) / S(-1)
         float VerticalHeld { get; }
+
         // 휠 한 칸당 +1(위) / -1(아래)
         float Scroll { get; }
         bool PointerPressed { get; }
         bool PointerHeld { get; }
     }
 
-    public class WindowServices
-    {
+    public class WindowServices {
         public WindowServices(IAltStatus alt, IMonitorSpace monitor, Collider2D playerCollider, IPlayerBody playerBody,
             IPlayerControl playerControl, IWindowInput input, Action close, MenuPlatformSwitch platforms,
-            IJumpBlock jumpBlock, IInputLock inputLock, IToggleableButtonInput dropInput)
-        {
+            IJumpBlock jumpBlock, IInputLock inputLock, IToggleableButtonInput dropInput) {
             Alt = alt;
             Monitor = monitor;
             PlayerCollider = playerCollider;
@@ -46,14 +46,15 @@ namespace LDY.Script
         public Action Close { get; }
         public MenuPlatformSwitch Platforms { get; }
         public IJumpBlock JumpBlock { get; }
+
         public IInputLock InputLock { get; }
+
         // S 내려가기. 창이 열려 있는 동안만 켠다
         public IToggleableButtonInput DropInput { get; }
     }
 
     // 한글 폰트 글리프 점검(셋업 도구)에도 씀
-    public static class WindowText
-    {
+    public static class WindowText {
         public const string SettingTitle = "설정";
         public const string CreditTitle = "Credit";
         public const string CloseHint = "ESC 닫기";
@@ -66,9 +67,9 @@ namespace LDY.Script
         public const string FullScreen = "전체 화면";
         public const string Windowed = "창 모드";
 
-        public static readonly string[] All =
-        {
-            SettingTitle, CreditTitle, CloseHint, SettingControlHint, CreditControlHint, MasterVolume, BgmVolume, SfxVolume, ScreenMode, FullScreen,
+        public static readonly string[] All = {
+            SettingTitle, CreditTitle, CloseHint, SettingControlHint, CreditControlHint, MasterVolume, BgmVolume,
+            SfxVolume, ScreenMode, FullScreen,
             Windowed, "0123456789%"
         };
     }

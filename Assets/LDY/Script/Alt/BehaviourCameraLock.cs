@@ -1,25 +1,21 @@
 using System;
 using UnityEngine;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // Alt 동안 카메라 추적 스크립트를 꺼둠. 대상은 인스펙터에서 등록
     [Serializable]
-    public class BehaviourCameraLock : ICameraLock
-    {
+    public class BehaviourCameraLock : ICameraLock {
         [SerializeField] private Behaviour[] followBehaviours;
 
         private bool[] _wasEnabled;
 
-        public void Freeze()
-        {
+        public void Freeze() {
             if (followBehaviours == null || _wasEnabled != null)
                 return;
 
             _wasEnabled = new bool[followBehaviours.Length];
-            for (int i = 0; i < followBehaviours.Length; i++)
-            {
-                Behaviour b = followBehaviours[i];
+            for (var i = 0; i < followBehaviours.Length; i++) {
+                var b = followBehaviours[i];
                 if (b == null)
                     continue;
 
@@ -28,16 +24,13 @@ namespace LDY.Script
             }
         }
 
-        public void Release()
-        {
+        public void Release() {
             if (_wasEnabled == null)
                 return;
 
-            for (int i = 0; i < followBehaviours.Length; i++)
-            {
+            for (var i = 0; i < followBehaviours.Length; i++)
                 if (followBehaviours[i] != null)
                     followBehaviours[i].enabled = _wasEnabled[i];
-            }
 
             _wasEnabled = null;
         }

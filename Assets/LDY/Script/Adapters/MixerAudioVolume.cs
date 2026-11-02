@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace LDY.Script
-{
-    public class MixerAudioVolume : MonoBehaviour, IAudioVolume
-    {
+namespace LDY.Script {
+    public class MixerAudioVolume : MonoBehaviour, IAudioVolume {
         private const string KeyPrefix = "Settings.Volume.";
         private const float SaveDelay = 0.5f;
         private const float MinDecibel = -80f;
@@ -12,16 +10,14 @@ namespace LDY.Script
         [SerializeField] private AudioMixer mixer;
         [SerializeField] private string bgmParameter = "BGMVolume";
         [SerializeField] private string sfxParameter = "SFXVolume";
-        [SerializeField, Range(0f, 1f)] private float defaultVolume = 0.7f;
+        [SerializeField] [Range(0f, 1f)] private float defaultVolume = 0.7f;
 
         private readonly float[] _values = new float[3];
         private bool _dirty;
         private float _lastChange;
 
-        private void Awake()
-        {
-            for (int i = 0; i < _values.Length; i++)
-            {
+        private void Awake() {
+            for (var i = 0; i < _values.Length; i++) {
                 var channel = (VolumeChannel)i;
                 _values[i] = Mathf.Clamp01(PlayerPrefs.GetFloat(KeyPrefix + channel, defaultVolume));
                 Apply(channel);
@@ -29,29 +25,31 @@ namespace LDY.Script
         }
 
         // Awake의 mixer.SetFloat은 믹서가 초기화되기 전이라 무시되는 일이 있다. 첫 프레임 전에 한 번 더 적용한다.
-        private void Start()
-        {
-            for (int i = 0; i < _values.Length; i++)
+        private void Start() {
+            for (var i = 0; i < _values.Length; i++)
                 Apply((VolumeChannel)i);
         }
 
+        // 드래그 중 매 프레임 디스크에 쓰지 않도록 변경이 멈춘 뒤에 저장한다.
+        private void Update() {
+            if (_dirty && Time.unscaledTime - _lastChange >= SaveDelay)
+                Flush();
+        }
+
+        private void OnDestroy() {
+            Flush();
+        }
+
+        private void OnApplicationQuit() {
+            Flush();
+        }
+
         // 슬라이더에 보이는 값의 기준은 이 어댑터가 가진 값이다. 믹서 값을 되읽으면 SetFloat이 무시됐을 때 0dB(100%)로 보인다.
-        public float Get(VolumeChannel channel)
-        {
+        public float Get(VolumeChannel channel) {
             return _values[(int)channel];
         }
 
-        [ContextMenu("저장된 음량 지우기")]
-        private void ClearSaved()
-        {
-            for (int i = 0; i < _values.Length; i++)
-                PlayerPrefs.DeleteKey(KeyPrefix + (VolumeChannel)i);
-
-            PlayerPrefs.Save();
-        }
-
-        public void Set(VolumeChannel channel, float value)
-        {
+        public void Set(VolumeChannel channel, float value) {
             _values[(int)channel] = Mathf.Clamp01(value);
             Apply(channel);
             PlayerPrefs.SetFloat(KeyPrefix + channel, _values[(int)channel]);
@@ -59,25 +57,15 @@ namespace LDY.Script
             _lastChange = Time.unscaledTime;
         }
 
-        // 드래그 중 매 프레임 디스크에 쓰지 않도록 변경이 멈춘 뒤에 저장한다.
-        private void Update()
-        {
-            if (_dirty && Time.unscaledTime - _lastChange >= SaveDelay)
-                Flush();
+        [ContextMenu("저장된 음량 지우기")]
+        private void ClearSaved() {
+            for (var i = 0; i < _values.Length; i++)
+                PlayerPrefs.DeleteKey(KeyPrefix + (VolumeChannel)i);
+
+            PlayerPrefs.Save();
         }
 
-        private void OnDestroy()
-        {
-            Flush();
-        }
-
-        private void OnApplicationQuit()
-        {
-            Flush();
-        }
-
-        private void Flush()
-        {
+        private void Flush() {
             if (!_dirty)
                 return;
 
@@ -85,11 +73,9 @@ namespace LDY.Script
             PlayerPrefs.Save();
         }
 
-        private void Apply(VolumeChannel channel)
-        {
-            float value = _values[(int)channel];
-            if (channel == VolumeChannel.Master)
-            {
+        private void Apply(VolumeChannel channel) {
+            var value = _values[(int)channel];
+            if (channel == VolumeChannel.Master) {
                 AudioListener.volume = value;
                 return;
             }
@@ -98,15 +84,12 @@ namespace LDY.Script
                 mixer.SetFloat(ParameterOf(channel), LinearToDecibel(value));
         }
 
-        private string ParameterOf(VolumeChannel channel)
-        {
+        private string ParameterOf(VolumeChannel channel) {
             return channel == VolumeChannel.Bgm ? bgmParameter : sfxParameter;
         }
 
-        private static float LinearToDecibel(float linear)
-        {
+        private static float LinearToDecibel(float linear) {
             return linear <= 0.0001f ? MinDecibel : Mathf.Max(MinDecibel, 20f * Mathf.Log10(linear));
         }
-
     }
 }

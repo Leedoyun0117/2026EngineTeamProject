@@ -1,20 +1,17 @@
 using System.Collections;
 using UnityEngine;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // 새 씬의 SceneEntryDirector와 실패 복구가 같이 씀
-    public class CrtPowerOnStep : ITransitionStep
-    {
-        private readonly ICrtPower _crt;
+    public class CrtPowerOnStep : ITransitionStep {
         private readonly ITransitionAudio _audio;
+        private readonly ICrtPower _crt;
         private readonly float _duration;
-        private readonly float _flickerDuration;
         private readonly float _flickerAmount;
+        private readonly float _flickerDuration;
 
         public CrtPowerOnStep(ICrtPower crt, ITransitionAudio audio, float duration, float flickerDuration,
-            float flickerAmount)
-        {
+            float flickerAmount) {
             _crt = crt;
             _audio = audio;
             _duration = duration;
@@ -22,8 +19,7 @@ namespace LDY.Script
             _flickerAmount = flickerAmount;
         }
 
-        public IEnumerator Run(TransitionContext context)
-        {
+        public IEnumerator Run(TransitionContext context) {
             _audio.PowerOn();
             yield return _crt.AnimateTo(0f, _duration);
 

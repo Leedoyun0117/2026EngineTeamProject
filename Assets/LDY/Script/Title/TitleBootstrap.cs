@@ -2,39 +2,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // 조립과 Update 위임만 담당한다.
     [DisallowMultipleComponent]
-    public class TitleBootstrap : MonoBehaviour
-    {
+    public class TitleBootstrap : MonoBehaviour {
         [SerializeField] private GameObject player;
         [SerializeField] private SubScreenController subScreens;
         [SerializeField] private GameStartTransition transition;
         [SerializeField] private MonitorSpace monitorSpace;
         [SerializeField] private SettingsPanel settingsPanel;
         [SerializeField] private CreditPanel creditPanel;
-        [Tooltip("IAudioVolume을 구현한 컴포넌트 (MixerAudioVolume)")]
-        [SerializeField] private MonoBehaviour audioVolume;
+
+        [Tooltip("IAudioVolume을 구현한 컴포넌트 (MixerAudioVolume)")] [SerializeField]
+        private MonoBehaviour audioVolume;
+
+        private TitleAbilityGuard _abilityGuard;
 
         private KeyboardCancelInput _cancel;
-        private KeyboardButtonInput _dropInput;
-        private TitleAbilityGuard _abilityGuard;
-        private MenuSelector _playerSelector;
         private MenuSelector _cursorSelector;
+        private KeyboardButtonInput _dropInput;
+        private MenuSelector _playerSelector;
 
-        private void Awake()
-        {
-            if (!ValidateReferences())
-            {
+        private void Awake() {
+            if (!ValidateReferences()) {
                 enabled = false;
                 return;
             }
 
             var altStatus = player.GetComponent<AltModeController>();
-            IInputLock inputLock = player.GetComponent<PlayerInputLock>().Lock;
+            var inputLock = player.GetComponent<PlayerInputLock>().Lock;
             var body = player.GetComponent<Collider2D>();
-            MenuIcon[] icons = FindObjectsByType<MenuIcon>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            var icons = FindObjectsByType<MenuIcon>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
             var gate = new MenuGate(new IMenuBlocker[] { subScreens, transition });
             var focus = new MenuFocus();
@@ -53,15 +51,34 @@ namespace LDY.Script
             BindWindows(altStatus, body, interact, inputLock, icons);
         }
 
+        private void Update() {
+            subScreens.Tick();
+            _playerSelector.Tick();
+            _cursorSelector.Tick();
+        }
+
+        private void OnEnable() {
+            _cancel.Enable();
+            _abilityGuard.Apply();
+        }
+
+        private void OnDisable() {
+            _abilityGuard.Dispose();
+            _cancel.Disable();
+        }
+
+        private void OnDestroy() {
+            _cancel?.Dispose();
+            _dropInput?.Dispose();
+        }
+
         // 연결 누락을 한 번에 모아 보여 준다. 필수 연결이 빠지면 조립하지 않고 이 컴포넌트를 끈다.
         // 창 관련(패널, audioVolume)만 빠진 경우는 시작 화면은 동작하고 해당 창만 열리지 않는다.
-        private bool ValidateReferences()
-        {
+        private bool ValidateReferences() {
             var missing = new List<string>();
-            bool fatal = false;
+            var fatal = false;
 
-            void Require(bool ok, string message, bool isFatal)
-            {
+            void Require(bool ok, string message, bool isFatal) {
                 if (ok)
                     return;
 
@@ -81,13 +98,12 @@ namespace LDY.Script
                 return true;
 
             Debug.LogError($"[Title] TitleBootstrap 연결 누락: {string.Join(", ", missing)}"
-                + (fatal ? " — 필수 연결이 없어 시작 화면을 조립하지 않습니다." : " — 해당 창은 열리지 않습니다."), this);
+                           + (fatal ? " — 필수 연결이 없어 시작 화면을 조립하지 않습니다." : " — 해당 창은 열리지 않습니다."), this);
             return !fatal;
         }
 
         private void BindWindows(AltModeController altStatus, Collider2D body, IButtonInput interact,
-            IInputLock inputLock, MenuIcon[] icons)
-        {
+            IInputLock inputLock, MenuIcon[] icons) {
             if (audioVolume is not IAudioVolume volume || settingsPanel == null || creditPanel == null)
                 return;
 
@@ -104,31 +120,6 @@ namespace LDY.Script
                 player.GetComponent<JJBControlGate>(), inputLock, _dropInput);
             settingsPanel.Bind(services, volume, screenMode);
             creditPanel.Bind(services);
-        }
-
-        private void OnEnable()
-        {
-            _cancel.Enable();
-            _abilityGuard.Apply();
-        }
-
-        private void OnDisable()
-        {
-            _abilityGuard.Dispose();
-            _cancel.Disable();
-        }
-
-        private void OnDestroy()
-        {
-            _cancel?.Dispose();
-            _dropInput?.Dispose();
-        }
-
-        private void Update()
-        {
-            subScreens.Tick();
-            _playerSelector.Tick();
-            _cursorSelector.Tick();
         }
     }
 }

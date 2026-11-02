@@ -1,12 +1,9 @@
-namespace LDY.Script
-{
-    public class NormalState : IAltState
-    {
+namespace LDY.Script {
+    public class NormalState : IAltState {
         private readonly IAltInput _input;
         private readonly IAltStateSwitcher _switcher;
 
-        public NormalState(IAltInput input, IAltStateSwitcher switcher)
-        {
+        public NormalState(IAltInput input, IAltStateSwitcher switcher) {
             _input = input;
             _switcher = switcher;
         }
@@ -16,8 +13,7 @@ namespace LDY.Script
         public void Enter() { }
         public void Exit() { }
 
-        public void Tick(float unscaledDeltaTime)
-        {
+        public void Tick(float unscaledDeltaTime) {
             if (_input.Pressed)
                 _switcher.Switch<AltState>();
         }

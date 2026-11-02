@@ -1,7 +1,5 @@
-namespace LDY.Script
-{
-    public enum PlayerAnimId
-    {
+namespace LDY.Script {
+    public enum PlayerAnimId {
         Idle,
         Walk,
         Run,

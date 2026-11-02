@@ -17,7 +17,10 @@ Shader "LDY/CrtScreen"
 
     SubShader
     {
-        Tags { "RenderType" = "Transparent" "Queue" = "Transparent" "RenderPipeline" = "UniversalPipeline" }
+        Tags
+        {
+            "RenderType" = "Transparent" "Queue" = "Transparent" "RenderPipeline" = "UniversalPipeline"
+        }
 
         Cull Off
         ZWrite Off
@@ -25,7 +28,10 @@ Shader "LDY/CrtScreen"
         Pass
         {
             Name "CrtScreen"
-            Tags { "LightMode" = "SRPDefaultUnlit" }
+            Tags
+            {
+                "LightMode" = "SRPDefaultUnlit"
+            }
 
             HLSLPROGRAM
             #pragma vertex vert
@@ -90,7 +96,8 @@ Shader "LDY/CrtScreen"
                 float2 ext = float2(lerp(0.5 * fill.x, lineHalf, b * b), lerp(0.5 * fill.y, lineHalf, a * a));
                 float2 edge = max(ext * 0.15, 0.0015);
                 float2 d = abs(screenUv - 0.5);
-                float mask = (1.0 - smoothstep(ext.x - edge.x, ext.x, d.x)) * (1.0 - smoothstep(ext.y - edge.y, ext.y, d.y));
+                float mask = (1.0 - smoothstep(ext.x - edge.x, ext.x, d.x)) * (1.0 - smoothstep(
+                    ext.y - edge.y, ext.y, d.y));
 
                 glow = smoothstep(0.25, 0.7, p) * (1.0 - smoothstep(0.85, 1.0, p));
                 return mask * (1.0 - smoothstep(0.92, 1.0, p));

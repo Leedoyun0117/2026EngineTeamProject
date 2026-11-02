@@ -1,28 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // 창 입력 구현. 플레이어 입력은 기존 JJBInput 액션과 입력 잠금을 그대로 따르고, W/S와 마우스는 장치를 직접 읽는다.
-    public class PlayerWindowInput : IWindowInput
-    {
-        private readonly PlayerInput _playerInput;
-        private readonly IInputLock _lock;
+    public class PlayerWindowInput : IWindowInput {
         private readonly IButtonInput _interact;
-        private InputAction _move;
+        private readonly IInputLock _lock;
+        private readonly PlayerInput _playerInput;
         private InputAction _jump;
+        private InputAction _move;
 
-        public PlayerWindowInput(PlayerInput playerInput, IInputLock inputLock, IButtonInput interact)
-        {
+        public PlayerWindowInput(PlayerInput playerInput, IInputLock inputLock, IButtonInput interact) {
             _playerInput = playerInput;
             _lock = inputLock;
             _interact = interact;
         }
 
-        public float Horizontal
-        {
-            get
-            {
+        public float Horizontal {
+            get {
                 if (_lock.IsLocked)
                     return 0f;
 
@@ -33,10 +28,8 @@ namespace LDY.Script
 
         public bool InteractPressed => _interact.Pressed;
 
-        public bool JumpPressed
-        {
-            get
-            {
+        public bool JumpPressed {
+            get {
                 if (_lock.IsLocked)
                     return false;
 
@@ -45,11 +38,9 @@ namespace LDY.Script
             }
         }
 
-        public int VerticalStep
-        {
-            get
-            {
-                Keyboard keyboard = Keyboard.current;
+        public int VerticalStep {
+            get {
+                var keyboard = Keyboard.current;
                 if (keyboard == null)
                     return 0;
 
@@ -61,15 +52,13 @@ namespace LDY.Script
             }
         }
 
-        public float VerticalHeld
-        {
-            get
-            {
-                Keyboard keyboard = Keyboard.current;
+        public float VerticalHeld {
+            get {
+                var keyboard = Keyboard.current;
                 if (keyboard == null)
                     return 0f;
 
-                float value = 0f;
+                var value = 0f;
                 if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed)
                     value += 1f;
                 if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed)
@@ -78,14 +67,12 @@ namespace LDY.Script
             }
         }
 
-        public float Scroll
-        {
-            get
-            {
+        public float Scroll {
+            get {
                 if (Mouse.current == null)
                     return 0f;
 
-                float y = Mouse.current.scroll.ReadValue().y;
+                var y = Mouse.current.scroll.ReadValue().y;
                 return y > 0f ? 1f : y < 0f ? -1f : 0f;
             }
         }

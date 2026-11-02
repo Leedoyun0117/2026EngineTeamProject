@@ -1,9 +1,7 @@
 using System;
 
-namespace LDY.Script
-{
-    public interface IInputLock
-    {
+namespace LDY.Script {
+    public interface IInputLock {
         bool IsLocked { get; }
         event Action<bool> LockChanged;
 

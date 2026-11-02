@@ -3,11 +3,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LDY.Script.Editor
-{
+namespace LDY.Script.Editor {
     // 프리팹이 없을 때만 한 번 만든다. 이미 있으면 손으로 고친 값을 지키려고 절대 덮어쓰지 않는다.
-    public static class LoadingOverlayPrefabBuilder
-    {
+    public static class LoadingOverlayPrefabBuilder {
         public const string PrefabPath = "Assets/LDY/Prefab/LoadingOverlay.prefab";
 
         // 원본이 68x68이라 2배 = 136
@@ -17,12 +15,10 @@ namespace LDY.Script.Editor
         private const float LabelWidth = 1200f;
 
         [MenuItem("LDY/Title/Create Loading Overlay Prefab")]
-        public static void CreateMenu()
-        {
-            LoadingOverlay prefab = EnsurePrefab(FindFirstFrame());
+        public static void CreateMenu() {
+            var prefab = EnsurePrefab(FindFirstFrame());
             var art = AssetDatabase.LoadAssetAtPath<TitleArtSet>(TitleArtImporter.Folder + "/TitleArtSet.asset");
-            if (art != null && prefab != null && art.loadingOverlayPrefab == null)
-            {
+            if (art != null && prefab != null && art.loadingOverlayPrefab == null) {
                 art.loadingOverlayPrefab = prefab;
                 EditorUtility.SetDirty(art);
                 AssetDatabase.SaveAssets();
@@ -31,8 +27,7 @@ namespace LDY.Script.Editor
             Debug.Log($"LoadingOverlay 프리팹: {PrefabPath} ({(prefab != null ? "사용 가능" : "실패")})");
         }
 
-        public static LoadingOverlay EnsurePrefab(Sprite previewSprite)
-        {
+        public static LoadingOverlay EnsurePrefab(Sprite previewSprite) {
             var existing = AssetDatabase.LoadAssetAtPath<LoadingOverlay>(PrefabPath);
             if (existing != null)
                 return existing;
@@ -49,7 +44,7 @@ namespace LDY.Script.Editor
             scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             scaler.matchWidthOrHeight = 0.5f;
 
-            Image background = NewChild<Image>("Background", root.transform);
+            var background = NewChild<Image>("Background", root.transform);
             background.color = Color.black;
             background.raycastTarget = false;
             var backgroundRect = background.rectTransform;
@@ -73,7 +68,7 @@ namespace LDY.Script.Editor
             layout.childForceExpandWidth = false;
             layout.childForceExpandHeight = false;
 
-            Image hourglass = NewChild<Image>("Hourglass", group.transform);
+            var hourglass = NewChild<Image>("Hourglass", group.transform);
             hourglass.sprite = previewSprite;
             hourglass.rectTransform.pivot = new Vector2(0.5f, 0.5f);
             hourglass.preserveAspect = true;
@@ -104,15 +99,13 @@ namespace LDY.Script.Editor
             return saved != null ? saved.GetComponent<LoadingOverlay>() : null;
         }
 
-        private static T NewChild<T>(string name, Transform parent) where T : Component
-        {
+        private static T NewChild<T>(string name, Transform parent) where T : Component {
             var go = new GameObject(name, typeof(RectTransform));
             go.transform.SetParent(parent, false);
             return go.AddComponent<T>();
         }
 
-        private static Sprite FindFirstFrame()
-        {
+        private static Sprite FindFirstFrame() {
             return AssetDatabase.LoadAssetAtPath<Sprite>(TitleArtImporter.HourglassFolder + "/hourglass_0.png");
         }
     }

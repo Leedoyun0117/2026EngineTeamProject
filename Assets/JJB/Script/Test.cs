@@ -1,6 +1,3 @@
 using UnityEngine;
 
-public class Test : MonoBehaviour
-{
-    
-}
+public class Test : MonoBehaviour { }

@@ -1,24 +1,21 @@
 using UnityEngine;
 
-namespace LDY.Script
-{
-    public class AltState : IAltState
-    {
+namespace LDY.Script {
+    public class AltState : IAltState {
+        private readonly IAfterimageSpawner _afterimage;
+        private readonly IPlayerBody _body;
+        private readonly ICameraLock _camera;
+        private readonly IPlayerControl _control;
+        private readonly IFacing _facing;
+        private readonly ITimeFreezer _freezer;
         private readonly IAltInput _input;
         private readonly IPointerSource _pointer;
-        private readonly IPlayerBody _body;
-        private readonly IFacing _facing;
-        private readonly IPlayerControl _control;
-        private readonly IAfterimageSpawner _afterimage;
-        private readonly ITimeFreezer _freezer;
-        private readonly ICameraLock _camera;
         private readonly AltSession _session;
         private readonly IAltStateSwitcher _switcher;
 
         public AltState(IAltInput input, IPointerSource pointer, IPlayerBody body, IFacing facing,
             IPlayerControl control, IAfterimageSpawner afterimage, ITimeFreezer freezer,
-            ICameraLock camera, AltSession session, IAltStateSwitcher switcher)
-        {
+            ICameraLock camera, AltSession session, IAltStateSwitcher switcher) {
             _input = input;
             _pointer = pointer;
             _body = body;
@@ -33,8 +30,7 @@ namespace LDY.Script
 
         public AltPhase Phase => AltPhase.Alt;
 
-        public void Enter()
-        {
+        public void Enter() {
             _session.Snapshot = new AltSnapshot(_body.Position, _body.Velocity, _facing.Capture());
             _session.Afterimage = _afterimage.Spawn();
 
@@ -45,10 +41,8 @@ namespace LDY.Script
             _freezer.Freeze();
         }
 
-        public void Tick(float unscaledDeltaTime)
-        {
-            if (!_input.Held)
-            {
+        public void Tick(float unscaledDeltaTime) {
+            if (!_input.Held) {
                 _switcher.Switch<ReturnState>();
                 return;
             }

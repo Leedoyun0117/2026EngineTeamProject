@@ -2,42 +2,29 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LDY.Script
-{
-    public interface IAltState
-    {
+namespace LDY.Script {
+    public interface IAltState {
         AltPhase Phase { get; }
         void Enter();
         void Tick(float unscaledDeltaTime);
         void Exit();
     }
 
-    public interface IAltStateSwitcher
-    {
+    public interface IAltStateSwitcher {
         void Switch<T>() where T : IAltState;
     }
 
-    public class AltStateMachine : IAltStateSwitcher
-    {
-        private readonly Dictionary<Type, IAltState> _states = new Dictionary<Type, IAltState>();
+    public class AltStateMachine : IAltStateSwitcher {
+        private readonly Dictionary<Type, IAltState> _states = new();
 
         public IAltState Current { get; private set; }
-        public event Action<AltPhase> PhaseChanged;
 
-        public void Register(IAltState state)
-        {
-            _states[state.GetType()] = state;
-        }
-
-        public void Switch<T>() where T : IAltState
-        {
+        public void Switch<T>() where T : IAltState {
             // Exit에서 예외가 나도 Current는 넘어가야 상태가 안 꼬임
-            try
-            {
+            try {
                 Current?.Exit();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Debug.LogException(e);
             }
 
@@ -46,8 +33,13 @@ namespace LDY.Script
             PhaseChanged?.Invoke(Current.Phase);
         }
 
-        public void Tick(float unscaledDeltaTime)
-        {
+        public event Action<AltPhase> PhaseChanged;
+
+        public void Register(IAltState state) {
+            _states[state.GetType()] = state;
+        }
+
+        public void Tick(float unscaledDeltaTime) {
             Current?.Tick(unscaledDeltaTime);
         }
     }

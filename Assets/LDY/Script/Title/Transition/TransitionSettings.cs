@@ -1,14 +1,12 @@
 using System;
 using UnityEngine;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // 시간은 모두 unscaled 초
     [Serializable]
-    public class TransitionSettings
-    {
+    public class TransitionSettings {
         [Min(0f)] public float pressDuration = 0.1f;
-        public Vector2 pressOffset = new Vector2(0.05f, -0.05f);
+        public Vector2 pressOffset = new(0.05f, -0.05f);
         [Min(0f)] public float frameDuration = 0.3f;
         [Min(0f)] public float powerOffDuration = 0.4f;
         [Min(0f)] public float fanFadeDuration = 0.4f;

@@ -1,31 +1,32 @@
-using JJB.Script;
 using JJB.Script.Player;
 using UnityEngine;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // PlayerRenderer가 읽는 움직임 정보를 JJB 플레이어에서 가져온다. 읽기만 하고 JJB 상태는 바꾸지 않는다.
     [RequireComponent(typeof(Rigidbody2D), typeof(JJBPlayerJump), typeof(PlayerInputLock))]
-    public class JJBPlayerMotionSource : MonoBehaviour, IPlayerMotionSource
-    {
+    public class JJBPlayerMotionSource : MonoBehaviour, IPlayerMotionSource {
         private const float GroundNormalY = 0.5f;
 
-        [SerializeField, Min(0f)] private float facingDeadZone = 0.05f;
-
-        private Rigidbody2D _rb;
+        [SerializeField] [Min(0f)] private float facingDeadZone = 0.05f;
+        private readonly ContactPoint2D[] _contacts = new ContactPoint2D[8];
         private JJBPlayerJump _jump;
         private IInputLock _lock;
-        private readonly ContactPoint2D[] _contacts = new ContactPoint2D[8];
+
+        private Rigidbody2D _rb;
+
+        private void Awake() {
+            _rb = GetComponent<Rigidbody2D>();
+            _jump = GetComponent<JJBPlayerJump>();
+            _lock = GetComponent<PlayerInputLock>().Lock;
+        }
 
         public Vector2 Velocity => _rb.linearVelocity;
         public bool IsInputLocked => _lock.IsLocked;
 
-        public int FacingSign
-        {
-            get
-            {
-                float vx = _rb.linearVelocity.x;
-                return Mathf.Abs(vx) <= facingDeadZone ? 0 : (vx > 0f ? 1 : -1);
+        public int FacingSign {
+            get {
+                var vx = _rb.linearVelocity.x;
+                return Mathf.Abs(vx) <= facingDeadZone ? 0 : vx > 0f ? 1 : -1;
             }
         }
 
@@ -33,21 +34,11 @@ namespace LDY.Script
         // 그때는 물리 접촉으로 대신 판정한다.
         public bool IsGrounded => _jump.enabled ? _jump.IsGrounded : IsTouchingGround();
 
-        private void Awake()
-        {
-            _rb = GetComponent<Rigidbody2D>();
-            _jump = GetComponent<JJBPlayerJump>();
-            _lock = GetComponent<PlayerInputLock>().Lock;
-        }
-
-        private bool IsTouchingGround()
-        {
-            int count = _rb.GetContacts(_contacts);
-            for (int i = 0; i < count; i++)
-            {
+        private bool IsTouchingGround() {
+            var count = _rb.GetContacts(_contacts);
+            for (var i = 0; i < count; i++)
                 if (_contacts[i].normal.y > GroundNormalY)
                     return true;
-            }
 
             return false;
         }

@@ -1,50 +1,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LDY.Script
-{
-    public class SettingsPanel : WindowPanel
-    {
-        private IAudioVolume _volume;
-        private IScreenModeSetting _screenMode;
-        private SliderWidget _master;
+namespace LDY.Script {
+    public class SettingsPanel : WindowPanel {
         private SliderWidget _bgm;
-        private SliderWidget _sfx;
+        private SliderWidget _master;
         private DropdownWidget _screen;
+        private IScreenModeSetting _screenMode;
+        private SliderWidget _sfx;
+        private IAudioVolume _volume;
 
         protected override string TitleText => WindowText.SettingTitle;
         protected override string ControlHint => WindowText.SettingControlHint;
         protected override WindowLayout Layout => WindowLayout.Settings;
 
-        public void Bind(WindowServices services, IAudioVolume volume, IScreenModeSetting screenMode)
-        {
+        public void Bind(WindowServices services, IAudioVolume volume, IScreenModeSetting screenMode) {
             Bind(services);
             _volume = volume;
             _screenMode = screenMode;
         }
 
-        protected override void BuildBody(WindowKit kit, Transform root, List<WindowWidget> widgets)
-        {
-            Vector2 rowX = new Vector2(WindowStyle.InnerLeft, WindowStyle.InnerRight);
-            float top = Layout.SliderTop0;
+        protected override void BuildBody(WindowKit kit, Transform root, List<WindowWidget> widgets) {
+            var rowX = new Vector2(WindowStyle.InnerLeft, WindowStyle.InnerRight);
+            var top = Layout.SliderTop0;
 
-            _master = AddSlider(kit, root, widgets, WindowText.MasterVolume, "Slider_Master", top, rowX, VolumeChannel.Master);
+            _master = AddSlider(kit, root, widgets, WindowText.MasterVolume, "Slider_Master", top, rowX,
+                VolumeChannel.Master);
             _bgm = AddSlider(kit, root, widgets, WindowText.BgmVolume, "Slider_Bgm", top - Layout.RowSpacing, rowX,
                 VolumeChannel.Bgm);
             _sfx = AddSlider(kit, root, widgets, WindowText.SfxVolume, "Slider_Sfx", top - Layout.RowSpacing * 2f, rowX,
                 VolumeChannel.Sfx);
 
-            float dropdownTop = top - Layout.RowSpacing * 3f;
+            var dropdownTop = top - Layout.RowSpacing * 3f;
             kit.Platform("Ledge_ScreenMode", root, rowX.x, rowX.y, dropdownTop, true);
-            _screen = new DropdownWidget(kit, root, WindowText.ScreenMode, dropdownTop + WindowStyle.RowCenterAbovePlatform,
-                WindowStyle.TrackX, dropdownTop, Layout.ZoneHeight, rowX, new[] { WindowText.FullScreen, WindowText.Windowed },
+            _screen = new DropdownWidget(kit, root, WindowText.ScreenMode,
+                dropdownTop + WindowStyle.RowCenterAbovePlatform,
+                WindowStyle.TrackX, dropdownTop, Layout.ZoneHeight, rowX,
+                new[] { WindowText.FullScreen, WindowText.Windowed },
                 (int)_screenMode.Current, index => _screenMode.Apply((ScreenModeOption)index));
             widgets.Add(_screen);
         }
 
         // 다른 곳에서 바뀐 값도 따라가게 열 때마다 다시 읽음
-        protected override void OnWindowOpened()
-        {
+        protected override void OnWindowOpened() {
             _master.SetValue(_volume.Get(VolumeChannel.Master), false);
             _bgm.SetValue(_volume.Get(VolumeChannel.Bgm), false);
             _sfx.SetValue(_volume.Get(VolumeChannel.Sfx), false);
@@ -52,11 +50,11 @@ namespace LDY.Script
         }
 
         private SliderWidget AddSlider(WindowKit kit, Transform root, List<WindowWidget> widgets, string label,
-            string name, float platformTop, Vector2 rowX, VolumeChannel channel)
-        {
+            string name, float platformTop, Vector2 rowX, VolumeChannel channel) {
             kit.Platform("Ledge_" + name, root, rowX.x, rowX.y, platformTop, true);
             var slider = new SliderWidget(kit, root, label, name, platformTop + WindowStyle.RowCenterAbovePlatform,
-                WindowStyle.TrackX, platformTop, Layout.ZoneHeight, rowX, _volume.Get(channel), value => _volume.Set(channel, value));
+                WindowStyle.TrackX, platformTop, Layout.ZoneHeight, rowX, _volume.Get(channel),
+                value => _volume.Set(channel, value));
             widgets.Add(slider);
             return slider;
         }

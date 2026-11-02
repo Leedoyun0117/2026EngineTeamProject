@@ -1,12 +1,12 @@
+using System;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // TitleVisualSettings의 값을 씬 오브젝트에 반영한다. 화면 대비 비율은 콘텐츠 카메라가 보는 영역 기준이다.
     [RequireComponent(typeof(TitleVisualSettings))]
-    public class TitleVisualApplier : MonoBehaviour
-    {
+    public class TitleVisualApplier : MonoBehaviour {
         [SerializeField] private Camera contentCamera;
         [SerializeField] private CrtScreen crtScreen;
         [SerializeField] private SpriteRenderer wallpaper;
@@ -15,17 +15,14 @@ namespace LDY.Script
         [SerializeField] private SpriteRenderer underline;
         [SerializeField] private GameObject player;
 
-        private void Awake()
-        {
+        private void Awake() {
             Apply(true);
         }
 
 #if UNITY_EDITOR
         // 인스펙터에서 값을 바꾸면 바로 반영한다. 플레이 중에는 플레이어 위치를 건드리지 않는다.
-        private void OnValidate()
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
+        private void OnValidate() {
+            EditorApplication.delayCall += () => {
                 if (this != null)
                     Apply(!Application.isPlaying);
             };
@@ -33,19 +30,19 @@ namespace LDY.Script
 #endif
 
         [ContextMenu("Apply")]
-        private void ApplyFromMenu()
-        {
+        private void ApplyFromMenu() {
             Apply(true);
         }
 
-        public void Apply(bool placePlayer)
-        {
-            TitleVisualSettings settings = GetComponent<TitleVisualSettings>();
-            float height = contentCamera.orthographicSize * 2f;
+        public void Apply(bool placePlayer) {
+            var settings = GetComponent<TitleVisualSettings>();
+            var height = contentCamera.orthographicSize * 2f;
             var size = new Vector2(height * crtScreen.Aspect, height);
-            Vector2 origin = (Vector2)contentCamera.transform.position - size * 0.5f;
+            var origin = (Vector2)contentCamera.transform.position - size * 0.5f;
 
-            Vector3 At(Vector2 ratio) => new Vector3(origin.x + ratio.x * size.x, origin.y + ratio.y * size.y, 0f);
+            Vector3 At(Vector2 ratio) {
+                return new Vector3(origin.x + ratio.x * size.x, origin.y + ratio.y * size.y, 0f);
+            }
 
             ApplyWallpaper(settings, size, origin + size * 0.5f);
             ApplyLogo(settings, size, At);
@@ -53,21 +50,19 @@ namespace LDY.Script
             ApplyPlayer(settings, At, placePlayer);
         }
 
-        private void ApplyWallpaper(TitleVisualSettings settings, Vector2 size, Vector2 center)
-        {
+        private void ApplyWallpaper(TitleVisualSettings settings, Vector2 size, Vector2 center) {
             wallpaper.sprite = settings.wallpaperSprite;
             wallpaper.color = settings.wallpaperTint;
             wallpaper.transform.position = new Vector3(center.x, center.y, 0f);
             SpriteFit.Stretch(wallpaper, size);
         }
 
-        private void ApplyLogo(TitleVisualSettings settings, Vector2 size, System.Func<Vector2, Vector3> at)
-        {
-            bool text = settings.logoMode == TitleLogoMode.Text;
+        private void ApplyLogo(TitleVisualSettings settings, Vector2 size, Func<Vector2, Vector3> at) {
+            var text = settings.logoMode == TitleLogoMode.Text;
             logoLabel.gameObject.SetActive(text);
             logoSprite.gameObject.SetActive(!text);
 
-            Vector3 position = at(settings.logoAnchor);
+            var position = at(settings.logoAnchor);
             logoLabel.transform.position = position;
             logoSprite.transform.position = position;
 
@@ -83,11 +78,9 @@ namespace LDY.Script
                 size.y * settings.underlineThicknessRatio, 1f);
         }
 
-        private static void ApplyIcons(TitleVisualSettings settings, Vector2 size, System.Func<Vector2, Vector3> at)
-        {
-            float tile = size.x * settings.iconSizeRatio;
-            foreach (TitleIconSlot slot in settings.icons)
-            {
+        private static void ApplyIcons(TitleVisualSettings settings, Vector2 size, Func<Vector2, Vector3> at) {
+            var tile = size.x * settings.iconSizeRatio;
+            foreach (var slot in settings.icons) {
                 if (slot.visual == null)
                     continue;
 
@@ -98,8 +91,7 @@ namespace LDY.Script
             }
         }
 
-        private void ApplyPlayer(TitleVisualSettings settings, System.Func<Vector2, Vector3> at, bool placePlayer)
-        {
+        private void ApplyPlayer(TitleVisualSettings settings, Func<Vector2, Vector3> at, bool placePlayer) {
             var renderer = player.GetComponent<SpriteRenderer>();
             renderer.sprite = settings.playerSprite;
             renderer.color = settings.playerColor;
@@ -108,7 +100,7 @@ namespace LDY.Script
             var body = player.GetComponent<BoxCollider2D>();
             body.size = settings.playerBodySize;
             body.offset = settings.playerBodyOffset;
-            Transform groundCheck = player.transform.Find("GroundCheck");
+            var groundCheck = player.transform.Find("GroundCheck");
             if (groundCheck != null)
                 groundCheck.localPosition = new Vector3(0f, body.offset.y - body.size.y * 0.5f, 0f);
 
@@ -116,7 +108,7 @@ namespace LDY.Script
                 return;
 
             // 스프라이트 피벗이 발이므로 transform 원점이 곧 발이다. 충돌체 바닥을 시작 위치에 맞춘다.
-            float bottom = (body.offset.y - body.size.y * 0.5f) * player.transform.lossyScale.y;
+            var bottom = (body.offset.y - body.size.y * 0.5f) * player.transform.lossyScale.y;
             player.transform.position = at(settings.playerStartRatio) - Vector3.up * bottom;
         }
     }

@@ -1,17 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace LDY.Script
-{
-    public class AsyncSceneLoader : SceneLoaderBehaviour, IGameSceneLoader
-    {
+namespace LDY.Script {
+    public class AsyncSceneLoader : SceneLoaderBehaviour, IGameSceneLoader {
         [SerializeField] private string sceneName;
 
         private Handle _pending;
 
         // 비동기 로드는 취소가 안 돼서 타임아웃 뒤 재시도해도 대기 중인 걸 재사용
-        public ISceneLoadHandle Begin()
-        {
+        public ISceneLoadHandle Begin() {
             if (_pending != null && !_pending.Failed)
                 return _pending;
 
@@ -19,20 +16,17 @@ namespace LDY.Script
             return _pending;
         }
 
-        public override void LoadGameScene()
-        {
+        public override void LoadGameScene() {
             Begin();
         }
 
-        private Handle CreateHandle()
-        {
-            if (string.IsNullOrEmpty(sceneName) || !Application.CanStreamedLevelBeLoaded(sceneName))
-            {
-                Debug.LogError($"씬을 불러올 수 없음", this);
+        private Handle CreateHandle() {
+            if (string.IsNullOrEmpty(sceneName) || !Application.CanStreamedLevelBeLoaded(sceneName)) {
+                Debug.LogError("씬을 불러올 수 없음", this);
                 return new Handle(null);
             }
 
-            AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
+            var operation = SceneManager.LoadSceneAsync(sceneName);
             if (operation == null)
                 return new Handle(null);
 
@@ -40,22 +34,20 @@ namespace LDY.Script
             return new Handle(operation);
         }
 
-        private sealed class Handle : ISceneLoadHandle
-        {
+        private sealed class Handle : ISceneLoadHandle {
             private readonly AsyncOperation _operation;
 
-            public Handle(AsyncOperation operation)
-            {
+            public Handle(AsyncOperation operation) {
                 _operation = operation;
             }
 
             public bool Failed => _operation == null;
+
             // allowSceneActivation이 false면 progress가 0.9에서 멈춤
             public bool Ready => _operation != null && _operation.progress >= 0.9f;
             public bool IsDone => _operation != null && _operation.isDone;
 
-            public void Activate()
-            {
+            public void Activate() {
                 if (_operation != null)
                     _operation.allowSceneActivation = true;
             }

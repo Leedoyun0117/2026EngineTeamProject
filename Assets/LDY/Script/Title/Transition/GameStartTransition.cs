@@ -4,68 +4,64 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // 연결이 비어 있는 단계는 건너뜀
-    public class GameStartTransition : MonoBehaviour, IMenuBlocker
-    {
+    public class GameStartTransition : MonoBehaviour, IMenuBlocker {
         [SerializeField] private MonitorZoomRig zoomRig;
         [SerializeField] private SceneLoaderBehaviour sceneLoader;
-        [SerializeField] private TransitionSettings settings = new TransitionSettings();
+        [SerializeField] private TransitionSettings settings = new();
 
-        [Header("Icon / Frame")]
-        [Tooltip("눌림 연출로 움직일 GameStart 아이콘")]
-        [SerializeField] private Transform startIcon;
-        [Tooltip("점선 확대가 시작되는 영역 (GameStart 아이콘의 hitArea)")]
-        [SerializeField] private Collider2D startIconBounds;
+        [Header("Icon / Frame")] [Tooltip("눌림 연출로 움직일 GameStart 아이콘")] [SerializeField]
+        private Transform startIcon;
+
+        [Tooltip("점선 확대가 시작되는 영역 (GameStart 아이콘의 hitArea)")] [SerializeField]
+        private Collider2D startIconBounds;
+
         [SerializeField] private Camera contentCamera;
         [SerializeField] private Transform frameParent;
 
-        [Header("CRT / Loading")]
-        [SerializeField] private CrtMaterialDriver crt;
+        [Header("CRT / Loading")] [SerializeField]
+        private CrtMaterialDriver crt;
+
         [SerializeField] private TitleArtSet art;
         [SerializeField] private TMP_FontAsset overlayFont;
 
-        [Header("Hooks (비워 두면 빈 구현)")]
-        [Tooltip("ITransitionAudio를 구현한 컴포넌트")]
-        [SerializeField] private MonoBehaviour audioHook;
-        [Tooltip("IGameNotifier를 구현한 컴포넌트")]
-        [SerializeField] private MonoBehaviour notifierHook;
+        [Header("Hooks (비워 두면 빈 구현)")] [Tooltip("ITransitionAudio를 구현한 컴포넌트")] [SerializeField]
+        private MonoBehaviour audioHook;
+
+        [Tooltip("IGameNotifier를 구현한 컴포넌트")] [SerializeField]
+        private MonoBehaviour notifierHook;
+
+        private FocusFrame _frame;
 
         private IInputLock _lock;
-        private FocusFrame _frame;
-        private bool _started;
 
-        public bool Blocking => _started;
+        // 활성화 전에 꺼지면 토큰 반납, 활성화가 시작됐으면 새 씬이 이어받음
+        private void OnDisable() {
+            if (Blocking && TransitionCarrier.Instance != null)
+                TransitionCarrier.Instance.CancelIfLeaving();
+            Blocking = false;
+        }
 
-        public void Initialize(IInputLock inputLock)
-        {
+        public bool Blocking { get; private set; }
+
+        public void Initialize(IInputLock inputLock) {
             _lock = inputLock;
         }
 
-        public void Begin()
-        {
-            if (_started)
+        public void Begin() {
+            if (Blocking)
                 return;
 
-            _started = true;
-            TransitionCarrier carrier = TransitionCarrier.GetOrCreate(art != null ? art.loadingOverlayPrefab : null);
+            Blocking = true;
+            var carrier = TransitionCarrier.GetOrCreate(art != null ? art.loadingOverlayPrefab : null);
             carrier.Begin(_lock);
             StartCoroutine(Run(carrier));
         }
 
-        // 활성화 전에 꺼지면 토큰 반납, 활성화가 시작됐으면 새 씬이 이어받음
-        private void OnDisable()
-        {
-            if (_started && TransitionCarrier.Instance != null)
-                TransitionCarrier.Instance.CancelIfLeaving();
-            _started = false;
-        }
-
-        private IEnumerator Run(TransitionCarrier carrier)
-        {
+        private IEnumerator Run(TransitionCarrier carrier) {
             var context = new TransitionContext();
-            ITransitionAudio audio = audioHook as ITransitionAudio ?? new NullTransitionAudio();
+            var audio = audioHook as ITransitionAudio ?? new NullTransitionAudio();
             var restore = new List<Action>();
 
             yield return BuildSequence(carrier, audio, restore).Run(context);
@@ -76,15 +72,14 @@ namespace LDY.Script
                 notifierHook as IGameNotifier ?? new LogGameNotifier(), settings,
                 () => restore.ForEach(action => action()));
             yield return failure.Handle(context);
-            _started = false;
+            Blocking = false;
         }
 
-        private TransitionSequence BuildSequence(TransitionCarrier carrier, ITransitionAudio audio, List<Action> restore)
-        {
+        private TransitionSequence BuildSequence(TransitionCarrier carrier, ITransitionAudio audio,
+            List<Action> restore) {
             var steps = new List<ITransitionStep>();
 
-            if (startIcon != null)
-            {
+            if (startIcon != null) {
                 var press = new IconPressStep(startIcon, settings.pressOffset, settings.pressDuration);
                 steps.Add(press);
                 restore.Add(press.Restore);
@@ -99,7 +94,8 @@ namespace LDY.Script
 
             var loading = new LoadingStep(sceneLoader as IGameSceneLoader, carrier.Overlay, settings.loadingText,
                 art != null ? art.iconHourglass : null, art != null ? art.hourglassFrames : null,
-                settings.hourglassFrameDuration, settings.hourglassFlipDuration, settings.hourglassFlipCurve, overlayFont,
+                settings.hourglassFrameDuration, settings.hourglassFlipDuration, settings.hourglassFlipCurve,
+                overlayFont,
                 settings.loadingMinDisplay, settings.loadingTimeout);
             steps.Add(loading);
             steps.Add(new ActivateSceneStep(loading, carrier));
@@ -109,13 +105,11 @@ namespace LDY.Script
 
         // 눌림 다음, 줌 전에 점선이 아이콘 영역에서 모니터 화면 전체로 커졌다가 줌이 시작되기 전에 숨겨짐
         // 줌과 씬 전환은 프레임 부모(타이틀 콘텐츠)를 건드리지 않고, 실패하면 restore에서 숨김
-        private void AddFrameSteps(List<ITransitionStep> steps, List<Action> restore)
-        {
+        private void AddFrameSteps(List<ITransitionStep> steps, List<Action> restore) {
             if (frameParent == null || startIconBounds == null || contentCamera == null)
                 return;
 
-            if (art == null || art.focusFrame == null)
-            {
+            if (art == null || art.focusFrame == null) {
                 Debug.LogError("[Transition] TitleArtSet의 focusFrame 스프라이트가 비어 있어 점선 단계를 건너뜀", this);
                 return;
             }

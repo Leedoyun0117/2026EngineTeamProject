@@ -2,34 +2,33 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace LDY.Script
-{
-    public class DropdownWidget : WindowWidget
-    {
+namespace LDY.Script {
+    public class DropdownWidget : WindowWidget {
         private const float BoxHeight = 56f * WindowKit.Pixel;
         private const float Border = 8f * WindowKit.Pixel;
         private const float ItemHeight = 0.55f;
+        private readonly Rect _boxRect;
+        private readonly Action<int> _changed;
+        private readonly SpriteRenderer _highlight;
+
+        private readonly WindowKit _kit;
+        private readonly GameObject _list;
+        private readonly Rect _listRect;
 
         private readonly string[] _options;
-        private readonly Action<int> _changed;
-        private readonly Rect _boxRect;
-        private readonly Rect _listRect;
-        private readonly GameObject _list;
-        private readonly SpriteRenderer _highlight;
         private readonly TMP_Text _selectedText;
-        private int _selected;
+        private bool _byPointer;
         private int _highlighted;
         private bool _open;
-        private bool _byPointer;
+        private int _selected;
 
         public DropdownWidget(WindowKit kit, Transform parent, string label, float centerY, Vector2 boxX,
-            float platformTop, float zoneHeight, Vector2 rowX, string[] options, int initial, Action<int> changed)
-        {
+            float platformTop, float zoneHeight, Vector2 rowX, string[] options, int initial, Action<int> changed) {
             _options = options;
             _changed = changed;
 
-            Transform root = kit.Group("ScreenMode", parent, Vector2.zero);
-            TitleArtSet art = kit.Art;
+            var root = kit.Group("ScreenMode", parent, Vector2.zero);
+            var art = kit.Art;
 
             kit.Text("Label", root, new Vector2(WindowStyle.LabelX, centerY), label, WindowStyle.RowFont,
                 WindowStyle.Text, WindowStyle.Order.Content, TextAlignmentOptions.Left, WindowStyle.LabelWidth);
@@ -37,110 +36,101 @@ namespace LDY.Script
             _boxRect = new Rect(boxX.x, centerY - BoxHeight * 0.5f, boxX.y - boxX.x, BoxHeight);
             kit.Sliced("Box", root, art.dropdownBox, _boxRect, WindowStyle.Order.Content);
 
-            float arrowSize = BoxHeight - Border * 2f;
+            var arrowSize = BoxHeight - Border * 2f;
             kit.Stretched("Arrow", root, art.dropdownArrowButton,
-                new Rect(_boxRect.xMax - Border - arrowSize, _boxRect.center.y - arrowSize * 0.5f, arrowSize, arrowSize), WindowStyle.Order.ContentRaised);
+                new Rect(_boxRect.xMax - Border - arrowSize, _boxRect.center.y - arrowSize * 0.5f, arrowSize,
+                    arrowSize), WindowStyle.Order.ContentRaised);
             _selectedText = kit.Text("Selected", root, new Vector2(_boxRect.xMin + WindowStyle.TextInset, centerY), "",
                 WindowStyle.RowFont, WindowStyle.Text, WindowStyle.Order.ContentRaised, TextAlignmentOptions.Left,
                 _boxRect.width - WindowStyle.TextWidthTrim);
 
-            float listHeight = _options.Length * ItemHeight + Border * 2f;
-            _listRect = new Rect(_boxRect.xMin, _boxRect.yMin - WindowStyle.DropdownListGap - listHeight, _boxRect.width, listHeight);
+            var listHeight = _options.Length * ItemHeight + Border * 2f;
+            _listRect = new Rect(_boxRect.xMin, _boxRect.yMin - WindowStyle.DropdownListGap - listHeight,
+                _boxRect.width, listHeight);
 
             _list = kit.Group("List", root, Vector2.zero).gameObject;
-            Transform list = _list.transform;
+            var list = _list.transform;
             kit.Sliced("ListBg", list, art.dropdownListBg, _listRect, WindowStyle.Order.DropdownList);
             _highlight = kit.Stretched("Highlight", list, art.dropdownHighlight, ItemRect(0, true),
                 WindowStyle.Order.DropdownHighlight);
-            for (int i = 0; i < _options.Length; i++)
-            {
-                kit.Text($"Item{i}", list, new Vector2(_boxRect.xMin + WindowStyle.TextInset, ItemRect(i, false).center.y),
+            for (var i = 0; i < _options.Length; i++)
+                kit.Text($"Item{i}", list,
+                    new Vector2(_boxRect.xMin + WindowStyle.TextInset, ItemRect(i, false).center.y),
                     _options[i], WindowStyle.RowFont, WindowStyle.Text, WindowStyle.Order.DropdownText,
                     TextAlignmentOptions.Left, _boxRect.width - WindowStyle.TextWidthTrim);
-            }
 
             _kit = kit;
             _list.SetActive(false);
 
             PointerRect = _boxRect;
-            FocusRect = new Rect(_boxRect.xMin - WindowStyle.DropdownFocusPad, _boxRect.yMin - WindowStyle.DropdownFocusPad,
-                _boxRect.width + WindowStyle.DropdownFocusPad * 2f, _boxRect.height + WindowStyle.DropdownFocusPad * 2f);
+            FocusRect = new Rect(_boxRect.xMin - WindowStyle.DropdownFocusPad,
+                _boxRect.yMin - WindowStyle.DropdownFocusPad,
+                _boxRect.width + WindowStyle.DropdownFocusPad * 2f,
+                _boxRect.height + WindowStyle.DropdownFocusPad * 2f);
             ProximityRect = new Rect(rowX.x, platformTop - WindowStyle.ZoneBelow, rowX.y - rowX.x, zoneHeight);
 
             SetIndex(initial);
         }
 
-        private readonly WindowKit _kit;
-
         public override bool PointerEngaged => _open && _byPointer;
 
         // 외부에서 맞출 땐 콜백 안 부름
-        public void SetIndex(int index)
-        {
+        public void SetIndex(int index) {
             _selected = Mathf.Clamp(index, 0, _options.Length - 1);
             _selectedText.text = _options[_selected];
         }
 
-        public override bool PointerPress(Vector2 local)
-        {
-            if (!_open)
-            {
+        public override bool PointerPress(Vector2 local) {
+            if (!_open) {
                 if (_boxRect.Contains(local))
                     Open(true);
                 return false;
             }
 
-            int item = ItemAt(local);
+            var item = ItemAt(local);
             if (item >= 0)
                 Select(item);
             Close();
             return false;
         }
 
-        public override void PointerMove(Vector2 local)
-        {
+        public override void PointerMove(Vector2 local) {
             if (!_open)
                 return;
 
-            int item = ItemAt(local);
+            var item = ItemAt(local);
             if (item >= 0)
                 SetHighlight(item);
         }
 
-        public override void PointerCancel()
-        {
+        public override void PointerCancel() {
             Close();
         }
 
-        public override bool PlayerActivate()
-        {
+        public override bool PlayerActivate() {
             Open(false);
             return true;
         }
 
-        public override bool PlayerTick(IWindowInput input, float dt)
-        {
-            if (input.InteractPressed)
-            {
+        public override bool PlayerTick(IWindowInput input, float dt) {
+            if (input.InteractPressed) {
                 Select(_highlighted);
                 Close();
                 return false;
             }
 
-            int step = -input.VerticalStep;
+            var step = -input.VerticalStep;
             if (step != 0)
                 SetHighlight(Mathf.Clamp(_highlighted + step, 0, _options.Length - 1));
 
             return true;
         }
 
-        public override void PlayerCancel()
-        {
+        public override void PlayerCancel() {
             Close();
         }
 
-        private void Open(bool byPointer)
-        {
+        private void Open(bool byPointer) {
             _open = true;
             _byPointer = byPointer;
             _list.SetActive(true);
@@ -148,16 +138,14 @@ namespace LDY.Script
             PointerRect = Union(_boxRect, _listRect);
         }
 
-        private void Close()
-        {
+        private void Close() {
             _open = false;
             _byPointer = false;
             _list.SetActive(false);
             PointerRect = _boxRect;
         }
 
-        private void Select(int index)
-        {
+        private void Select(int index) {
             if (index < 0 || index >= _options.Length || index == _selected)
                 return;
 
@@ -165,8 +153,7 @@ namespace LDY.Script
             _changed(index);
         }
 
-        private void SetHighlight(int index)
-        {
+        private void SetHighlight(int index) {
             if (_highlighted == index)
                 return;
 
@@ -174,28 +161,23 @@ namespace LDY.Script
             _kit.Resize(_highlight, ItemRect(index, true));
         }
 
-        private int ItemAt(Vector2 local)
-        {
-            for (int i = 0; i < _options.Length; i++)
-            {
+        private int ItemAt(Vector2 local) {
+            for (var i = 0; i < _options.Length; i++)
                 if (ItemRect(i, true).Contains(local))
                     return i;
-            }
 
             return -1;
         }
 
         // inset이면 테두리 안쪽 폭(하이라이트/판정용), 아니면 글자 위치용
-        private Rect ItemRect(int index, bool inset)
-        {
-            float x = inset ? _listRect.xMin + Border : _listRect.xMin;
-            float width = inset ? _listRect.width - Border * 2f : _listRect.width;
-            float top = _listRect.yMax - Border - index * ItemHeight;
+        private Rect ItemRect(int index, bool inset) {
+            var x = inset ? _listRect.xMin + Border : _listRect.xMin;
+            var width = inset ? _listRect.width - Border * 2f : _listRect.width;
+            var top = _listRect.yMax - Border - index * ItemHeight;
             return new Rect(x, top - ItemHeight, width, ItemHeight);
         }
 
-        private static Rect Union(Rect a, Rect b)
-        {
+        private static Rect Union(Rect a, Rect b) {
             return Rect.MinMaxRect(Mathf.Min(a.xMin, b.xMin), Mathf.Min(a.yMin, b.yMin),
                 Mathf.Max(a.xMax, b.xMax), Mathf.Max(a.yMax, b.yMax));
         }

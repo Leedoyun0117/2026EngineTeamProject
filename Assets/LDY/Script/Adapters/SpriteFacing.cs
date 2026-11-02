@@ -1,25 +1,20 @@
 using UnityEngine;
 
-namespace LDY.Script
-{
-    public class SpriteFacing : IFacing
-    {
-        private readonly Transform _transform;
+namespace LDY.Script {
+    public class SpriteFacing : IFacing {
         private readonly SpriteRenderer _sprite;
+        private readonly Transform _transform;
 
-        public SpriteFacing(Transform transform, SpriteRenderer sprite)
-        {
+        public SpriteFacing(Transform transform, SpriteRenderer sprite) {
             _transform = transform;
             _sprite = sprite;
         }
 
-        public FacingState Capture()
-        {
+        public FacingState Capture() {
             return new FacingState(_transform.localScale, _sprite.flipX);
         }
 
-        public void Restore(FacingState state)
-        {
+        public void Restore(FacingState state) {
             if (_transform == null)
                 return;
 

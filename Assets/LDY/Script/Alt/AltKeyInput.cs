@@ -2,27 +2,19 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace LDY.Script
-{
-    public class AltKeyInput : IAltInput, IDisposable
-    {
-        private readonly InputAction _action = new InputAction("Alt", InputActionType.Button, "<Keyboard>/alt");
+namespace LDY.Script {
+    public class AltKeyInput : IAltInput, IDisposable {
+        private readonly InputAction _action = new("Alt", InputActionType.Button, "<Keyboard>/alt");
         private readonly IInputLock _lock;
         private bool _suppressed;
 
-        public AltKeyInput(IInputLock inputLock)
-        {
+        public AltKeyInput(IInputLock inputLock) {
             _lock = inputLock;
         }
 
-        public bool Pressed => Available && _action.WasPressedThisFrame();
-        public bool Held => Available && _action.IsPressed();
-
         // 잠금 중이거나, 포커스 잃은 뒤 Alt를 뗄 때까지는 입력 없음으로 침
-        private bool Available
-        {
-            get
-            {
+        private bool Available {
+            get {
                 if (_lock.IsLocked || !Application.isFocused)
                     return false;
 
@@ -33,26 +25,25 @@ namespace LDY.Script
             }
         }
 
-        public void Enable()
-        {
-            _action.Enable();
-            Application.focusChanged += HandleFocusChanged;
-        }
+        public bool Pressed => Available && _action.WasPressedThisFrame();
+        public bool Held => Available && _action.IsPressed();
 
-        public void Disable()
-        {
-            Application.focusChanged -= HandleFocusChanged;
-            _action.Disable();
-        }
-
-        public void Dispose()
-        {
+        public void Dispose() {
             Disable();
             _action.Dispose();
         }
 
-        private void HandleFocusChanged(bool focused)
-        {
+        public void Enable() {
+            _action.Enable();
+            Application.focusChanged += HandleFocusChanged;
+        }
+
+        public void Disable() {
+            Application.focusChanged -= HandleFocusChanged;
+            _action.Disable();
+        }
+
+        private void HandleFocusChanged(bool focused) {
             if (!focused)
                 _suppressed = true;
         }

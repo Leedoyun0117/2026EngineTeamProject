@@ -1,22 +1,19 @@
 using UnityEngine;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     [DisallowMultipleComponent]
-    public class PlayerRenderer : MonoBehaviour
-    {
+    public class PlayerRenderer : MonoBehaviour {
         [SerializeField] private PlayerAnimSet animSet;
         [SerializeField] private SpriteRenderer target;
-        [SerializeField] private PlayerAnimRules rules = new PlayerAnimRules();
-
-        private IPlayerMotionSource _source;
+        [SerializeField] private PlayerAnimRules rules = new();
         private IAltStatus _alt;
+        private SpriteFlipDriver _flip;
         private PlayerAnimStateMachine _machine;
         private SpriteFramePlayer _player;
-        private SpriteFlipDriver _flip;
 
-        private void Awake()
-        {
+        private IPlayerMotionSource _source;
+
+        private void Awake() {
             if (target == null)
                 target = GetComponentInChildren<SpriteRenderer>();
 
@@ -26,8 +23,7 @@ namespace LDY.Script
             _player = new SpriteFramePlayer();
             _flip = new SpriteFlipDriver(target);
 
-            if (animSet == null || _source == null)
-            {
+            if (animSet == null || _source == null) {
                 Debug.LogError("[PlayerRenderer] PlayerAnimSet 또는 IPlayerMotionSource 없음, 비활성화", this);
                 enabled = false;
                 return;
@@ -36,21 +32,19 @@ namespace LDY.Script
             Play(_machine.Current, 0);
         }
 
-        private void Update()
-        {
-            if (_alt != null && _alt.Phase != AltPhase.Normal)
-            {
+        private void Update() {
+            if (_alt != null && _alt.Phase != AltPhase.Normal) {
                 if (animSet.AltSprite != null)
                     target.sprite = animSet.AltSprite;
                 return;
             }
 
-            float dt = Time.deltaTime;
-            Vector2 velocity = _source.Velocity;
+            var dt = Time.deltaTime;
+            var velocity = _source.Velocity;
 
             var input = new PlayerAnimInput(velocity, _source.IsGrounded, _source.IsInputLocked, dt,
                 _player.Finished, _player.Frame);
-            PlayerAnimId id = _machine.Tick(input);
+            var id = _machine.Tick(input);
             if (_machine.Changed)
                 Play(id, _machine.EntryFrame);
 
@@ -59,21 +53,18 @@ namespace LDY.Script
             _flip.Apply(_source.FacingSign);
         }
 
-        private float PlaybackScale(PlayerAnimId id, float velocityX)
-        {
-            bool scaled = id == PlayerAnimId.Walk || id == PlayerAnimId.Run;
+        private float PlaybackScale(PlayerAnimId id, float velocityX) {
+            var scaled = id == PlayerAnimId.Walk || id == PlayerAnimId.Run;
             return scaled ? rules.SpeedScale(Mathf.Abs(velocityX)) : 1f;
         }
 
-        private void Play(PlayerAnimId id, int startFrame)
-        {
+        private void Play(PlayerAnimId id, int startFrame) {
             _player.Play(animSet.Resolve(id), startFrame);
             ApplySprite();
         }
 
-        private void ApplySprite()
-        {
-            Sprite sprite = _player.Sprite;
+        private void ApplySprite() {
+            var sprite = _player.Sprite;
             if (sprite != null)
                 target.sprite = sprite;
         }

@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public enum SKillState
-{
+public enum SKillState {
     None,
     ReSize,
     Copy,
@@ -15,7 +14,4 @@ public enum SKillState
     Cutting
 }
 
-public class SkillManager_HTY : MonoBehaviour
-{
-    
-}
+public class SkillManager_HTY : MonoBehaviour { }

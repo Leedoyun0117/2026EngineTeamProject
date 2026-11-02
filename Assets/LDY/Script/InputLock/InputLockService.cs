@@ -1,16 +1,13 @@
 using System;
 
-namespace LDY.Script
-{
-    public class InputLockService : IInputLock
-    {
+namespace LDY.Script {
+    public class InputLockService : IInputLock {
         private int _count;
 
         public bool IsLocked => _count > 0;
         public event Action<bool> LockChanged;
 
-        public IDisposable Acquire()
-        {
+        public IDisposable Acquire() {
             _count++;
             if (_count == 1)
                 LockChanged?.Invoke(true);
@@ -18,29 +15,25 @@ namespace LDY.Script
             return new Token(this);
         }
 
-        private void Release()
-        {
+        private void Release() {
             _count--;
             if (_count == 0)
                 LockChanged?.Invoke(false);
         }
 
-        private sealed class Token : IDisposable
-        {
+        private sealed class Token : IDisposable {
             private InputLockService _owner;
 
-            public Token(InputLockService owner)
-            {
+            public Token(InputLockService owner) {
                 _owner = owner;
             }
 
             // Dispose가 두 번 불려도 한 번만 반납
-            public void Dispose()
-            {
+            public void Dispose() {
                 if (_owner == null)
                     return;
 
-                InputLockService owner = _owner;
+                var owner = _owner;
                 _owner = null;
                 owner.Release();
             }

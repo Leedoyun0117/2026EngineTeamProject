@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 
-namespace JJB.Script.Player
-{
-    public class JJBPlayerInteract : MonoBehaviour
-    {
-        [Header("Interact")]
-        [SerializeField] private Transform interactPoint;
+namespace JJB.Script.Player {
+    public class JJBPlayerInteract : MonoBehaviour {
+        [Header("Interact")] [SerializeField] private Transform interactPoint;
+
         [SerializeField] private LayerMask interactMask;
-        [SerializeField] private float  interactSize;
-        
-        public void Trigger()
-        {
-            IInteract target = FindTarget();
+        [SerializeField] private float interactSize;
+
+        private void OnDrawGizmos() {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(interactPoint.position, interactSize);
+        }
+
+        public void Trigger() {
+            var target = FindTarget();
 
             if (target == null)
                 return;
@@ -19,30 +21,22 @@ namespace JJB.Script.Player
             target.Interact(this);
         }
 
-        private IInteract FindTarget()
-        {
+        private IInteract FindTarget() {
             if (interactPoint == null)
                 return null;
 
-            Collider2D[] hits = Physics2D.OverlapCircleAll(interactPoint.position, interactSize, interactMask);
+            var hits = Physics2D.OverlapCircleAll(interactPoint.position, interactSize, interactMask);
 
-            foreach (Collider2D hit in hits)
-            {
-                IInteract target = hit.GetComponentInParent<IInteract>();
+            foreach (var hit in hits) {
+                var target = hit.GetComponentInParent<IInteract>();
 
                 if (target != null)
                     return target;
-                
+
                 hit.gameObject.SetActive(false);
             }
 
             return null;
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(interactPoint.position, interactSize);
         }
     }
 }

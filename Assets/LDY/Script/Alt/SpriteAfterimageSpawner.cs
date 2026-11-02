@@ -1,21 +1,17 @@
 using UnityEngine;
 
-namespace LDY.Script
-{
-    public class SpriteAfterimageSpawner : IAfterimageSpawner
-    {
+namespace LDY.Script {
+    public class SpriteAfterimageSpawner : IAfterimageSpawner {
         private readonly SpriteRenderer _source;
         private readonly Color _tint;
 
-        public SpriteAfterimageSpawner(SpriteRenderer source, Color tint)
-        {
+        public SpriteAfterimageSpawner(SpriteRenderer source, Color tint) {
             _source = source;
             _tint = tint;
         }
 
-        public IAfterimage Spawn()
-        {
-            Transform src = _source.transform;
+        public IAfterimage Spawn() {
+            var src = _source.transform;
             var go = new GameObject("Afterimage");
             go.transform.SetPositionAndRotation(src.position, src.rotation);
             go.transform.localScale = src.lossyScale;
@@ -32,31 +28,27 @@ namespace LDY.Script
             return new Handle(go, sr, _tint);
         }
 
-        private sealed class Handle : IAfterimage
-        {
-            private GameObject _go;
-            private readonly SpriteRenderer _renderer;
+        private sealed class Handle : IAfterimage {
             private readonly Color _baseColor;
+            private readonly SpriteRenderer _renderer;
+            private GameObject _go;
 
-            public Handle(GameObject go, SpriteRenderer renderer, Color baseColor)
-            {
+            public Handle(GameObject go, SpriteRenderer renderer, Color baseColor) {
                 _go = go;
                 _renderer = renderer;
                 _baseColor = baseColor;
             }
 
-            public void SetFade(float visibility)
-            {
+            public void SetFade(float visibility) {
                 if (_renderer == null)
                     return;
 
-                Color c = _baseColor;
+                var c = _baseColor;
                 c.a *= visibility;
                 _renderer.color = c;
             }
 
-            public void Dispose()
-            {
+            public void Dispose() {
                 if (_go == null)
                     return;
 

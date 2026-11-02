@@ -1,18 +1,14 @@
+using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class TpPlayer_HTY : MonoBehaviour,ISkill_HTY
-{
-    
+public class TpPlayer_HTY : MonoBehaviour, ISkill_HTY {
     public GameObject _panel;
 
-    public bool CanUse()
-    {
-        throw new System.NotImplementedException();
+    public bool CanUse() {
+        throw new NotImplementedException();
     }
 
-    public void UseSkill()
-    {
+    public void UseSkill() {
         _panel.SetActive(true);
     }
 }

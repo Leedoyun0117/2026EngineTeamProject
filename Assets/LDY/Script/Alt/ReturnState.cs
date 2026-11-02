@@ -1,29 +1,26 @@
 using System;
 using UnityEngine;
 
-namespace LDY.Script
-{
-    public class ReturnState : IAltState
-    {
+namespace LDY.Script {
+    public class ReturnState : IAltState {
         private readonly IPlayerBody _body;
-        private readonly IFacing _facing;
-        private readonly IPlayerControl _control;
-        private readonly ITimeFreezer _freezer;
         private readonly ICameraLock _camera;
+        private readonly IPlayerControl _control;
+        private readonly IFacing _facing;
+        private readonly ITimeFreezer _freezer;
         private readonly IInputLock _inputLock;
         private readonly AltSession _session;
         private readonly AltReturnSettings _settings;
         private readonly IAltStateSwitcher _switcher;
-
-        private IDisposable _lockToken;
-        private Vector2 _from;
         private float _duration;
         private float _elapsed;
+        private Vector2 _from;
+
+        private IDisposable _lockToken;
 
         public ReturnState(IPlayerBody body, IFacing facing, IPlayerControl control, ITimeFreezer freezer,
             ICameraLock camera, IInputLock inputLock, AltSession session, AltReturnSettings settings,
-            IAltStateSwitcher switcher)
-        {
+            IAltStateSwitcher switcher) {
             _body = body;
             _facing = facing;
             _control = control;
@@ -37,22 +34,20 @@ namespace LDY.Script
 
         public AltPhase Phase => AltPhase.Return;
 
-        public void Enter()
-        {
+        public void Enter() {
             _lockToken = _inputLock.Acquire();
             _from = _body.Position;
             _duration = _settings.CalculateDuration(Vector2.Distance(_from, _session.Snapshot.Position));
             _elapsed = 0f;
         }
 
-        public void Tick(float unscaledDeltaTime)
-        {
+        public void Tick(float unscaledDeltaTime) {
             _elapsed += unscaledDeltaTime;
-            float t = UnscaledTween.Progress(_elapsed, _duration);
-            float eased = UnscaledTween.EaseOutQuad(t);
+            var t = UnscaledTween.Progress(_elapsed, _duration);
+            var eased = UnscaledTween.EaseOutQuad(t);
             _body.Position = Vector2.Lerp(_from, _session.Snapshot.Position, eased);
 
-            float remaining = _duration - _elapsed;
+            var remaining = _duration - _elapsed;
             _session.Afterimage?.SetFade(Mathf.Clamp01(remaining / _settings.afterimageFadeTime));
 
             if (t >= 1f)
@@ -61,10 +56,8 @@ namespace LDY.Script
 
         // timeScale 0인 채로 한 Update 안에 끝남. 순서 바꾸면 안 됨
         // 앞에서 예외 나도 시간/잠금은 풀려야 해서 finally
-        public void Exit()
-        {
-            try
-            {
+        public void Exit() {
+            try {
                 _session.Afterimage?.Dispose();
                 _session.Afterimage = null;
 
@@ -74,8 +67,7 @@ namespace LDY.Script
                 _facing.Restore(_session.Snapshot.Facing);
                 _body.SyncTransforms();
             }
-            finally
-            {
+            finally {
                 _camera.Release();
                 _freezer.Release();
                 _control.SetSuspended(false);

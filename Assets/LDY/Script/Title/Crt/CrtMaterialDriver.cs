@@ -1,12 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     // 시간은 TitleClock을 따라서 Alt 중에도 흐름
     [ExecuteAlways]
-    public class CrtMaterialDriver : MonoBehaviour, ICrtPower
-    {
+    public class CrtMaterialDriver : MonoBehaviour, ICrtPower {
         private static readonly int ContentTex = Shader.PropertyToID("_ContentTex");
         private static readonly int Curvature = Shader.PropertyToID("_Curvature");
         private static readonly int ScanlineIntensity = Shader.PropertyToID("_ScanlineIntensity");
@@ -22,24 +20,13 @@ namespace LDY.Script
         [SerializeField] private Renderer screenRenderer;
         [SerializeField] private CrtScreen screen;
         [SerializeField] private TitleClock clock;
-        [SerializeField] private CrtSettings settings = new CrtSettings();
+        [SerializeField] private CrtSettings settings = new();
 
         private MaterialPropertyBlock _block;
 
         public float CurvatureValue => settings.curvature;
-        public float Level { get; set; }
-        public Vector2 Fill { get; set; } = Vector2.one;
 
-        // Level/Fill은 출력 마스크 값이라 곡률 UV 변환(클릭 좌표)에는 영향 없음
-        public IEnumerator AnimateTo(float target, float duration)
-        {
-            float from = Level;
-            yield return UnscaledTween.Run(duration, t => Level = Mathf.Lerp(from, target, t));
-            Level = target;
-        }
-
-        private void LateUpdate()
-        {
+        private void LateUpdate() {
             if (clock == null || screen == null)
                 return;
 
@@ -57,6 +44,16 @@ namespace LDY.Script
             _block.SetFloat(PowerOff, Mathf.Clamp01(Level));
             _block.SetVector(PowerFill, new Vector4(Fill.x, Fill.y, 0f, 0f));
             screenRenderer.SetPropertyBlock(_block);
+        }
+
+        public float Level { get; set; }
+        public Vector2 Fill { get; set; } = Vector2.one;
+
+        // Level/Fill은 출력 마스크 값이라 곡률 UV 변환(클릭 좌표)에는 영향 없음
+        public IEnumerator AnimateTo(float target, float duration) {
+            var from = Level;
+            yield return UnscaledTween.Run(duration, t => Level = Mathf.Lerp(from, target, t));
+            Level = target;
         }
     }
 }

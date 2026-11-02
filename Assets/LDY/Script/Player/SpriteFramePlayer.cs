@@ -1,9 +1,7 @@
 using UnityEngine;
 
-namespace LDY.Script
-{
-    public class SpriteFramePlayer
-    {
+namespace LDY.Script {
+    public class SpriteFramePlayer {
         private const float MinFrameTime = 0.001f;
 
         private PlayerAnimClip _clip;
@@ -13,33 +11,27 @@ namespace LDY.Script
         public bool Finished { get; private set; }
         public Sprite Sprite => _clip != null ? _clip.frames[Frame] : null;
 
-        public void Play(PlayerAnimClip clip, int startFrame = 0)
-        {
+        public void Play(PlayerAnimClip clip, int startFrame = 0) {
             _clip = clip != null && clip.IsValid ? clip : null;
             Frame = _clip != null ? Mathf.Clamp(startFrame, 0, _clip.frames.Length - 1) : 0;
             _elapsed = 0f;
             Finished = false;
         }
 
-        public void Tick(float deltaTime, float speedScale)
-        {
+        public void Tick(float deltaTime, float speedScale) {
             if (_clip == null || Finished)
                 return;
 
             _elapsed += deltaTime * speedScale;
-            while (_elapsed >= FrameTime(Frame))
-            {
+            while (_elapsed >= FrameTime(Frame)) {
                 _elapsed -= FrameTime(Frame);
-                if (Frame + 1 < _clip.frames.Length)
-                {
+                if (Frame + 1 < _clip.frames.Length) {
                     Frame++;
                 }
-                else if (_clip.loop)
-                {
+                else if (_clip.loop) {
                     Frame = 0;
                 }
-                else
-                {
+                else {
                     Finished = true;
                     _elapsed = 0f;
                     return;
@@ -47,8 +39,7 @@ namespace LDY.Script
             }
         }
 
-        private float FrameTime(int frame)
-        {
+        private float FrameTime(int frame) {
             return Mathf.Max(_clip.durations[frame], MinFrameTime);
         }
     }

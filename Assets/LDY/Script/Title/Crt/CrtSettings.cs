@@ -1,11 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace LDY.Script
-{
+namespace LDY.Script {
     [Serializable]
-    public class CrtSettings
-    {
+    public class CrtSettings {
         [Range(0f, 0.4f)] public float curvature = 0.03f;
         [Range(0f, 1f)] public float scanlineIntensity = 0.12f;
         [Min(1f)] public float scanlineCount = 360f;
