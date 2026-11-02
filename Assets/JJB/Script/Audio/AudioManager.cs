@@ -2,45 +2,28 @@ using UnityEngine;
 
 namespace JJB.Script.Audio
 {
-    public class AudioManager : MonoBehaviour
+    public class AudioManager : MonoBehaviour, IAudioService
     {
-        public static AudioManager Instance { get; private set; }
-
-        [SerializeField]
-        private AudioSource _bgmSource;
-
-        [SerializeField]
-        private AudioSource _sfxSource;
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-
+        [SerializeField] private AudioSource bgmSource;
+        [SerializeField] private AudioSource sfxSource;
+        
         public void PlayBGM(AudioClip clip)
         {
             if (clip == null)
                 return;
             
-            if (_bgmSource.clip == clip && _bgmSource.isPlaying)
+            if (bgmSource.clip == clip && bgmSource.isPlaying)
                 return;
 
-            _bgmSource.Stop();
-            _bgmSource.clip = clip;
-            _bgmSource.loop = true;
-            _bgmSource.Play();
+            bgmSource.Stop();
+            bgmSource.clip = clip;
+            bgmSource.loop = true;
+            bgmSource.Play();
         }
 
         public void StopBGM()
         {
-            _bgmSource.Stop();
+            bgmSource.Stop();
         }
 
         public void PlaySFX(AudioClip clip)
@@ -48,15 +31,7 @@ namespace JJB.Script.Audio
             if (clip == null)
                 return;
 
-            _sfxSource.PlayOneShot(clip);
-        }
-
-        private void OnDestroy()
-        {
-            if (Instance == this)
-            {
-                Instance = null;
-            }
+            sfxSource.PlayOneShot(clip);
         }
     }
 }
