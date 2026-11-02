@@ -11,11 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6fe23d18-7e65-450d-b817-a0888c4ceaa1" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Alt/AltModeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Alt/AltModeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowSideWalls.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/WindowSideWalls.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LDY_TitleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LDY_TitleScene.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +109,7 @@
       <workItem from="1792462052158" duration="3755000" />
       <workItem from="1793067485448" duration="1423000" />
       <workItem from="1793178720937" duration="2341000" />
-      <workItem from="1793590025451" duration="341000" />
+      <workItem from="1793590025451" duration="1087000" />
     </task>
     <servers />
   </component>
