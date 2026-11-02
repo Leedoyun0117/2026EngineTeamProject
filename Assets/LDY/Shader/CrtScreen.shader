@@ -61,7 +61,6 @@ Shader "LDY/CrtScreen"
                 float2 uv : TEXCOORD0;
             };
 
-            // CrtCurvature.Warp(C#)와 같은 식을 유지할 것.
             float2 CrtWarp(float2 uv, float k)
             {
                 float2 p = uv * 2.0 - 1.0;
@@ -76,8 +75,6 @@ Shader "LDY/CrtScreen"
                 return frac(p.x * p.y);
             }
 
-            // 전원 꺼짐 마스크. 곡률 변환 전의 화면 UV로 계산하는 출력 마스킹이라 콘텐츠 좌표(클릭 판정)에 영향이 없다.
-            // 세로로 줄어 가로선이 되고, 가로로 줄어 점이 된다. 켜질 때는 같은 값을 거꾸로 지난다.
             float PowerMask(float2 screenUv, float p, float2 fill, out float glow)
             {
                 glow = 0.0;

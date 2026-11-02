@@ -55,7 +55,8 @@ namespace JJB.Script
 
         private void HandleInteractPressed()
         {
-            PlayerInteract.Trigger();
+            if (PlayerInteract != null)
+                PlayerInteract.Trigger();
         }
 
         private void Update()
