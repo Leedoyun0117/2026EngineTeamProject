@@ -83,7 +83,7 @@ namespace LDY.Script
 
             if (_machine.Current is AltState)
                 _machine.Switch<ReturnState>();
-            if (_machine.Current is ReturnState)
+            if (_machine.Current is ReturnState)    
                 _machine.Switch<NormalState>();
 
             _freezer.Release();
