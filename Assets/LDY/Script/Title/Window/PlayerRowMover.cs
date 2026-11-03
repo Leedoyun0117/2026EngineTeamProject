@@ -82,7 +82,7 @@ namespace LDY.Script
                 Finish();
         }
 
-        // 진행 중이면 목표 위치로 맞추고 정상 상태로 복구
+        // 진행 중이면 목표 위치로 맞추고 정상 상태로 복구 플랫포머 
         public void Cancel()
         {
             if (_moving)

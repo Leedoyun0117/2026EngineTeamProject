@@ -6,6 +6,7 @@ namespace LDY.Script
 {
     [RequireComponent(typeof(JJBPlayer), typeof(JJBPlayerJump))]
     [RequireComponent(typeof(Rigidbody2D), typeof(PlayerInputLock))]
+    [DefaultExecutionOrder(-100)]
     public class JJBControlGate : MonoBehaviour, IPlayerControl, IJumpBlock
     {
         //컨트롤 관련 변수들
@@ -14,6 +15,7 @@ namespace LDY.Script
         private Rigidbody2D _rb;
         private IInputLock _lock;
         private bool _suspended;
+        private bool _jumpBlocked;
 
         private void Awake()
         {
@@ -63,29 +65,35 @@ namespace LDY.Script
             _player.enabled = !(_suspended || _lock.IsLocked); // 있다면 suspend가 참이거나 잠겨있다면 지금 움직이면 안 되기에 거짓이 나오게 됨
         }
 
-        // JJBPlayerJump를 꺼 두면 FixedUpdate가 돌지 않아 점프 요청이 처리되지 않는다.
-        // 꺼진 동안에도 RequestJump는 플래그를 세우므로, 풀 때는 껐다 켜서 남은 요청을 지운다.
+        private void FixedUpdate()
+        {
+            if (_jumpBlocked)
+                ClearPendingJump();
+        }
+
         public void SetJumpBlocked(bool blocked)
         {
+            _jumpBlocked = blocked;
             if (blocked)
             {
                 _jump.enabled = false;
                 return;
             }
 
-            _jump.enabled = true;
-            _jump.enabled = false;
+            ClearPendingJump();
             _jump.enabled = true;
         }
 
         // JJBPlayerJump.OnDisable이 점프 요청 플래그를 초기화하는 점을 이용한다.
         private void ClearPendingJump()
         {
-            if (_jump == null || !_jump.enabled)
+            if (_jump == null)
                 return;
 
-            _jump.enabled = false;
+            bool wasEnabled = _jump.enabled;
             _jump.enabled = true;
+            _jump.enabled = false;
+            _jump.enabled = wasEnabled;
         }
     }
 }

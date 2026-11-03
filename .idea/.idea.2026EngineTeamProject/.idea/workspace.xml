@@ -12,7 +12,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6fe23d18-7e65-450d-b817-a0888c4ceaa1" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/LDY_TitleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/LDY_TitleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlayerRowMover.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlayerRowMover.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,6 +111,7 @@
       <workItem from="1793067485448" duration="1423000" />
       <workItem from="1793178720937" duration="2341000" />
       <workItem from="1793590025451" duration="1087000" />
+      <workItem from="1793600451578" duration="3316000" />
     </task>
     <servers />
   </component>
