@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace JJB.Script.Audio
 {
-    public class AudioManager : MonoBehaviour, IAudioService
+    public class JJBAudioManager : MonoSingleton<JJBAudioManager>, IAudioService
     {
         [SerializeField] private AudioSource bgmSource;
         [SerializeField] private AudioSource sfxSource;

@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace JJB.Script.Level
 {
-    public class LevelManager : MonoBehaviour
+    public class JJBLevelManager : MonoSingleton<JJBLevelManager>
     {
-        /*[SerializeField] private LevelListSO levelList;
+        [SerializeField] private LevelListSO levelList;
         [SerializeField] private Transform levelRoot;
         [SerializeField, Min(0)] private int startLevelIndex;
         
@@ -114,6 +114,6 @@ namespace JJB.Script.Level
             _rb.position = _currentInstance.SpawnPosition;
 
             Physics2D.SyncTransforms();
-        }*/
+        }
     }
 }

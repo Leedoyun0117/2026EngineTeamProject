@@ -7,7 +7,9 @@ namespace JJB.Script.Player
         [Header("Interact")]
         [SerializeField] private Transform interactPoint;
         [SerializeField] private LayerMask interactMask;
-        [SerializeField] private float  interactSize;
+        [SerializeField] private float interactSize;
+        
+        private bool _isEating;
         
         public void Trigger()
         {
@@ -15,7 +17,7 @@ namespace JJB.Script.Player
 
             if (target == null)
                 return;
-
+            
             target.Interact(this);
         }
 
