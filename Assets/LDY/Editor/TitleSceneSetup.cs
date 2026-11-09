@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using JJB.Script;
+using JJB.Script.Player;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;

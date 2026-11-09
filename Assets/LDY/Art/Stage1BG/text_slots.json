@@ -1,0 +1,345 @@
+{
+ "canvas": [
+  640,
+  360
+ ],
+ "ppu_suggest": 32,
+ "to_unity": "unityX=(px-320)/PPU, unityY=(180-py)/PPU (background centered at origin, rect = [x,y,w,h] from top-left)",
+ "texts": [
+  {
+   "id": "window_title",
+   "rect": [
+    22,
+    6,
+    300,
+    12
+   ],
+   "align": "left",
+   "default": "MUSIC PLAYER",
+   "color": "#FFFFFF"
+  },
+  {
+   "id": "menu",
+   "rect": [
+    8,
+    24,
+    300,
+    9
+   ],
+   "align": "left",
+   "default": "FILE   EDIT   VIEW   PLAY   HELP",
+   "color": "#000000"
+  },
+  {
+   "id": "tab_0",
+   "rect": [
+    8,
+    42,
+    39,
+    14
+   ],
+   "align": "center",
+   "default": "PLAYER",
+   "color": "#000000"
+  },
+  {
+   "id": "tab_1",
+   "rect": [
+    49,
+    42,
+    47,
+    14
+   ],
+   "align": "center",
+   "default": "PLAYLIST",
+   "color": "#000000"
+  },
+  {
+   "id": "tab_2",
+   "rect": [
+    98,
+    42,
+    39,
+    14
+   ],
+   "align": "center",
+   "default": "ARTIST",
+   "color": "#000000"
+  },
+  {
+   "id": "tab_3",
+   "rect": [
+    139,
+    42,
+    31,
+    14
+   ],
+   "align": "center",
+   "default": "SONG",
+   "color": "#000000"
+  },
+  {
+   "id": "playlist_row_0",
+   "rect": [
+    24,
+    77,
+    132,
+    10
+   ],
+   "align": "left",
+   "default": "",
+   "color": "#000000",
+   "selected_color": "#FFFFFF"
+  },
+  {
+   "id": "playlist_row_1",
+   "rect": [
+    24,
+    90,
+    132,
+    10
+   ],
+   "align": "left",
+   "default": "",
+   "color": "#000000",
+   "selected_color": "#FFFFFF"
+  },
+  {
+   "id": "playlist_row_2",
+   "rect": [
+    24,
+    103,
+    132,
+    10
+   ],
+   "align": "left",
+   "default": "",
+   "color": "#000000",
+   "selected_color": "#FFFFFF"
+  },
+  {
+   "id": "playlist_row_3",
+   "rect": [
+    24,
+    116,
+    132,
+    10
+   ],
+   "align": "left",
+   "default": "",
+   "color": "#000000",
+   "selected_color": "#FFFFFF"
+  },
+  {
+   "id": "playlist_row_4",
+   "rect": [
+    24,
+    129,
+    132,
+    10
+   ],
+   "align": "left",
+   "default": "",
+   "color": "#000000",
+   "selected_color": "#FFFFFF"
+  },
+  {
+   "id": "playlist_row_5",
+   "rect": [
+    24,
+    142,
+    132,
+    10
+   ],
+   "align": "left",
+   "default": "",
+   "color": "#000000",
+   "selected_color": "#FFFFFF"
+  },
+  {
+   "id": "playlist_row_6",
+   "rect": [
+    24,
+    155,
+    132,
+    10
+   ],
+   "align": "left",
+   "default": "",
+   "color": "#000000",
+   "selected_color": "#FFFFFF"
+  },
+  {
+   "id": "playlist_row_7",
+   "rect": [
+    24,
+    168,
+    132,
+    10
+   ],
+   "align": "left",
+   "default": "",
+   "color": "#000000",
+   "selected_color": "#FFFFFF"
+  },
+  {
+   "id": "group_playlist",
+   "rect": [
+    22,
+    63,
+    60,
+    7
+   ],
+   "align": "left",
+   "default": "PLAYLIST",
+   "color": "#000000"
+  },
+  {
+   "id": "group_visualizer",
+   "rect": [
+    472,
+    63,
+    70,
+    7
+   ],
+   "align": "left",
+   "default": "VISUALIZER",
+   "color": "#000000"
+  },
+  {
+   "id": "time_current",
+   "rect": [
+    206,
+    283,
+    40,
+    8
+   ],
+   "align": "left",
+   "default": "00:13",
+   "color": "#000000"
+  },
+  {
+   "id": "time_total",
+   "rect": [
+    394,
+    283,
+    40,
+    8
+   ],
+   "align": "right",
+   "default": "03:56",
+   "color": "#000000"
+  },
+  {
+   "id": "status_marquee",
+   "rect": [
+    8,
+    338,
+    490,
+    12
+   ],
+   "align": "left",
+   "default": "NOW PLAYING - MAKE ME MOVE - THE CURSORS",
+   "color": "#000000",
+   "mask": true
+  },
+  {
+   "id": "status_time",
+   "rect": [
+    510,
+    338,
+    80,
+    12
+   ],
+   "align": "left",
+   "default": "00:13",
+   "color": "#000000"
+  }
+ ],
+ "widgets": {
+  "playlist_selection_bar": {
+   "rect": [
+    22,
+    76,
+    136,
+    10
+   ],
+   "color": "#000080",
+   "row_step": 13
+  },
+  "progress_track": {
+   "rect": [
+    208,
+    270,
+    225,
+    7
+   ],
+   "fill_color": "#1F6FD6"
+  },
+  "progress_thumb": {
+   "file": "part_progress_thumb.png",
+   "y": 265,
+   "x_range": [
+    208,
+    424
+   ]
+  },
+  "cd": {
+   "center": [
+    320,
+    162
+   ],
+   "radius": 96,
+   "sheet": "cd_sheet.png",
+   "frames": 12
+  },
+  "visualizer": {
+   "rect": [
+    474,
+    78,
+    144,
+    178
+   ],
+   "bars": 14,
+   "bar_w": 8,
+   "bar_gap": 2,
+   "segments": 16,
+   "seg_h": 9,
+   "seg_step": 11,
+   "segment_sprite": "part_visualizer_segment_white.png",
+   "ramp": [
+    "#A6CAF0",
+    "#A6CAF0",
+    "#A6CAF0",
+    "#A6CAF0",
+    "#A6CAF0",
+    "#A6CAF0",
+    "#5E9AE0",
+    "#5E9AE0",
+    "#5E9AE0",
+    "#5E9AE0",
+    "#5E9AE0",
+    "#1F6FD6",
+    "#1F6FD6",
+    "#1F6FD6",
+    "#000080",
+    "#000080"
+   ],
+   "off": "#E8EEF7"
+  },
+  "notes_spawn": {
+   "area": [
+    210,
+    170,
+    220,
+    90
+   ],
+   "sprite": "part_note_white.png",
+   "colors": [
+    "#1F6FD6",
+    "#000080",
+    "#5E9AE0"
+   ]
+  }
+ }
+}

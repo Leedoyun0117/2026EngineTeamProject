@@ -5,7 +5,6 @@ namespace LDY.Script
 {
     public class AsyncSceneLoader : SceneLoaderBehaviour, IGameSceneLoader
     {
-        [Tooltip("Build Settings에 등록된 본게임 씬 이름. 비어 있으면 로딩 실패로 처리된다")]
         [SerializeField] private string sceneName;
 
         private Handle _pending;
@@ -29,7 +28,7 @@ namespace LDY.Script
         {
             if (string.IsNullOrEmpty(sceneName) || !Application.CanStreamedLevelBeLoaded(sceneName))
             {
-                Debug.LogError($"[Transition] 씬을 불러올 수 없음: '{sceneName}' (Build Settings 확인)", this);
+                Debug.LogError($"씬을 불러올 수 없음", this);
                 return new Handle(null);
             }
 

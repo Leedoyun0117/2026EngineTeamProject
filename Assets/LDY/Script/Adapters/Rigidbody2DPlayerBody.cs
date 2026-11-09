@@ -15,8 +15,6 @@ namespace LDY.Script
             _alt = rb != null ? rb.GetComponent<IAltStatus>() : null;
         }
 
-        // 씬 언로드/파괴 중 복구 경로에서도 안전하도록 Rigidbody2D가 파괴됐으면 건너뛴다.
-        // Position은 항상 transform(발) 기준이다. 다만 Alt 중에는 포인터가 몸통 중심에 오도록 충돌체 중심 높이만큼 내려 놓는다.
         public Vector2 Position
         {
             get => _rb != null ? _rb.position : Vector2.zero;

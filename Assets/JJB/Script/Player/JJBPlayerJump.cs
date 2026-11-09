@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace JJB.Script
+namespace JJB.Script.Player
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class JJBPlayerJump : MonoBehaviour

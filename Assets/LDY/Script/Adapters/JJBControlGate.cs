@@ -1,9 +1,9 @@
 using JJB.Script;
+using JJB.Script.Player;
 using UnityEngine;
 
 namespace LDY.Script
 {
-    // JJB 플레이어 코드와 닿는 유일한 지점 곳 입력 잠금(컷씬/복귀)과 Alt 정지를 JJBPlayer on/off로 반영한다.
     [RequireComponent(typeof(JJBPlayer), typeof(JJBPlayerJump))]
     [RequireComponent(typeof(Rigidbody2D), typeof(PlayerInputLock))]
     public class JJBControlGate : MonoBehaviour, IPlayerControl, IJumpBlock
