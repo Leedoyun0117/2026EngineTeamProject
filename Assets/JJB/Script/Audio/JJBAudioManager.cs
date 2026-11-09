@@ -1,14 +1,17 @@
 using UnityEngine;
 
-namespace JJB.Script.Audio {
-    public class AudioManager : MonoBehaviour, IAudioService {
+namespace JJB.Script.Audio
+{
+    public class JJBAudioManager : MonoSingleton<JJBAudioManager>, IAudioService
+    {
         [SerializeField] private AudioSource bgmSource;
         [SerializeField] private AudioSource sfxSource;
-
-        public void PlayBGM(AudioClip clip) {
+        
+        public void PlayBGM(AudioClip clip)
+        {
             if (clip == null)
                 return;
-
+            
             if (bgmSource.clip == clip && bgmSource.isPlaying)
                 return;
 
@@ -18,11 +21,13 @@ namespace JJB.Script.Audio {
             bgmSource.Play();
         }
 
-        public void StopBGM() {
+        public void StopBGM()
+        {
             bgmSource.Stop();
         }
 
-        public void PlaySFX(AudioClip clip) {
+        public void PlaySFX(AudioClip clip)
+        {
             if (clip == null)
                 return;
 

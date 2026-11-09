@@ -1,14 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-namespace JJB.Script.Level {
-    public class LevelManager : MonoBehaviour {
-        /*[SerializeField] private LevelListSO levelList;
+namespace JJB.Script.Level
+{
+    public class JJBLevelManager : MonoSingleton<JJBLevelManager>
+    {
+        [SerializeField] private LevelListSO levelList;
         [SerializeField] private Transform levelRoot;
         [SerializeField, Min(0)] private int startLevelIndex;
-
+        
         private Rigidbody2D _rb;
         private LevelInstance _currentInstance;
-
+        
         private int _currentLevelIndex = -1;
         private bool _isChanging;
         private bool _isCompleted;
@@ -111,6 +114,6 @@ namespace JJB.Script.Level {
             _rb.position = _currentInstance.SpawnPosition;
 
             Physics2D.SyncTransforms();
-        }*/
+        }
     }
 }
