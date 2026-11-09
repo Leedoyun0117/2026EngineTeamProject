@@ -5,11 +5,11 @@ namespace HES.Script.Object {
         protected bool IsPressed;
 
         protected virtual void OnTriggerEnter2D(Collider2D other) {
-            if (!other.CompareTag("Player")) IsPressed = true;
+            if (other.CompareTag("Player")) IsPressed = true;
         }
 
         protected virtual void OnTriggerExit2D(Collider2D other) {
-            if (!other.CompareTag("Player")) IsPressed = false;
+            if (other.CompareTag("Player")) IsPressed = false;
         }
     }
 }
