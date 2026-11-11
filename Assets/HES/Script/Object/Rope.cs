@@ -1,7 +1,5 @@
-﻿using JJB.Script.Player;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HES.Script.Object {
-    public class Rope : MonoBehaviour {
-    }
+    public class Rope : MonoBehaviour { }
 }
