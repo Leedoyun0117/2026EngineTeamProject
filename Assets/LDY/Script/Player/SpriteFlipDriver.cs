@@ -8,8 +8,8 @@ namespace LDY.Script {
             _renderer = renderer;
         }
 
-        public void Apply(int facingSign) {
-            if (facingSign != 0)
+        public void Apply(int facingSign, bool frozen) {
+            if (!frozen && facingSign != 0)
                 _renderer.flipX = facingSign < 0;
         }
     }

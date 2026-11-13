@@ -27,6 +27,7 @@ namespace LDY.Script
         private Vector2 _from;
         private Vector2 _to;
         private int _targetRow;
+        private RowMoveDirection _direction;
 
         public PlayerRowMover(IPlayerBody body, Collider2D player, IInputLock inputLock,
             IReadOnlyList<Collider2D> platforms, bool debug)
@@ -39,6 +40,8 @@ namespace LDY.Script
         }
 
         public bool IsMoving => _moving;
+
+        public RowMoveDirection Direction => _moving ? _direction : RowMoveDirection.None;
 
         // 맨 아래 행으로 옮기는 건 WindowFloorGuard 담당
         public void Open()
@@ -65,6 +68,7 @@ namespace LDY.Script
             if (target < 0 || target >= _tops.Count)
                 return false;
 
+            _direction = dir > 0 ? RowMoveDirection.Up : RowMoveDirection.Down;
             Begin(StandPosition(target), target);
             return true;
         }

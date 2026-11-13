@@ -23,7 +23,8 @@ namespace LDY.Script {
     public class WindowServices {
         public WindowServices(IAltStatus alt, IMonitorSpace monitor, Collider2D playerCollider, IPlayerBody playerBody,
             IPlayerControl playerControl, IWindowInput input, Action close, MenuPlatformSwitch platforms,
-            IJumpBlock jumpBlock, IInputLock inputLock, IToggleableButtonInput dropInput) {
+            IJumpBlock jumpBlock, IInputLock inputLock, IToggleableButtonInput dropInput,
+            IPlayerPoseSink pose = null) {
             Alt = alt;
             Monitor = monitor;
             PlayerCollider = playerCollider;
@@ -35,7 +36,10 @@ namespace LDY.Script {
             JumpBlock = jumpBlock;
             InputLock = inputLock;
             DropInput = dropInput;
+            Pose = pose;
         }
+
+        public IPlayerPoseSink Pose { get; }
 
         public IAltStatus Alt { get; }
         public IMonitorSpace Monitor { get; }

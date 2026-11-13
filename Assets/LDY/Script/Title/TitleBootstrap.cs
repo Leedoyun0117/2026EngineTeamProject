@@ -117,7 +117,7 @@ namespace LDY.Script {
                 new Rigidbody2DPlayerBody(player.GetComponent<Rigidbody2D>()), player.GetComponent<JJBControlGate>(),
                 new PlayerWindowInput(player.GetComponent<PlayerInput>(), inputLock, interact),
                 subScreens.CloseCurrent, new MenuPlatformSwitch(icons),
-                player.GetComponent<JJBControlGate>(), inputLock, _dropInput);
+                player.GetComponent<JJBControlGate>(), inputLock, _dropInput, player.GetComponent<PlayerPoseRelay>());
             settingsPanel.Bind(services, volume, screenMode);
             creditPanel.Bind(services);
         }

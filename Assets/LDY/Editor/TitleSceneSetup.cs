@@ -745,6 +745,8 @@ namespace LDY.Script.Editor {
             var renderer = root.GetComponent<PlayerRenderer>();
             if (renderer == null)
                 renderer = root.AddComponent<PlayerRenderer>();
+            if (root.GetComponent<PlayerPoseRelay>() == null)
+                root.AddComponent<PlayerPoseRelay>();
             if (animSet != null)
                 Wire(renderer, "animSet", animSet);
 

@@ -9,6 +9,9 @@ namespace LDY.Script {
         [Min(0f)] public float runExitSpeed = 3f;
         [Min(0f)] public float sitDelay = 5f;
 
+        [Header("Airborne")] [Min(0f)] public float airVelocityMargin = 0.5f;
+        [Min(0f)] public float groundLeaveGrace = 0.08f;
+
         [Header("Playback Speed")] [Min(0.01f)]
         public float speedScaleReference = 5f;
 

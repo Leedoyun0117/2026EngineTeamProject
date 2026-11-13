@@ -53,6 +53,12 @@ namespace LDY.Script {
                     _focus.Hide();
                     break;
             }
+
+            PublishPose();
+        }
+
+        private void PublishPose() {
+            _services.Pose?.Report(_captured is SliderWidget, _rows?.Direction ?? RowMoveDirection.None);
         }
 
         public void FixedTick(float fixedDeltaTime) {
@@ -97,6 +103,7 @@ namespace LDY.Script {
             _phase = _services.Alt.Phase;
             _rows?.Cancel();
             _floor.Deactivate();
+            PublishPose();
         }
 
         public void Opened() {
@@ -109,6 +116,7 @@ namespace LDY.Script {
         public void Abort() {
             _rows?.Cancel();
             _floor.Deactivate();
+            _services.Pose?.Report(false, RowMoveDirection.None);
         }
 
         private void HandlePhaseChanged(AltPhase phase) {

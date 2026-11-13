@@ -7,6 +7,7 @@ namespace LDY.Script {
         SitLoop,
         StandUp,
         Jump,
-        Fall
+        Fall,
+        Grab
     }
 }

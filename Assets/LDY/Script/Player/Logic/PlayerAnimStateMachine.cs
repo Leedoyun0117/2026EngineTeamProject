@@ -8,24 +8,30 @@ namespace LDY.Script {
         public readonly float DeltaTime;
         public readonly bool ClipFinished;
         public readonly int ClipFrame;
+        public readonly bool Grabbing;
+        public readonly RowMoveDirection RowMove;
 
         public PlayerAnimInput(Vector2 velocity, bool grounded, bool locked, float deltaTime,
-            bool clipFinished, int clipFrame) {
+            bool clipFinished, int clipFrame, bool grabbing = false, RowMoveDirection rowMove = RowMoveDirection.None) {
             Velocity = velocity;
             Grounded = grounded;
             Locked = locked;
             DeltaTime = deltaTime;
             ClipFinished = clipFinished;
             ClipFrame = clipFrame;
+            Grabbing = grabbing;
+            RowMove = rowMove;
         }
     }
 
     public class PlayerAnimStateMachine {
+        private readonly AirStateTracker _air;
         private readonly PlayerAnimRules _rules;
         private float _idleTimer;
 
         public PlayerAnimStateMachine(PlayerAnimRules rules) {
             _rules = rules;
+            _air = new AirStateTracker(rules);
         }
 
         public PlayerAnimId Current { get; private set; } = PlayerAnimId.Idle;
@@ -36,24 +42,35 @@ namespace LDY.Script {
             Changed = false;
             EntryFrame = 0;
 
+            if (input.Grabbing) {
+                _air.Reset();
+                Enter(PlayerAnimId.Grab);
+                return Current;
+            }
+
+            if (_air.TryResolve(input, out var airState)) {
+                Enter(airState);
+                return Current;
+            }
+
             var speed = Mathf.Abs(input.Velocity.x);
             var moving = speed >= _rules.idleSpeedThreshold;
 
             switch (Current) {
                 case PlayerAnimId.StandUp:
                     if (input.ClipFinished)
-                        Enter(Locomotion(input, speed));
+                        Enter(Locomotion(speed));
                     break;
 
                 case PlayerAnimId.SitDown:
-                    if (moving || !input.Grounded)
+                    if (moving)
                         InterruptSit(input, speed);
                     else if (input.ClipFinished)
                         Enter(PlayerAnimId.SitLoop);
                     break;
 
                 case PlayerAnimId.SitLoop:
-                    if (moving || !input.Grounded)
+                    if (moving)
                         Enter(PlayerAnimId.StandUp);
                     break;
 
@@ -66,7 +83,7 @@ namespace LDY.Script {
         }
 
         private void TickFree(in PlayerAnimInput input, float speed) {
-            var target = Locomotion(input, speed);
+            var target = Locomotion(speed);
             if (target != PlayerAnimId.Idle) {
                 if (target != Current)
                     Enter(target);
@@ -90,7 +107,7 @@ namespace LDY.Script {
         private void InterruptSit(in PlayerAnimInput input, float speed) {
             var entry = _rules.StandUpEntryFor(input.ClipFrame);
             if (entry < 0) {
-                Enter(Locomotion(input, speed));
+                Enter(Locomotion(speed));
                 return;
             }
 
@@ -99,10 +116,7 @@ namespace LDY.Script {
         }
 
         // Run은 진입/이탈 속도가 달라서 깜빡이지 않음
-        private PlayerAnimId Locomotion(in PlayerAnimInput input, float speed) {
-            if (!input.Grounded)
-                return input.Velocity.y > 0f ? PlayerAnimId.Jump : PlayerAnimId.Fall;
-
+        private PlayerAnimId Locomotion(float speed) {
             if (speed < _rules.idleSpeedThreshold)
                 return PlayerAnimId.Idle;
 

@@ -8,10 +8,10 @@ using UnityEngine;
 namespace LDY.Script {
     // aseprite 임포터가 만든 스프라이트(Frame_0~25)를 태그 표대로 나눠 PlayerAnimSet에 담는다. 임시 도구.
     public static class PlayerAnimSetBuilder {
-        public const string AsepritePath = "Assets/LDY/Sprites/Character/player_anim (2).aseprite";
+        public const string AsepritePath = "Assets/LDY/Art/player_anim_pink (3).aseprite";
         public const string SetPath = "Assets/LDY/Data/PlayerAnimSet.asset";
 
-        private const int FrameCount = 26;
+        private const int FrameCount = 33;
         private const float ExpectedPpu = 40f;
 
         private static readonly Regex FrameName = new(@"^Frame_(\d+)$");
@@ -23,7 +23,10 @@ namespace LDY.Script {
             new(PlayerAnimId.Run, 11, true, 60, 60, 60, 60, 60, 60, 60, 60),
             new(PlayerAnimId.SitDown, 19, false, 100, 120, 160),
             new(PlayerAnimId.SitLoop, 22, true, 1000),
-            new(PlayerAnimId.StandUp, 23, false, 100, 120, 100)
+            new(PlayerAnimId.StandUp, 23, false, 100, 120, 100),
+            new(PlayerAnimId.Jump, 26, false, 100, 140),
+            new(PlayerAnimId.Fall, 28, true, 130, 130, 130, 130),
+            new(PlayerAnimId.Grab, 32, true, 200)
         };
 
         [MenuItem("LDY/Build Player Anim Set")]

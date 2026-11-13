@@ -8,6 +8,8 @@ namespace LDY.Script {
         [SerializeField] private PlayerAnimRules rules = new();
         private IAltStatus _alt;
         private SpriteFlipDriver _flip;
+        private IGrabStateSource _grab;
+        private IRowMoveSource _rowMove;
         private PlayerAnimStateMachine _machine;
         private SpriteFramePlayer _player;
 
@@ -19,6 +21,8 @@ namespace LDY.Script {
 
             _source = GetComponent<IPlayerMotionSource>();
             _alt = GetComponent<IAltStatus>();
+            _grab = GetComponent<IGrabStateSource>();
+            _rowMove = GetComponent<IRowMoveSource>();
             _machine = new PlayerAnimStateMachine(rules);
             _player = new SpriteFramePlayer();
             _flip = new SpriteFlipDriver(target);
@@ -43,14 +47,15 @@ namespace LDY.Script {
             var velocity = _source.Velocity;
 
             var input = new PlayerAnimInput(velocity, _source.IsGrounded, _source.IsInputLocked, dt,
-                _player.Finished, _player.Frame);
+                _player.Finished, _player.Frame, _grab != null && _grab.IsGrabbing,
+                _rowMove?.RowMove ?? RowMoveDirection.None);
             var id = _machine.Tick(input);
             if (_machine.Changed)
                 Play(id, _machine.EntryFrame);
 
             _player.Tick(dt, PlaybackScale(id, velocity.x));
             ApplySprite();
-            _flip.Apply(_source.FacingSign);
+            _flip.Apply(_source.FacingSign, id == PlayerAnimId.Grab);
         }
 
         private float PlaybackScale(PlayerAnimId id, float velocityX) {
