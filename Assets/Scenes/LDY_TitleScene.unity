@@ -3580,11 +3580,12 @@ MonoBehaviour:
   contentRoot: {fileID: 0}
   art: {fileID: 11400000, guid: 6fac36029d5202148a636fc8eae4db36, type: 2}
   font: {fileID: 11400000, guid: 84f2aea38759435428cccc5d4ee306ad, type: 2}
-  dropIgnoreSeconds: 1
-  dropDownSpeed: -4
-  debugDropper: 0
+  focusStyle: {fileID: 0}
+  debugWindowMovement: 0
   wallLayerName: 
   data: {fileID: 11400000, guid: 56db470044a4c34409308164a1357583, type: 2}
+  dropIgnoreSeconds: 1
+  dropDownSpeed: -4
   scrollSpeed: 0.6
   startDelay: 0.5
 --- !u!1 &1200646975
@@ -4284,9 +4285,8 @@ MonoBehaviour:
   contentRoot: {fileID: 0}
   art: {fileID: 11400000, guid: 6fac36029d5202148a636fc8eae4db36, type: 2}
   font: {fileID: 11400000, guid: 84f2aea38759435428cccc5d4ee306ad, type: 2}
-  dropIgnoreSeconds: 1
-  dropDownSpeed: -4
-  debugDropper: 0
+  focusStyle: {fileID: 0}
+  debugWindowMovement: 0
   wallLayerName: 
 --- !u!1 &1561868196
 GameObject:
@@ -5098,6 +5098,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2687800455479188185, guid: 05b6011638ac6e24b83479291c79b303, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 2059378899}
     - target: {fileID: 3135162579502915106, guid: 05b6011638ac6e24b83479291c79b303, type: 3}
       propertyPath: m_Size.x
       value: 0.7
@@ -5210,6 +5214,11 @@ Transform:
 --- !u!1 &2059378888 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6285373521417979638, guid: 05b6011638ac6e24b83479291c79b303, type: 3}
+  m_PrefabInstance: {fileID: 2059378885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &2059378899 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 3984342965919087576, guid: 05b6011638ac6e24b83479291c79b303, type: 3}
   m_PrefabInstance: {fileID: 2059378885}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2093903996

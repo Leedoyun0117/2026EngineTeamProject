@@ -1,0 +1,1 @@
+- JJBControlGate의 점프 차단은 JJB 내부 구현에 기댄 우회다: JJBPlayer.FixedUpdate가 꺼진 JJBPlayerJump의 Tick도 호출해서 enabled=false만으로는 점프가 막히지 않으므로, 실행 순서를 JJBPlayer(기본 0)보다 앞(-100)으로 두고 막힌 동안 매 FixedUpdate마다 JJBPlayerJump를 껐다 켜서 OnDisable이 _jumpRequested를 지우게 한다(JJB 폴더는 수정 금지라 JJBControlGate 한 곳에서만 처리).
