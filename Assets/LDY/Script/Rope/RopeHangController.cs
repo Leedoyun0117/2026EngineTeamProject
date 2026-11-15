@@ -6,16 +6,20 @@ namespace LDY.Script {
         IReadOnlyList<Vector2> Points { get; }
     }
 
+    public interface IRopeGrabber {
+        bool TryGrab();
+    }
+
     [DisallowMultipleComponent]
-    public class RopeHangController : MonoBehaviour, IRopePose {
+    public class RopeHangController : MonoBehaviour, IRopePose, IRopeGrabber {
         private const float ClimbPoseThreshold = 0.1f;
 
         [SerializeField] private Transform anchor;
         [SerializeField] private RopeSettings settings;
         [SerializeField] private Rigidbody2D player;
-        [SerializeField] [Min(0f)] private float grabRange = 1.2f;
 
         private IPlayerBody _body;
+        private ReleaseGate _gate;
         private SuspendRequestHub _hub;
         private bool _hanging;
         private RopeInput _input;
@@ -44,6 +48,7 @@ namespace LDY.Script {
 
             _pendulum = new Pendulum(settings.Tuning);
             _sway = new ClimbSway(settings.ClimbSway);
+            _gate = new ReleaseGate(settings.ReleaseInputDelay);
             _rope = new RopeSimulation(settings.Curve, settings.Damping);
             _rope.Initialize(Anchor);
             _body = new Rigidbody2DPlayerBody(player);
@@ -72,30 +77,15 @@ namespace LDY.Script {
                 _input.Clear();
         }
 
-        private void FixedUpdate() {
-            var deltaTime = Time.fixedDeltaTime;
-            var grab = _input.ConsumeGrab();
-            var jump = _input.ConsumeJump();
-
-            if (_hanging && (grab || jump))
-                Release(jump);
-            else if (!_hanging && grab)
-                TryGrab();
-
-            if (_hanging)
-                Hang(deltaTime);
-            else
-                _rope.Step(Anchor, deltaTime);
-        }
-
-        private void TryGrab() {
-            if (!_rope.TryGetGrabPoint(_body.Position, grabRange, out var grabPoint))
-                return;
+        public bool TryGrab() {
+            if (_rope == null || _hanging || !isActiveAndEnabled)
+                return false;
 
             if (!_slot.TryAcquire(this, Time.time))
-                return;
+                return false;
 
             var velocity = _body.Velocity;
+            var grabPoint = _rope.PrepareGrab(_body.Position);
             var requested = false;
             try {
                 _hub.Request(this);
@@ -108,7 +98,27 @@ namespace LDY.Script {
 
             _state = _pendulum.CreateState(Anchor, grabPoint, velocity);
             _sway.Reset();
+            _gate.MarkGrab(Time.frameCount, Time.realtimeSinceStartup);
             _hanging = true;
+            return true;
+        }
+
+        private void FixedUpdate() {
+            var deltaTime = Time.fixedDeltaTime;
+            var released = ReadRelease(_input.TryConsumeRelease(out var releaseFrame), releaseFrame);
+            var jumped = ReadRelease(_input.TryConsumeJump(out var jumpFrame), jumpFrame);
+
+            if (_hanging && (released || jumped))
+                Release(jumped);
+
+            if (_hanging)
+                Hang(deltaTime);
+            else
+                _rope.Step(Anchor, deltaTime);
+        }
+
+        private bool ReadRelease(bool pressed, int pressFrame) {
+            return _hanging && pressed && _gate.Accepts(pressFrame, Time.realtimeSinceStartup);
         }
 
         private void Hang(float deltaTime) {

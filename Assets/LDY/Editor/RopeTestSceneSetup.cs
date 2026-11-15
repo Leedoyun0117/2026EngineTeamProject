@@ -1,3 +1,4 @@
+using JJB.Script.Player;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -8,13 +9,13 @@ namespace LDY.Script.Editor {
         private const string SettingsPath = "Assets/LDY/Data/RopeSettings.asset";
         private const string RootName = "RopeTest";
         private const string GroundLayerName = "Ground";
+        private const string InteractLayerName = "Object";
         private const string ReferencePlatformName = "Square (1)";
         private const float RootX = 21f;
         private const float AnchorHeight = 2.5f;
         private const float PlatformY = -4.5776f;
         private const float PlatformOffsetX = 7f;
         private static readonly Vector2 PlatformScale = new(8f, 0.7576084f);
-        private const float GrabRange = 3.5f;
 
         [MenuItem("LDY/Rope Test/Setup SampleScene")]
         public static void Setup() {
@@ -40,6 +41,67 @@ namespace LDY.Script.Editor {
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             Selection.activeGameObject = root;
+        }
+
+        [MenuItem("LDY/Rope Test/Upgrade RopeTest To Interact")]
+        public static void Upgrade() {
+            var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            var root = GameObject.Find(RootName);
+            if (root == null) {
+                Debug.LogWarning($"'{RootName}'가 씬에 없습니다. 먼저 Setup을 실행하세요.");
+                return;
+            }
+
+            AttachInteraction(root);
+            AssignObjectLayer();
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+            Selection.activeGameObject = root;
+        }
+
+        [MenuItem("LDY/Rope Test/Assign Player Object Layer (scene only)")]
+        public static void AssignPlayerObjectLayer() {
+            var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            if (AssignObjectLayer())
+                EditorSceneManager.SaveScene(scene);
+        }
+
+        private static bool AssignObjectLayer() {
+            var layer = LayerMask.NameToLayer(InteractLayerName);
+            var player = GameObject.FindWithTag("Player");
+            var interact = player != null ? player.GetComponent<JJBPlayerInteract>() : null;
+            if (layer < 0 || interact == null) {
+                Debug.LogWarning("Player 태그의 JJBPlayerInteract 또는 Object 레이어를 찾지 못했습니다.");
+                return false;
+            }
+
+            var serialized = new SerializedObject(interact);
+            var mask = serialized.FindProperty("objectLayer");
+            if (mask == null) {
+                Debug.LogWarning("JJBPlayerInteract에 objectLayer 필드가 없습니다.");
+                return false;
+            }
+
+            mask.intValue |= 1 << layer;
+            serialized.ApplyModifiedProperties();
+            PrefabUtility.RecordPrefabInstancePropertyModifications(interact);
+            EditorSceneManager.MarkSceneDirty(interact.gameObject.scene);
+            return true;
+        }
+
+        private static void AttachInteraction(GameObject root) {
+            var layer = LayerMask.NameToLayer(InteractLayerName);
+            if (layer < 0)
+                Debug.LogWarning($"'{InteractLayerName}' 레이어가 없어 레이어를 바꾸지 못했습니다.");
+            else
+                root.layer = layer;
+
+            if (root.GetComponent<EdgeCollider2D>() == null)
+                root.AddComponent<EdgeCollider2D>().isTrigger = true;
+            if (root.GetComponent<RopeColliderFollower>() == null)
+                root.AddComponent<RopeColliderFollower>();
+            if (root.GetComponent<RopeInteractable>() == null)
+                root.AddComponent<RopeInteractable>();
         }
 
         private static RopeSettings EnsureSettings() {
@@ -73,11 +135,11 @@ namespace LDY.Script.Editor {
 
             root.AddComponent<RopeLineRenderer>();
             var controller = root.AddComponent<RopeHangController>();
+            AttachInteraction(root);
 
             var serialized = new SerializedObject(controller);
             serialized.FindProperty("anchor").objectReferenceValue = anchor.transform;
             serialized.FindProperty("settings").objectReferenceValue = settings;
-            serialized.FindProperty("grabRange").floatValue = GrabRange;
             serialized.ApplyModifiedPropertiesWithoutUndo();
             return root;
         }

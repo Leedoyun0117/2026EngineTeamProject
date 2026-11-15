@@ -47,6 +47,7 @@ namespace LDY.Script {
 
         [SerializeField] [Min(0f)] private float jumpReleaseBonus = 6f;
         [SerializeField] [Min(0f)] private float regrabCooldown = 0.2f;
+        [SerializeField] [Min(0f)] private float releaseInputDelay = 0.05f;
 
         public PendulumTuning Tuning => RopeLengthLimits.Apply(tuning, totalLength);
 
@@ -63,5 +64,6 @@ namespace LDY.Script {
         public float TotalLength => totalLength;
         public float JumpReleaseBonus => jumpReleaseBonus;
         public float RegrabCooldown => regrabCooldown;
+        public float ReleaseInputDelay => releaseInputDelay;
     }
 }

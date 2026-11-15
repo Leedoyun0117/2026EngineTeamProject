@@ -115,7 +115,7 @@ namespace LDY.Tests {
         public void HeldStill_RopeDoesNotJitter() {
             var rope = Create();
             var position = OnArc(3.5f, 0.3f);
-            rope.TryGetGrabPoint(position, 5f, out _);
+            rope.PrepareGrab(position);
             var previous = Snapshot(rope);
             var worst = 0f;
 
@@ -134,7 +134,7 @@ namespace LDY.Tests {
         public void HeldRope_UpperSectionIsStraightBetweenAnchorAndPlayer() {
             var rope = Create();
             var position = OnArc(3.5f, 0.4f);
-            rope.TryGetGrabPoint(position, 5f, out _);
+            rope.PrepareGrab(position);
 
             for (var i = 0; i < 120; i++)
                 rope.StepHeld(Anchor, 3.5f, position, Dt);
@@ -153,7 +153,7 @@ namespace LDY.Tests {
                 minLength = 1f, maxLength = 6f, gravity = 25f, damping = 0.15f, climbSpeed = 2.5f
             }, rope.TotalLength));
             var state = new PendulumState(0.35f, 0f, 3f);
-            rope.TryGetGrabPoint(Pendulum.PositionOf(Anchor, state), 5f, out _);
+            rope.PrepareGrab(Pendulum.PositionOf(Anchor, state));
             var worstBend = 0f;
 
             for (var i = 0; i < 200; i++) {
@@ -180,7 +180,7 @@ namespace LDY.Tests {
                 softLimitStartDegrees = 40f, softLimitStrength = 4f, maxAngleDegrees = 90f
             });
             var state = new PendulumState(0.2f, 0f, 3f);
-            rope.TryGetGrabPoint(Pendulum.PositionOf(Anchor, state), 5f, out _);
+            rope.PrepareGrab(Pendulum.PositionOf(Anchor, state));
             var worst = 0f;
 
             for (var i = 0; i < 500; i++) {

@@ -716,7 +716,10 @@ GameObject:
   - component: {fileID: 2034412827}
   - component: {fileID: 2034412826}
   - component: {fileID: 2034412825}
-  m_Layer: 0
+  - component: {fileID: 2034412831}
+  - component: {fileID: 2034412830}
+  - component: {fileID: 2034412829}
+  m_Layer: 9
   m_Name: RopeTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -738,7 +741,6 @@ MonoBehaviour:
   anchor: {fileID: 1528235954}
   settings: {fileID: 11400000, guid: 7ab9581adb8304946bf7a07ac06be89c, type: 2}
   player: {fileID: 0}
-  grabRange: 3.5
 --- !u!114 &2034412826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -893,6 +895,73 @@ Transform:
   - {fileID: 1627561647}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2034412829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034412824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8578926125fffe44090207751ab01bc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.RopeInteractable
+--- !u!114 &2034412830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034412824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a97dbf6fbcb0ad418f12fef614690ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.RopeColliderFollower
+--- !u!68 &2034412831
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034412824}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.19999999, y: 0}
+  - {x: 0.8, y: 0}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
