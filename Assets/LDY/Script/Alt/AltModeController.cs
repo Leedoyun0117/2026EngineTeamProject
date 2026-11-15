@@ -27,7 +27,7 @@ namespace LDY.Script {
             var inputLock = GetComponent<PlayerInputLock>().Lock;
             var body = new Rigidbody2DPlayerBody(GetComponent<Rigidbody2D>());
             var facing = new SpriteFacing(transform, playerSprite);
-            var control = GetComponent<JJBControlGate>();
+            var control = new SuspendRequestControl(PlayerSuspendHub.GetOrAdd(gameObject).Hub, this);
             var afterimage = new SpriteAfterimageSpawner(playerSprite, afterimageTint);
             var session = new AltSession();
             _pointer = pointerOverride as IPointerSource ?? new MouseWorldPointer(targetCamera, transform);
