@@ -6,14 +6,11 @@ namespace HES.Script.Object {
 
         protected override void OnTriggerEnter2D(Collider2D other) {
             base.OnTriggerEnter2D(other);
-            if(door == null) return;
-            door.SetActive(false);
+            OpenDoor();
         }
 
-        protected override void OnTriggerExit2D(Collider2D other) {
-            base.OnTriggerExit2D(other);
-            if(door == null) return;
-            door.SetActive(true);
+        private void OpenDoor() {
+            door.SetActive(false);
         }
     }
 }

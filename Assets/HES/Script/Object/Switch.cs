@@ -2,15 +2,17 @@
 
 namespace HES.Script.Object {
     public class Switch : ButtonParent {
+        [SerializeField] private float pressTime;
         [SerializeField] private GameObject door;
+        private bool _isActive;
+        private float _pressedTime;
 
-        protected override void OnTriggerEnter2D(Collider2D other) {
-            base.OnTriggerEnter2D(other);
-            OpenDoor();
-        }
+        private void Update() {
+            if (IsPressed) {
+                _isActive = !_isActive;
+            }
 
-        private void OpenDoor() {
-            door.SetActive(false);
+            door.SetActive(!_isActive);
         }
     }
 }
