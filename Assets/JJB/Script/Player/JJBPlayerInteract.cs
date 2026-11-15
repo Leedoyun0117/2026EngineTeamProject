@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using JJB.Script.Player.Interface;
+using UnityEngine;
 
 namespace JJB.Script.Player
 {
@@ -6,18 +8,16 @@ namespace JJB.Script.Player
     {
         [Header("Interact")]
         [SerializeField] private Transform interactPoint;
-        [SerializeField] private LayerMask interactMask;
-        [SerializeField] private float interactSize;
-        
-        private bool _isEating;
-        
+        [SerializeField] private LayerMask objectLayer;
+        [SerializeField] private float interactSize = 0.5f;
+
         public void Trigger()
         {
             IInteract target = FindTarget();
 
             if (target == null)
                 return;
-            
+
             target.Interact(this);
         }
 
@@ -26,7 +26,11 @@ namespace JJB.Script.Player
             if (interactPoint == null)
                 return null;
 
-            Collider2D[] hits = Physics2D.OverlapCircleAll(interactPoint.position, interactSize, interactMask);
+            Collider2D[] hits = Physics2D.OverlapCircleAll(
+                interactPoint.position,
+                interactSize,
+                objectLayer
+            );
 
             foreach (Collider2D hit in hits)
             {
@@ -34,8 +38,6 @@ namespace JJB.Script.Player
 
                 if (target != null)
                     return target;
-                
-                hit.gameObject.SetActive(false);
             }
 
             return null;
@@ -43,6 +45,9 @@ namespace JJB.Script.Player
 
         private void OnDrawGizmos()
         {
+            if (interactPoint == null)
+                return;
+
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(interactPoint.position, interactSize);
         }

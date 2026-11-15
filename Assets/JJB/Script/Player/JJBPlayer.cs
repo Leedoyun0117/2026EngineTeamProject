@@ -12,6 +12,7 @@ namespace JJB.Script
         public JJBPlayerMovement PlayerMovement { get; private set; }
         public JJBPlayerJump PlayerJump { get; private set; }
         public JJBPlayerInteract PlayerInteract { get; private set; }
+        public JJBPlayerAbsorb PlayerAbsorb { get; private set; }
         public JJBPlayerRenderer PlayerRenderer { get; private set; }
 
         private void Awake()
@@ -20,48 +21,60 @@ namespace JJB.Script
                 GetComponent<JJBPlayerMovement>(),
                 GetComponent<JJBPlayerJump>(),
                 GetComponent<JJBPlayerInteract>(),
-                GetComponent<JJBPlayerRenderer>());
+                GetComponentInChildren<JJBPlayerRenderer>(),
+                GetComponent<JJBPlayerAbsorb>());
         }
 
         private void Initialize(JJBPlayerInput playerInput, 
             JJBPlayerMovement playerMovement, 
             JJBPlayerJump playerJump, 
             JJBPlayerInteract playerInteract, 
-            JJBPlayerRenderer playerRenderer)
+            JJBPlayerRenderer playerRenderer,
+            JJBPlayerAbsorb playerAbsorb)
         {
             PlayerInput = playerInput;
             PlayerMovement = playerMovement;
             PlayerJump = playerJump;
             PlayerInteract = playerInteract;
             PlayerRenderer = playerRenderer;
+            PlayerAbsorb = playerAbsorb;
         }
 
         private void OnEnable()
         {
             PlayerInput.OnJumpKeyPressed += HandleJumpKeyPress;
             PlayerInput.OnInteractPressed += HandleInteractPressed;
+            PlayerInput.OnAbsorbPressed += HandleAbsorbPressed;
         }
 
         private void OnDisable()
         {
             PlayerInput.OnJumpKeyPressed -= HandleJumpKeyPress;
             PlayerInput.OnInteractPressed -= HandleInteractPressed;
+            PlayerInput.OnAbsorbPressed -= HandleAbsorbPressed;
         }
         
         private void HandleJumpKeyPress()
         {
             PlayerJump.RequestJump();
         }
-
+        
+        // F키
         private void HandleInteractPressed()
         {
             if (PlayerInteract != null)
                 PlayerInteract.Trigger();
         }
+        
+        // E키
+        private void HandleAbsorbPressed()
+        {
+            PlayerAbsorb.Trigger();
+        }
 
         private void Update()
         {
-            //PlayerRenderer.FilpX(PlayerMovement.rb.linearVelocityX);
+            PlayerRenderer.FilpX(PlayerMovement.rb.linearVelocityX);
         }
         
         private void FixedUpdate()

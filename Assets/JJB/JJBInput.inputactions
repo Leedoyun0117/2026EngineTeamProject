@@ -32,6 +32,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Absorb",
+                    "type": "Button",
+                    "id": "666e7d1a-6956-4ee1-8a59-51133b7d78eb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -47,8 +56,8 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "left",
-                    "id": "7da003a5-4ddc-40da-8d99-5ce5e413850a",
+                    "name": "Left",
+                    "id": "1b6d6338-783c-4b3c-9b40-1ab3f711f59e",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
@@ -58,8 +67,8 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "right",
-                    "id": "324e7748-f944-4b89-8104-c0c605da2f7c",
+                    "name": "Right",
+                    "id": "7defd0ab-26b3-4ffa-8276-62f3bba5f984",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
@@ -82,11 +91,22 @@
                 {
                     "name": "",
                     "id": "361307cf-7858-40f2-81c1-c04129511aa4",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cff4e7c3-81ce-480f-9684-b7f776e206ca",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Absorb",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

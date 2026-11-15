@@ -23,7 +23,7 @@ namespace JJB.Script.Level
         public event Action<LevelSO> OnLevelLoaded;
         public event Action OnAllLevelsCompleted;
 
-        private void Awake()
+        protected override void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
         }
