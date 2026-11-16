@@ -36,7 +36,7 @@ namespace LDY.Script {
                     continue;
                 }
 
-                var sr = child.GetComponent<SpriteRenderer>();
+                var sr = child.GetComponentInChildren<SpriteRenderer>(true);
                 var hierarchy = scene ? $" inHierarchy={child.gameObject.activeInHierarchy}" : "";
                 var sprites = " SpriteRenderer 없음";
                 if (sr != null) {

@@ -25,6 +25,9 @@ namespace LDY.Script {
         private RopeInput _input;
         private ClimbSway _sway;
         private Pendulum _pendulum;
+        private IRopeAngleSink _angleSink;
+        private IRopeGripSource _gripSource;
+        private GripSolver _grip;
         private IPlayerPoseSink _pose;
         private RopeSimulation _rope;
         private HoldSlot _slot;
@@ -55,6 +58,9 @@ namespace LDY.Script {
             _hub = PlayerSuspendHub.GetOrAdd(player.gameObject).Hub;
             _slot = PlayerRopeSlot.GetOrAdd(player.gameObject).Slot;
             _pose = player.GetComponent<IPlayerPoseSink>();
+            _angleSink = player.GetComponent<IRopeAngleSink>();
+            _gripSource = player.GetComponentInChildren<IRopeGripSource>();
+            _grip = new GripSolver(settings.Grip);
             _input = new RopeInput();
         }
 
@@ -98,6 +104,7 @@ namespace LDY.Script {
 
             _state = _pendulum.CreateState(Anchor, grabPoint, velocity);
             _sway.Reset();
+            _grip.Reset();
             _gate.MarkGrab(Time.frameCount, Time.realtimeSinceStartup);
             _hanging = true;
             return true;
@@ -128,14 +135,22 @@ namespace LDY.Script {
             var position = Pendulum.PositionOf(Anchor, _state);
             _body.Position = position;
             _body.Velocity = Vector2.zero;
-            _rope.StepHeld(Anchor, _state.Length, position, deltaTime);
+            _rope.StepHeld(Anchor, _state.Length, position, deltaTime, SolveGrip(position, deltaTime));
             _pose?.ReportRope(true, ToRowMove(axis.y));
+        }
+
+        private FootPin? SolveGrip(Vector2 hand, float deltaTime) {
+            var sample = _gripSource != null && _gripSource.TryGetSample(out var found) ? found : default;
+            var result = _grip.Solve(_state.Angle, hand, sample, deltaTime);
+            _angleSink?.ReportRopeAngle(result.Angle);
+            return result.HasFoot ? new FootPin(result.Foot, result.FootDistance) : null;
         }
 
         private void Release(bool jump) {
             var velocity = ReleaseVelocity.Compute(_state, jump, settings.JumpReleaseBonus);
             _hanging = false;
             _rope.Release();
+            _grip.Reset();
             try {
                 _hub.Release(this);
             }
@@ -152,6 +167,7 @@ namespace LDY.Script {
 
             _hanging = false;
             _rope.Release();
+            _grip.Reset();
             try {
                 _hub.Release(this);
             }

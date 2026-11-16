@@ -45,6 +45,14 @@ namespace LDY.Script {
             releaseBlendTime = 0.25f
         };
 
+        [Tooltip("매달린 플레이어 회전: 각도 단위, 최대 각도, 붙고 놓을 때 회전 블렌드 시간, 발 고정 위치 보간 시간(초)")]
+        [SerializeField] private GripTuning grip = new() {
+            angleStepDegrees = 7.5f,
+            maxAngleDegrees = 60f,
+            blendTime = 0.1f,
+            footSmoothTime = 0.04f
+        };
+
         [SerializeField] [Min(0f)] private float jumpReleaseBonus = 6f;
         [SerializeField] [Min(0f)] private float regrabCooldown = 0.2f;
         [SerializeField] [Min(0f)] private float releaseInputDelay = 0.05f;
@@ -59,6 +67,7 @@ namespace LDY.Script {
             }
         }
 
+        public GripTuning Grip => grip;
         public RopeDampingTuning Damping => ropeDamping;
         public ClimbSwayTuning ClimbSway => climbSway;
         public float TotalLength => totalLength;

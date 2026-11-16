@@ -30,6 +30,10 @@ namespace LDY.Script {
         private float _blend;
         private float _heldDistance;
         private int _pin = -1;
+        private int _foot = -1;
+        private int _footSplit = -1;
+        private float _footDistance;
+        private Vector2 _footTarget;
         private Vector2 _pinTarget;
         private int _split = -1;
 
@@ -53,6 +57,7 @@ namespace LDY.Script {
         public float TotalLength { get; }
         public float SegmentLength { get; }
         public int PinIndex => _pin;
+        public int FootIndex => _foot;
         public IReadOnlyList<Vector2> Points => _points;
 
         public float CurrentLength {
@@ -74,6 +79,8 @@ namespace LDY.Script {
 
         public void Initialize(Vector2 anchor) {
             _pin = -1;
+            _foot = -1;
+            _footSplit = -1;
             _split = -1;
             _blend = 0f;
             for (var i = 0; i < _points.Length; i++) {
@@ -89,6 +96,8 @@ namespace LDY.Script {
             if (index != _pin) {
                 _pin = index;
                 _split = index;
+                _foot = -1;
+                _footSplit = -1;
                 _points[index] = target;
                 _previous[index] = target;
             }
@@ -99,6 +108,29 @@ namespace LDY.Script {
 
         public void ClearPin() {
             _pin = -1;
+            _foot = -1;
+        }
+
+        public void SetFootPin(int index, Vector2 target, float distance) {
+            if (_pin < 0 || _pin >= _points.Length - 2) {
+                _foot = -1;
+                return;
+            }
+
+            index = Mathf.Clamp(index, _pin + 1, _points.Length - 2);
+            if (index != _foot) {
+                _foot = index;
+                _footSplit = index;
+                _points[index] = target;
+                _previous[index] = target;
+            }
+
+            _footTarget = target;
+            _footDistance = Mathf.Max(distance, MinLength);
+        }
+
+        public void ClearFootPin() {
+            _foot = -1;
         }
 
         public Vector2 GetClosest(Vector2 position, out int index) {
@@ -131,6 +163,11 @@ namespace LDY.Script {
                 _points[_pin] = _pinTarget;
             }
 
+            if (_foot >= 0) {
+                _previous[_foot] = _points[_foot];
+                _points[_foot] = _footTarget;
+            }
+
             _points[0] = anchor;
             _previous[0] = anchor;
 
@@ -145,19 +182,21 @@ namespace LDY.Script {
         }
 
         private void FillRest() {
-            var upperCount = _split >= 1 ? _split : 1;
-            var tailCount = _rest.Length - upperCount;
-            for (var i = 0; i < _rest.Length; i++) {
-                if (_split < 1 || _blend <= 0f) {
-                    _rest[i] = SegmentLength;
-                    continue;
-                }
+            for (var i = 0; i < _rest.Length; i++)
+                _rest[i] = _split < 1 || _blend <= 0f ? SegmentLength : Mathf.Lerp(SegmentLength, HeldRest(i), Weight);
+        }
 
-                var held = i < upperCount
-                    ? _heldDistance / upperCount
-                    : (TotalLength - _heldDistance) / tailCount;
-                _rest[i] = Mathf.Lerp(SegmentLength, held, Weight);
-            }
+        private float HeldRest(int i) {
+            if (i < _split)
+                return _heldDistance / _split;
+
+            if (_footSplit <= _split)
+                return (TotalLength - _heldDistance) / (_rest.Length - _split);
+
+            if (i < _footSplit)
+                return _footDistance / (_footSplit - _split);
+
+            return Mathf.Max((TotalLength - _heldDistance - _footDistance) / (_rest.Length - _footSplit), MinLength);
         }
 
         private void Integrate(float damping, float tailDamping, float deltaTime) {
@@ -166,7 +205,7 @@ namespace LDY.Script {
             var tailKeep = Mathf.Max(0f, 1f - Mathf.Lerp(damping, tailDamping, Weight) * deltaTime);
             var keep = Mathf.Max(0f, 1f - damping * deltaTime);
             for (var i = 1; i < _points.Length; i++) {
-                if (i == _pin)
+                if (i == _pin || i == _foot)
                     continue;
 
                 var current = _points[i];
@@ -184,7 +223,14 @@ namespace LDY.Script {
                 return;
 
             Pull(1, _split, _points[0], _points[_split], Weight);
-            Pull(_split + 1, _points.Length - 1, _points[_split], _points[_points.Length - 1], Weight * _tailStiffness);
+            var last = _points.Length - 1;
+            if (_footSplit <= _split) {
+                Pull(_split + 1, last, _points[_split], _points[last], Weight * _tailStiffness);
+                return;
+            }
+
+            Pull(_split + 1, _footSplit, _points[_split], _points[_footSplit], Weight);
+            Pull(_footSplit + 1, last, _points[_footSplit], _points[last], Weight * _tailStiffness);
         }
 
         private void Pull(int from, int to, Vector2 start, Vector2 end, float weight) {
@@ -222,7 +268,7 @@ namespace LDY.Script {
         }
 
         private bool IsFixed(int index) {
-            return index == 0 || index == _pin;
+            return index == 0 || index == _pin || index == _foot;
         }
     }
 }

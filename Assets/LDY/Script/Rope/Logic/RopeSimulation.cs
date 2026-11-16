@@ -6,6 +6,7 @@ namespace LDY.Script {
         private readonly RopeCurve _curve;
         private readonly RopeDampingProfile _damping;
         private int _grabIndex = -1;
+        private int _footIndex = -1;
         private bool _held;
         private float _sinceRelease = float.PositiveInfinity;
 
@@ -16,6 +17,7 @@ namespace LDY.Script {
 
         public bool IsHeld => _held;
         public int PinIndex => _curve.PinIndex;
+        public int FootIndex => _curve.FootIndex;
         public float TotalLength => _curve.TotalLength;
         public float CurrentLength => _curve.CurrentLength;
         public float SegmentLength => _curve.SegmentLength;
@@ -28,6 +30,7 @@ namespace LDY.Script {
         public void Initialize(Vector2 anchor) {
             _held = false;
             _grabIndex = -1;
+            _footIndex = -1;
             _sinceRelease = float.PositiveInfinity;
             _curve.Initialize(anchor);
         }
@@ -44,6 +47,7 @@ namespace LDY.Script {
 
             _held = false;
             _grabIndex = -1;
+            _footIndex = -1;
             _sinceRelease = 0f;
             _curve.ClearPin();
         }
@@ -54,11 +58,25 @@ namespace LDY.Script {
             _curve.Step(anchor, damping, damping, deltaTime);
         }
 
-        public void StepHeld(Vector2 anchor, float distance, Vector2 holdPosition, float deltaTime) {
+        public void StepHeld(Vector2 anchor, float distance, Vector2 holdPosition, float deltaTime, FootPin? foot = null) {
             _held = true;
             var index = _curve.PinIndex >= 0 ? _curve.PinIndex : ResolveGrabIndex(distance);
             _curve.SetPin(index, holdPosition, distance);
+            ApplyFoot(foot);
             _curve.Step(anchor, _damping.Held, _damping.HeldTail, deltaTime);
+        }
+
+        private void ApplyFoot(FootPin? foot) {
+            if (!foot.HasValue) {
+                _curve.ClearFootPin();
+                _footIndex = -1;
+                return;
+            }
+
+            if (_footIndex < 0)
+                _footIndex = _curve.PinIndex + Mathf.Max(1, Mathf.RoundToInt(foot.Value.Distance / SegmentLength));
+
+            _curve.SetFootPin(_footIndex, foot.Value.Target, foot.Value.Distance);
         }
 
         private int ResolveGrabIndex(float distance) {
