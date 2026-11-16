@@ -7,11 +7,12 @@ namespace HES.Script.Object {
         private bool _isActive;
         private float _pressedTime;
 
-        private void Update() {
-            if (IsPressed) {
-                _isActive = !_isActive;
-            }
+        protected override void OnTriggerEnter2D(Collider2D other) {
+            base.OnTriggerEnter2D(other);
+            _isActive = !_isActive;
+        }
 
+        private void Update() {
             door.SetActive(!_isActive);
         }
     }
