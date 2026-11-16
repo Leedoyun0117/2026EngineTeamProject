@@ -348,6 +348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24b41fc21f1e4b468ea5d567155dd02a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.Level.LevelManager
+  isDontDestroy: 0
   levelList: {fileID: 11400000, guid: 08dd10541fef6294cbe67acb3d41cd19, type: 2}
   levelRoot: {fileID: 169902326}
   startLevelIndex: 0
@@ -395,8 +396,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7016c54768ee4394964265c89f58797a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.GameManager
-  audioManager: {fileID: 1619276923}
-  levelManager: {fileID: 680090414}
+  isDontDestroy: 0
+  jjbAudioManager: {fileID: 0}
+  jjbLevelManager: {fileID: 0}
 --- !u!4 &1506818599
 Transform:
   m_ObjectHideFlags: 0
@@ -539,6 +541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60baecf2c7f15614183e72289b1ee0fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.Audio.AudioManager
+  isDontDestroy: 0
   bgmSource: {fileID: 1619276922}
   sfxSource: {fileID: 1619276922}
 --- !u!4 &1619276924

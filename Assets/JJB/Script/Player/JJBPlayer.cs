@@ -1,7 +1,6 @@
-using JJB.Script.Player;
 using UnityEngine;
 
-namespace JJB.Script
+namespace JJB.Script.Player
 {
     [RequireComponent(typeof(JJBPlayerInput))]
     [RequireComponent(typeof(JJBPlayerMovement))]
@@ -74,7 +73,7 @@ namespace JJB.Script
 
         private void Update()
         {
-            PlayerRenderer.FilpX(PlayerMovement.rb.linearVelocityX);
+            PlayerRenderer.FilpX(PlayerMovement.Rb.linearVelocityX);
         }
         
         private void FixedUpdate()
