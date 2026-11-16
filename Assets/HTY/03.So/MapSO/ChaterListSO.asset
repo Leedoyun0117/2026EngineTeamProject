@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce50a2723259b5640af735c7813ef4a3, type: 3}
+  m_Name: ChaterListSO
+  m_EditorClassIdentifier: Assembly-CSharp::ChapterListSO_HTY
+  _list:
+  - {fileID: 11400000, guid: 4ea1c5def3c893d44a3fc1fba447131b, type: 2}
+  - {fileID: 11400000, guid: 20b952976bfac214fb6c5bb018e34164, type: 2}
+  - {fileID: 11400000, guid: 2bbbcc85be6f2e846b31f16ba7e8ff4c, type: 2}
