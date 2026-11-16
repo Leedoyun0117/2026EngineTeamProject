@@ -47,7 +47,7 @@ namespace LDY.Script {
             try {
                 var pink = root.transform.Find(PinkName);
                 var renderer = pink != null ? pink.GetComponent<PlayerRenderer>() : null;
-                var sr = pink != null ? pink.GetComponent<SpriteRenderer>() : null;
+                var sr = pink != null ? pink.GetComponentInChildren<SpriteRenderer>(true) : null;
                 if (renderer == null || sr == null) {
                     Log($"중단: 프리팹에 {PinkName}의 PlayerRenderer/SpriteRenderer가 없음");
                     return;
@@ -86,7 +86,7 @@ namespace LDY.Script {
             }
 
             var reverted = RevertIfOverridden(pink.GetComponent<PlayerRenderer>(), "animSet", changes);
-            reverted |= RevertIfOverridden(pink.GetComponent<SpriteRenderer>(), "m_Sprite", changes);
+            reverted |= RevertIfOverridden(pink.GetComponentInChildren<SpriteRenderer>(true), "m_Sprite", changes);
             if (!reverted)
                 return;
 
