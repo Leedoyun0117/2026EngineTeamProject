@@ -9,10 +9,12 @@ namespace LDY.Script {
         public readonly bool ClipFinished;
         public readonly int ClipFrame;
         public readonly bool Grabbing;
+        public readonly bool RopeHanging;
         public readonly RowMoveDirection RowMove;
 
         public PlayerAnimInput(Vector2 velocity, bool grounded, bool locked, float deltaTime,
-            bool clipFinished, int clipFrame, bool grabbing = false, RowMoveDirection rowMove = RowMoveDirection.None) {
+            bool clipFinished, int clipFrame, bool grabbing = false, RowMoveDirection rowMove = RowMoveDirection.None,
+            bool ropeHanging = false) {
             Velocity = velocity;
             Grounded = grounded;
             Locked = locked;
@@ -20,6 +22,7 @@ namespace LDY.Script {
             ClipFinished = clipFinished;
             ClipFrame = clipFrame;
             Grabbing = grabbing;
+            RopeHanging = ropeHanging;
             RowMove = rowMove;
         }
     }
@@ -41,6 +44,12 @@ namespace LDY.Script {
         public PlayerAnimId Tick(in PlayerAnimInput input) {
             Changed = false;
             EntryFrame = 0;
+
+            if (input.RopeHanging) {
+                _air.Reset();
+                Enter(RopePose.For(input.RowMove));
+                return Current;
+            }
 
             if (input.Grabbing) {
                 _air.Reset();

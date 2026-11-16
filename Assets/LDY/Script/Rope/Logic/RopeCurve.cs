@@ -101,9 +101,9 @@ namespace LDY.Script {
             _pin = -1;
         }
 
-        public bool TryGetClosest(Vector2 position, float range, out Vector2 closest, out int index) {
+        public Vector2 GetClosest(Vector2 position, out int index) {
             var best = float.PositiveInfinity;
-            closest = _points[0];
+            var closest = _points[0];
             index = 1;
             for (var i = 0; i < _points.Length - 1; i++) {
                 var candidate = RopeReach.ClosestPoint(_points[i], _points[i + 1], position);
@@ -118,7 +118,7 @@ namespace LDY.Script {
                 index = ClampPin(span > Mathf.Epsilon && along / span >= 0.5f ? i + 1 : i);
             }
 
-            return best <= range * range;
+            return closest;
         }
 
         public void Step(Vector2 anchor, float damping, float tailDamping, float deltaTime) {

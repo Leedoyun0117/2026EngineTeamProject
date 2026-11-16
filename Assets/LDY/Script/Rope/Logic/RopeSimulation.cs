@@ -32,12 +32,10 @@ namespace LDY.Script {
             _curve.Initialize(anchor);
         }
 
-        public bool TryGetGrabPoint(Vector2 position, float range, out Vector2 point) {
-            var found = _curve.TryGetClosest(position, range, out point, out var index);
-            if (found)
-                _grabIndex = index;
-
-            return found;
+        public Vector2 PrepareGrab(Vector2 position) {
+            var point = _curve.GetClosest(position, out var index);
+            _grabIndex = index;
+            return point;
         }
 
         public void Release() {

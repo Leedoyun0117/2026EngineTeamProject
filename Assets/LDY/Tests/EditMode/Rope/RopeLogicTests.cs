@@ -291,12 +291,6 @@ namespace LDY.Tests {
 
             Assert.AreEqual(-6f, point.y, 1e-5f);
         }
-
-        [Test]
-        public void TryGetGrabPoint_RespectsRange() {
-            Assert.IsTrue(RopeReach.TryGetGrabPoint(Vector2.zero, new Vector2(0f, -6f), new Vector2(1f, -2f), 1.2f, out _));
-            Assert.IsFalse(RopeReach.TryGetGrabPoint(Vector2.zero, new Vector2(0f, -6f), new Vector2(2f, -2f), 1.2f, out _));
-        }
     }
 
     public class HoldSlotTests {

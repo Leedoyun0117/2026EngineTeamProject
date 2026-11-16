@@ -38,6 +38,10 @@ namespace LDY.Script {
             if (TryGet(id, out var clip))
                 return clip;
 
+            var fallback = RopePose.FallbackFor(id);
+            if (fallback != id && TryGet(fallback, out var fallbackClip))
+                return fallbackClip;
+
             if ((id == PlayerAnimId.Jump || id == PlayerAnimId.Fall) && TryGet(PlayerAnimId.Run, out var run))
                 return _airHold ??= PlayerAnimClip.Hold(run.frames[Mathf.Min(airHoldRunFrame, run.frames.Length - 1)]);
 
