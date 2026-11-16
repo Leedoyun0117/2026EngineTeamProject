@@ -12,8 +12,14 @@
   <component name="ChangeListManager">
     <list default="true" id="6fe23d18-7e65-450d-b817-a0888c4ceaa1" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.2026EngineTeamProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Adapters/JJBControlGate.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlayerRowMover.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/LDY/Script/Title/Window/PlayerRowMover.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/JJBLevel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/JJBLevel.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/JJBScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/JJBScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/Player/Iinteract.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerInput.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerJump.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerJump.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/JJB/Script/Player/JJBPlayerMovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,11 +34,77 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/61339efb240547e991d3aef546e3afd3a6e400/8b/9c58b219/ChangeAssetObjectPropertiesEventArgs.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f14a369973b548758cab792edd81bcc6212a00/32/adbfc7a3/AsyncOperation.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0000000000000002" />
+      <entry key="S10" value="1.0000000164445702" />
+      <entry key="S30" value="1.0040342325847167" />
+      <entry key="S60" value="1.0898177361298815" />
+      <entry key="M2" value="1.4238261108176804" />
+      <entry key="M5" value="2.075204514114259" />
+      <entry key="M10" value="2.466426174076656" />
+      <entry key="M15" value="2.626235336182458" />
+      <entry key="M30" value="2.803460594822213" />
+      <entry key="H1" value="2.89918957339535" />
+      <entry key="H2" value="2.948943074145584" />
+      <entry key="H4" value="2.974306495428978" />
+      <entry key="D1" value="2.9956946451685287" />
+      <entry key="W1" value="2.999384381112363" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="2.5985600157552746E-4" />
+      <entry key="MS500" value="0.19184326200011084" />
+      <entry key="S2" value="0.6618150478294996" />
+      <entry key="S5" value="0.8478024261139204" />
+      <entry key="S10" value="0.9207618880030671" />
+      <entry key="S30" value="0.9768014509066787" />
+      <entry key="S60" value="1.075147461205052" />
+      <entry key="M2" value="1.414593634755655" />
+      <entry key="M5" value="2.0700422709148723" />
+      <entry key="M10" value="2.463404308432816" />
+      <entry key="M15" value="2.6241007535731313" />
+      <entry key="M30" value="2.802326765259774" />
+      <entry key="H1" value="2.8986046886934775" />
+      <entry key="H2" value="2.9486459620696364" />
+      <entry key="H4" value="2.9741567491269563" />
+      <entry key="D1" value="2.995669520166824" />
+      <entry key="W1" value="2.9993807877037257" />
+    </decayedShown>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4,
   &quot;fromUser&quot;: false
 }</component>
   <component name="ProjectId" id="3KMyvjMOOt4ZM5ozxdZTFxhK0kH" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -40,6 +112,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
@@ -48,13 +121,14 @@
     &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;LDY&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;JJB&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;rider.unittesting.toolwindow.stripe.button.shown&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -81,12 +155,10 @@
     </configuration>
     <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false">
       <option name="allowRunningInParallel" value="false" />
+      <option name="coreClr" value="false" />
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="projectPathOnTarget" />
-      <option name="runtimes">
-        <list />
-      </option>
       <option name="selectedOptions">
         <list />
       </option>

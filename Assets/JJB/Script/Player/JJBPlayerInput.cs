@@ -23,7 +23,6 @@ namespace JJB.Script.Player
         private void OnJump(InputValue value)
         {
             IsJumpHold = value.isPressed;
-            
             if (value.isPressed)
             {
                 OnJumpKeyPressed?.Invoke();

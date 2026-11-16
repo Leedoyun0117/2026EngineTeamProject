@@ -1,39 +1,39 @@
 ﻿using UnityEngine;
 
-namespace JJB.Script.Player {
+namespace JJB.Script.Player
+{
     [RequireComponent(typeof(Rigidbody2D))]
-    public class JJBPlayerJump : MonoBehaviour {
-        [Header("Jump")] [SerializeField] [Min(0f)]
-        private float jumpSpeed = 8f;
-
+    public class JJBPlayerJump : MonoBehaviour
+    {
+        [Header("Jump")] 
+        [SerializeField] [Min(0f)] private float jumpSpeed = 8f;
         [SerializeField] [Min(0f)] private float maxJumpHoldTime = 0.3f;
 
-        [Header("Ground Check")] [SerializeField]
-        private Transform groundCheck;
-
+        [Header("Ground Check")] 
+        [SerializeField] private Transform groundCheck;
         [SerializeField] private Vector2 groundCheckSize;
         [SerializeField] private LayerMask groundLayer;
 
-        [Header("Extra Gravity")] [SerializeField] [Min(0f)]
-        private float extraGravity = 30f;
-
+        [Header("Extra Gravity")] 
+        [SerializeField] [Min(0f)] private float extraGravity = 30f;
         [SerializeField] [Min(0f)] private float gravityDelay = 0.15f;
+
         private bool _canJump;
-
         private float _jumpHoldTime;
-
         private bool _jumpRequested;
+        private float _timeInAir;
 
         private Rigidbody2D _rb;
-        private float _timeInAir;
 
         public bool IsGrounded { get; private set; }
 
-        private void Awake() {
+        private void Awake()
+        {
             _rb = GetComponent<Rigidbody2D>();
         }
 
-        private void OnDisable() {
+        private void OnDisable()
+        {
             _jumpRequested = false;
             _canJump = false;
 
@@ -43,7 +43,8 @@ namespace JJB.Script.Player {
             IsGrounded = false;
         }
 
-        private void OnDrawGizmos() {
+        private void OnDrawGizmos()
+        {
             if (groundCheck == null)
                 return;
 
@@ -52,11 +53,13 @@ namespace JJB.Script.Player {
             Gizmos.color = Color.wheat;
         }
 
-        public void RequestJump() {
+        public void RequestJump()
+        {
             _jumpRequested = true;
         }
 
-        public void Tick(bool isJumpHeld) {
+        public void Tick(bool isJumpHeld)
+        {
             IsGrounded = CheckGround();
 
             ProcessJumpRequest();
@@ -65,7 +68,8 @@ namespace JJB.Script.Player {
             ApplyExtraGravity();
         }
 
-        private void ProcessJumpRequest() {
+        private void ProcessJumpRequest()
+        {
             if (!_jumpRequested)
                 return;
 
@@ -83,16 +87,19 @@ namespace JJB.Script.Player {
             IsGrounded = false;
         }
 
-        private void ProcessJumpHold(bool isJumpHeld) {
+        private void ProcessJumpHold(bool isJumpHeld)
+        {
             if (!_canJump)
                 return;
 
-            if (_rb.linearVelocityY <= 0f) {
+            if (_rb.linearVelocityY <= 0f)
+            {
                 _canJump = false;
                 return;
             }
 
-            if (!isJumpHeld || _jumpHoldTime >= maxJumpHoldTime) {
+            if (!isJumpHeld || _jumpHoldTime >= maxJumpHoldTime)
+            {
                 StopJump();
                 return;
             }
@@ -102,14 +109,17 @@ namespace JJB.Script.Player {
             if (_jumpHoldTime >= maxJumpHoldTime) StopJump();
         }
 
-        private void StopJump() {
+        private void StopJump()
+        {
             if (_rb.linearVelocityY > 0f) _rb.linearVelocityY = 0f;
 
             _canJump = false;
         }
 
-        private void UpdateAirTime() {
-            if (IsGrounded) {
+        private void UpdateAirTime()
+        {
+            if (IsGrounded)
+            {
                 _timeInAir = 0f;
                 return;
             }
@@ -117,14 +127,16 @@ namespace JJB.Script.Player {
             _timeInAir += Time.fixedDeltaTime;
         }
 
-        private void ApplyExtraGravity() {
+        private void ApplyExtraGravity()
+        {
             if (IsGrounded || _timeInAir <= gravityDelay)
                 return;
 
             _rb.AddForceY(-extraGravity);
         }
 
-        private bool CheckGround() {
+        private bool CheckGround()
+        {
             if (groundCheck == null)
                 return false;
 
