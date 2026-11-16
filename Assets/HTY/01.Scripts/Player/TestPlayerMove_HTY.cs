@@ -15,7 +15,7 @@ public class TestPlayerMove_HTY : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_isPlayObj) _rb.linearVelocityX = _speed * GameManager_HTY.instance._inputValue._moveDir.x;
+        if (_isPlayObj) _rb.linearVelocityX = _speed * GameManager_HTY.Instance._inputValue._moveDir.x;
         else _rb.linearVelocityX = Vector2.zero.x;
     }
 

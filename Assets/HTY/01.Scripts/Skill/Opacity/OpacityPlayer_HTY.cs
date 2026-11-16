@@ -1,31 +1,49 @@
-using System.Net.NetworkInformation;
 using UnityEngine;
 
-public class OpacityPlayer_HTY : MonoBehaviour,ISkill_HTY
+public class OpacityPlayer_HTY : MonoBehaviour, ISkill_HTY
 {
-    [SerializeField] private SpriteRenderer _spCompo;
-    private bool _canOpacity = true;
-    public bool _isOpacity = false;
+    public TargetSelector_HTY _targetSelector;
+    private bool _isOpacity;
 
-    public bool CanUse()
+    public SkillSo_HTY _skillSO { get; set; }
+    public SkillState _skillState { get; set; }
+
+    public bool CanUse() => true;
+
+    private void Start()
     {
-        return _canOpacity;
+        Init();
+    }
+
+    public void Init()
+    {
+        _skillState = SkillState.Opacity;
+        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
 
     public void UseSkill()
     {
-        if (_isOpacity)
+        if (CanUse())
         {
-            Color alpha = _spCompo.color;
-            alpha.a = 1;
-            _spCompo.color = alpha;
+            Color _targetColor = _targetSelector._currentTarget.gameObject.GetComponent<SpriteRenderer>().color;
+            _targetColor.a = _isOpacity ? 1 : 0.5f;
+            _targetSelector._currentTarget.gameObject.GetComponent<SpriteRenderer>().color = _targetColor;
+            _isOpacity = !_isOpacity;
         }
-        else if (!_isOpacity)
-        {
-            Color alpha = _spCompo.color;
-            alpha.a = 0.5f;
-            _spCompo.color = alpha;
-        }
-        _isOpacity = !_isOpacity;
+    }
+
+    public void Enter()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Exit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void UpdateState()
+    {
+        throw new System.NotImplementedException();
     }
 }

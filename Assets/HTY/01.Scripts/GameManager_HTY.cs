@@ -6,14 +6,17 @@ public class GameManager_HTY : MonoBehaviour
     public GameObject _player;
     public PlayerInput_HTY _inputValue;
 
-    public static GameManager_HTY instance;
-
+    public static GameManager_HTY Instance;
+    public Transform _pointer;
+    public Material _originMat;
+    public Material _outLineMat;
+    public SkillListSo_HTY _skillList;
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {

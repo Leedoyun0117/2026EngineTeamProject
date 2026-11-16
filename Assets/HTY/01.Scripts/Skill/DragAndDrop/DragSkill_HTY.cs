@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
@@ -8,10 +7,20 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
     [SerializeField] private float _maxDistance = 2.0f;
     private GameObject _dragObj;
 
-    private void Awake()
+    public SkillSo_HTY _skillSO { get; set; }
+    public SkillState _skillState { get; set; }
+
+    private void Start()
     {
-        _joint = GetComponent<FixedJoint2D>();
+        Init();
+    }
+
+    public void Init()
+    {
+        _joint = GetComponentInParent<FixedJoint2D>();
         _joint.enabled = false;
+        _skillState = SkillState.Drag;
+        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
 
     public bool CanUse() => _canDrag;
@@ -60,5 +69,20 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
                 }
             }
         }
+    }
+
+    public void Enter()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Exit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void UpdateState()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -3,14 +3,19 @@ using UnityEngine;
 public class OpacityObj_HTY : MonoBehaviour
 {
     private Collider2D _coll;
+    private SpriteRenderer _sp;
 
     private void Awake()
     {
+        _sp = GetComponent<SpriteRenderer>();
         _coll = GetComponent<Collider2D>();
     }
 
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void Update()
+    {
+        _coll.isTrigger = _sp.color.a < 0.9f ? true : false;
+    }
+    /*private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent(out OpacityPlayer_HTY sr)) 
         {
@@ -44,5 +49,5 @@ public class OpacityObj_HTY : MonoBehaviour
             if (!sr._isOpacity) 
                 _coll.isTrigger = false;
         }
-    }
+    }*/
 }

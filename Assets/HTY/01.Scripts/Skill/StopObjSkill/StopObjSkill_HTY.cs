@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 {
-    [SerializeField] private TargetSelector targetSelector;
+    [SerializeField] private TargetSelector_HTY targetSelector;
     [SerializeField] private Camera mainCamera;
 
     private Rigidbody2D _otherRb;
@@ -13,9 +13,17 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
     private Vector2 _saveVel;
     private float _saveAngVel;
 
+    public SkillSo_HTY _skillSO { get; set; }
+    public SkillState _skillState { get; set; }
+
     private void Awake()
     {
         mainCamera = Camera.main;
+    }
+
+    private void Start()
+    {
+        Init();
     }
 
     private void Update()
@@ -27,6 +35,12 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
                 ReSetObject();
             }
         }
+    }
+
+    public void Init()
+    {
+        _skillState = SkillState.TimeStop;
+        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
 
     public bool CanUse()
@@ -105,5 +119,20 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
     private void OnDisable()
     {
         ReSetObject();
+    }
+
+    public void Enter()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Exit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void UpdateState()
+    {
+        throw new System.NotImplementedException();
     }
 }

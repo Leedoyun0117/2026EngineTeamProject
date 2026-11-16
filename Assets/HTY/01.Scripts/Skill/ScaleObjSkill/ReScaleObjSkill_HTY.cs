@@ -2,7 +2,22 @@ using UnityEngine;
 
 public class ReScaleObjSkill_HTY : MonoBehaviour, ISkill_HTY
 {
-    [SerializeField] private TargetSelector _targetSelector;
+    [SerializeField] private TargetSelector_HTY _targetSelector;
+
+    public SkillSo_HTY _skillSO { get; set; }
+    public SkillState _skillState { get; set; }
+
+
+    private void Start()
+    {
+        Init();
+    }
+
+    public void Init()
+    {
+        _skillState = SkillState.ReSizeObj;
+        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
+    }
 
     public bool CanUse()
     {
@@ -25,5 +40,20 @@ public class ReScaleObjSkill_HTY : MonoBehaviour, ISkill_HTY
         {
             reScale.ChangeScale();
         }
+    }
+
+    public void Enter()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Exit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void UpdateState()
+    {
+        throw new System.NotImplementedException();
     }
 }

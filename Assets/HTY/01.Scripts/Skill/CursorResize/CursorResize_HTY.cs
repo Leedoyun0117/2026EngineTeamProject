@@ -1,8 +1,7 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CursorResize_HTY : MonoBehaviour, ISkill_HTY
+public class CursorResize_HTY : MonoBehaviour
 {
     [Header("Resize Settings")]
     [SerializeField] private float _reSizeSpeed = 1.5f;
@@ -14,12 +13,26 @@ public class CursorResize_HTY : MonoBehaviour, ISkill_HTY
 
     private bool _canResize = false;
 
+    public SkillSo_HTY _skillSO { get; set; }
+    public SkillState _skillState { get; set; }
+
     private void Awake()
     {
-        _coll = GetComponent<CapsuleCollider2D>();
+        _coll = GetComponentInParent<CapsuleCollider2D>();
 
         _originalScale = transform.localScale;
         _originalDirection = _coll.direction;
+    }
+
+    private void Start()
+    {
+        Init();
+    }
+
+    public void Init()
+    {
+        _skillState = SkillState.ReSize;
+        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
 
     public bool CanUse()
@@ -115,5 +128,20 @@ public class CursorResize_HTY : MonoBehaviour, ISkill_HTY
         Physics2D.SyncTransforms();
 
         return !blocked;
+    }
+
+    public void Enter()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Exit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void UpdateState()
+    {
+        throw new System.NotImplementedException();
     }
 }

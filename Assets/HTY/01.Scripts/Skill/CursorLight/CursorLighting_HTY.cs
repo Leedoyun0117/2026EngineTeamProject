@@ -1,27 +1,58 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 
-public class CursorLighting_HTY : MonoBehaviour,ISkill_HTY
+public class CursorLighting_HTY : MonoBehaviour, ISkill_HTY
 {
     private Light2D _light;
-    private bool _isLight = false;
+    private bool _isLight;
 
-    private void Awake()
+    public SkillSo_HTY _skillSO { get; set; }
+    public SkillState _skillState { get; set; }
+
+
+    private void Start()
+    {
+        Init();
+    }
+
+    public void Init()
     {
         _light = GetComponentInChildren<Light2D>();
+        _skillState = SkillState.Luminosity;
+        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
 
-    public bool CanUse()
-    {
-        return true;
-    }
+    public bool CanUse() => true;
 
     public void UseSkill()
     {
         if (CanUse())
         {
-            _light.enabled = _isLight;
+            _light.enabled = !_isLight;
             _isLight = !_isLight;
         }
     }
+
+    public void Enter()
+    {
+        _light.enabled = false;
+        _isLight = false;
+    }
+
+    public void UpdateState()
+    {
+        if (Keyboard.current.yKey.wasPressedThisFrame)
+        {
+            UseSkill();
+        }
+    }
+
+    public void Exit()
+    {
+        _light.enabled = false;
+        _isLight = false;
+    }
+
+    
 }
