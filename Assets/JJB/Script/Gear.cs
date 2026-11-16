@@ -6,7 +6,6 @@ namespace JJB.Script
     public class Gear : MonoBehaviour
     {
         [SerializeField] private float rotateSpeed;
-        [SerializeField] private LayerMask detectLayer;
 
         private void Update()
         {
@@ -22,9 +21,8 @@ namespace JJB.Script
         {
             Debug.Log($"충돌 대상: {other.name}");
             Debug.Log($"충돌 대상 Layer: {other.gameObject.layer}");
-            Debug.Log($"설정된 LayerMask: {detectLayer.value}");
 
-            if (other.gameObject.layer == detectLayer.value)
+            if (other.gameObject.CompareTag("Player"))
             {
                 Debug.Log("asdfasdf");
             }
