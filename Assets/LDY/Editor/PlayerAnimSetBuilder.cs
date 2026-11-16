@@ -6,18 +6,20 @@ using UnityEditor;
 using UnityEngine;
 
 namespace LDY.Script {
-    // aseprite 임포터가 만든 스프라이트(Frame_0~25)를 태그 표대로 나눠 PlayerAnimSet에 담는다. 임시 도구.
+    // aseprite 임포터가 만든 스프라이트(Frame_N)를 태그 표대로 나눠 PlayerAnimSet에 담는다. 임시 도구.
     public static class PlayerAnimSetBuilder {
         public const string AsepritePath = "Assets/LDY/Art/player_anim_pink (3).aseprite";
         public const string SetPath = "Assets/LDY/Data/PlayerAnimSet.asset";
+        public const string AsepriteV2Path = "Assets/LDY/Sprites/Character/player_anim_pinkV2.aseprite";
+        public const string SetV2Path = "Assets/LDY/Data/PlayerAnimSetV2.asset";
 
-        private const int FrameCount = 33;
-        private const float ExpectedPpu = 40f;
+        // 기존 aseprite 임포트 설정(Pixels Per Unit 100)과 같다.
+        private const float ExpectedPpu = 100f;
 
         private static readonly Regex FrameName = new(@"^Frame_(\d+)$");
 
         // aseprite 프레임 시간(ms)
-        private static readonly Tag[] Tags = {
+        private static readonly Tag[] BaseTags = {
             new(PlayerAnimId.Idle, 0, true, 900, 120, 900),
             new(PlayerAnimId.Walk, 3, true, 90, 90, 90, 90, 90, 90, 90, 90),
             new(PlayerAnimId.Run, 11, true, 60, 60, 60, 60, 60, 60, 60, 60),
@@ -29,24 +31,47 @@ namespace LDY.Script {
             new(PlayerAnimId.Grab, 32, true, 200)
         };
 
+        private static readonly Tag[] RopeTags = {
+            new(PlayerAnimId.RopeHang, 33, true, 450, 450),
+            new(PlayerAnimId.RopeClimb, 35, true, 120, 110, 120, 110),
+            new(PlayerAnimId.RopeClimbDown, 39, true, 110, 120, 110, 120)
+        };
+
+        private static readonly Source Original = new(AsepritePath, SetPath, 33, BaseTags);
+        private static readonly Source V2 = new(AsepriteV2Path, SetV2Path, 43, Concat(BaseTags, RopeTags));
+
         [MenuItem("LDY/Build Player Anim Set")]
         public static void Build() {
-            if (!TryCollectFrames(out var frames))
-                return;
+            Build(Original);
+        }
+
+        [MenuItem("LDY/Build Player Anim Set V2")]
+        public static void BuildV2() {
+            Build(V2);
+        }
+
+        // 편집기 메뉴 밖에서 고른 aseprite 경로로 V2 세트를 만든다.
+        public static bool BuildV2From(string asepritePath) {
+            return Build(new Source(asepritePath, SetV2Path, V2.FrameCount, V2.Tags));
+        }
+
+        private static bool Build(Source source) {
+            if (!TryCollectFrames(source, out var frames))
+                return false;
 
             var entries = new List<PlayerAnimSet.Entry>();
-            foreach (var tag in Tags) {
+            foreach (var tag in source.Tags) {
                 var clip = new PlayerAnimClip { loop = tag.Loop, durations = tag.Seconds };
                 clip.frames = new Sprite[tag.Seconds.Length];
                 Array.Copy(frames, tag.First, clip.frames, 0, tag.Seconds.Length);
                 entries.Add(new PlayerAnimSet.Entry { id = tag.Id, clip = clip });
             }
 
-            var set = AssetDatabase.LoadAssetAtPath<PlayerAnimSet>(SetPath);
+            var set = AssetDatabase.LoadAssetAtPath<PlayerAnimSet>(source.SetPath);
             if (set == null) {
-                Directory.CreateDirectory(Path.GetDirectoryName(SetPath));
+                Directory.CreateDirectory(Path.GetDirectoryName(source.SetPath));
                 set = ScriptableObject.CreateInstance<PlayerAnimSet>();
-                AssetDatabase.CreateAsset(set, SetPath);
+                AssetDatabase.CreateAsset(set, source.SetPath);
             }
 
             set.Clips = entries.ToArray();
@@ -55,15 +80,16 @@ namespace LDY.Script {
                 set.AltSprite = frames[1];
             EditorUtility.SetDirty(set);
             AssetDatabase.SaveAssets();
-            Debug.Log($"[PlayerAnimSetBuilder] {SetPath} 갱신 완료 ({entries.Count}개 클립)");
+            Debug.Log($"[PlayerAnimSetBuilder] {source.SetPath} 갱신 완료 ({entries.Count}개 클립)");
+            return true;
         }
 
         // 프레임 이름/개수/순서 또는 임포트 설정이 어긋나면 에러를 내고 중단한다.
-        private static bool TryCollectFrames(out Sprite[] frames) {
-            frames = new Sprite[FrameCount];
+        private static bool TryCollectFrames(Source source, out Sprite[] frames) {
+            frames = new Sprite[source.FrameCount];
             var errors = new List<string>();
 
-            foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(AsepritePath)) {
+            foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(source.AsepritePath)) {
                 if (!(asset is Sprite sprite))
                     continue;
 
@@ -74,7 +100,7 @@ namespace LDY.Script {
                 }
 
                 var index = int.Parse(match.Groups[1].Value);
-                if (index >= FrameCount)
+                if (index >= source.FrameCount)
                     errors.Add($"프레임 번호가 범위를 벗어남: {sprite.name}");
                 else if (frames[index] != null)
                     errors.Add($"프레임 번호 중복: {sprite.name}");
@@ -82,7 +108,7 @@ namespace LDY.Script {
                     frames[index] = sprite;
             }
 
-            for (var i = 0; i < FrameCount; i++)
+            for (var i = 0; i < source.FrameCount; i++)
                 if (frames[i] == null)
                     errors.Add($"Frame_{i} 가 없음");
 
@@ -92,7 +118,7 @@ namespace LDY.Script {
             if (errors.Count == 0)
                 return true;
 
-            Debug.LogError($"[PlayerAnimSetBuilder] 중단: {AsepritePath}\n- {string.Join("\n- ", errors)}");
+            Debug.LogError($"[PlayerAnimSetBuilder] 중단: {source.AsepritePath}\n- {string.Join("\n- ", errors)}");
             return false;
         }
 
@@ -105,6 +131,27 @@ namespace LDY.Script {
             var format = sample.texture.format;
             if (format != TextureFormat.RGBA32 && format != TextureFormat.ARGB32 && format != TextureFormat.RGB24)
                 errors.Add($"텍스처가 압축됨({format}). 임포터 Inspector에서 Compression을 None으로 맞추세요");
+        }
+
+        private static Tag[] Concat(Tag[] first, Tag[] second) {
+            var all = new Tag[first.Length + second.Length];
+            first.CopyTo(all, 0);
+            second.CopyTo(all, first.Length);
+            return all;
+        }
+
+        private readonly struct Source {
+            public readonly string AsepritePath;
+            public readonly string SetPath;
+            public readonly int FrameCount;
+            public readonly Tag[] Tags;
+
+            public Source(string asepritePath, string setPath, int frameCount, Tag[] tags) {
+                AsepritePath = asepritePath;
+                SetPath = setPath;
+                FrameCount = frameCount;
+                Tags = tags;
+            }
         }
 
         private readonly struct Tag {

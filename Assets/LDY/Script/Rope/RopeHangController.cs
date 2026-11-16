@@ -129,7 +129,7 @@ namespace LDY.Script {
             _body.Position = position;
             _body.Velocity = Vector2.zero;
             _rope.StepHeld(Anchor, _state.Length, position, deltaTime);
-            _pose?.Report(true, ToRowMove(axis.y));
+            _pose?.ReportRope(true, ToRowMove(axis.y));
         }
 
         private void Release(bool jump) {
@@ -141,7 +141,7 @@ namespace LDY.Script {
             }
             finally {
                 _slot.Release(this, Time.time, settings.RegrabCooldown);
-                _pose?.Report(false, RowMoveDirection.None);
+                _pose?.ReportRope(false, RowMoveDirection.None);
                 _body.Velocity = velocity;
             }
         }
@@ -157,7 +157,7 @@ namespace LDY.Script {
             }
             finally {
                 _slot.Release(this, Time.time, settings.RegrabCooldown);
-                _pose?.Report(false, RowMoveDirection.None);
+                _pose?.ReportRope(false, RowMoveDirection.None);
             }
         }
 

@@ -8,6 +8,9 @@ namespace LDY.Script {
         StandUp,
         Jump,
         Fall,
-        Grab
+        Grab,
+        RopeHang,
+        RopeClimb,
+        RopeClimbDown
     }
 }
