@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class TargetSelector_HTY : MonoBehaviour
 {
@@ -13,28 +13,17 @@ public class TargetSelector_HTY : MonoBehaviour
     private int _currentIndex = -1;
     public Transform _currentTarget;
 
-    private void Update()
+    public void TargetDetectAndSelect()
     {
-        //나중에 어떤 스킬 상태를 만들어서 그때만 활성화 되게 그리고 활성화된다면 그때마다 가장 가까운 하나를 미리 지정해두기
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            if (_currentTarget != null)
-            {
-                _currentTarget.GetComponent<SpriteRenderer>().material = GameManager_HTY.Instance._outLineMat;
-            }
-            
-            DetectTargets();
-            SelectNextTarget();
-        }
+        DetectTargets();
+        SelectNextTarget();
     }
 
     private void DetectTargets()
     {
-        _targets.Clear();
-
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position,_detectRange,_targetLayer);
 
-        foreach (Collider2D col in colliders)
+        foreach (Collider2D col in colliders)//탐색
         {
             Transform target = col.transform;
 
@@ -43,7 +32,31 @@ public class TargetSelector_HTY : MonoBehaviour
             if (!_targets.Contains(target))//타겟이 리스트미리 있는지 확인
                 _targets.Add(target);
         }
-        _targets.Sort((a, b) =>//블로그 참고
+
+
+        List<Collider2D> collList=colliders.ToList();
+        List<Transform> _nulltargets = new List<Transform>();
+
+        foreach (var tran in _targets)//탐색
+        {
+            Collider2D collT = tran.GetComponent<Collider2D>();
+            if (!collList.Contains(collT))
+            {
+                _nulltargets.Add(tran);
+            }//타겟이 리스트미리 있는지 확인
+        }
+
+        foreach (var tran in _nulltargets)
+        {
+            if (_currentTarget != null && _currentTarget == tran)
+            {
+                _currentTarget.GetComponent<SpriteRenderer>().material = GameManager_HTY.Instance._originMat;
+                _currentTarget = null;
+                _targets.Remove(tran);
+            }
+        }
+
+        _targets.Sort((a, b) =>//정렬
         {
             float distanceA = (a.position - transform.position).sqrMagnitude;
 
@@ -51,6 +64,12 @@ public class TargetSelector_HTY : MonoBehaviour
 
             return distanceA.CompareTo(distanceB);
         });
+
+        if(_currentTarget == null)
+        {
+            _currentTarget = _targets[0];
+        }
+        
     }
 
     private void SelectNextTarget()
@@ -65,6 +84,7 @@ public class TargetSelector_HTY : MonoBehaviour
 
         _currentIndex = targetIndex >= 0? (targetIndex + 1) % _targets.Count:0;
 
+        _currentTarget.GetComponent<SpriteRenderer>().material = GameManager_HTY.Instance._originMat;
         _currentTarget = _targets[_currentIndex];
         _currentTarget.GetComponent<SpriteRenderer>().material = GameManager_HTY.Instance._outLineMat;
 

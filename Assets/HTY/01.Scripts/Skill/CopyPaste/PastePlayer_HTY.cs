@@ -26,17 +26,7 @@ public class PastePlayer_HTY : MonoBehaviour, ISkill_HTY
     {
         if (CanUse())
         {
-            if (_playObj.TryGetComponent<TestPlayerMove_HTY>(out TestPlayerMove_HTY moveCompo))
-            {
-                moveCompo.SetPlay(false);
-                if (_otherObj.TryGetComponent<TestPlayerMove_HTY>(out TestPlayerMove_HTY moveCompoOther))
-                {
-                    moveCompoOther.SetPlay(true);
-                }
-            }
-            GameObject someObj = _playObj;
-            _playObj = _otherObj;
-            _otherObj = someObj;
+            
         }
         else
         {

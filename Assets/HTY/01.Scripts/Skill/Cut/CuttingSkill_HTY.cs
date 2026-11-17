@@ -3,24 +3,19 @@ using UnityEngine.InputSystem;
 
 public class CuttingSkill_HTY : MonoBehaviour, ISkill_HTY
 {
-    public TargetSelector_HTY _targetSelector;
+    private TargetSelector_HTY _targetSelector;
 
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
 
-    private void Start()
-    {
-        Init();
-    }
-
     public void Init()
     {
+        _targetSelector = GetComponentInParent<TargetSelector_HTY>();
         _skillState = SkillState.Cutting;
         _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
 
     public bool CanUse() => true;//나중에 연결할떄 타겟이 null이 아니면 true
-
 
     public void UseSkill()
     {
@@ -37,10 +32,13 @@ public class CuttingSkill_HTY : MonoBehaviour, ISkill_HTY
 
     public void UpdateState()
     {
-        if (Keyboard.current.cKey.wasPressedThisFrame)
+        if (Keyboard.current.yKey.wasPressedThisFrame)
         {
             UseSkill();
         }
+
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+            _targetSelector.TargetDetectAndSelect();
     }
 
     public void Exit()

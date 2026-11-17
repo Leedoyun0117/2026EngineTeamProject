@@ -1,12 +1,17 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public static class Utility_HTY
+public class Utility_HTY : MonoBehaviour 
 {
-    public static Vector3 GetMousePos()
+    [SerializeField] private GameObject _pointerPrefab;
+    public GameObject Pointer_HTY { get; private set; }
+
+    public void OnPointer()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        mousePos.z = 0;
-        return mousePos;
+        Pointer_HTY = Instantiate(_pointerPrefab,GameManager_HTY.Instance._player.transform.position,Quaternion.identity);
+    }
+
+    public void OffPointer()
+    {
+        Destroy(Pointer_HTY);
     }
 }

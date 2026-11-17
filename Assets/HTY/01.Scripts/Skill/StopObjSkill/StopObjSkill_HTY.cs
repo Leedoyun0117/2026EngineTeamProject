@@ -1,53 +1,36 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 {
-    [SerializeField] private TargetSelector_HTY targetSelector;
-    [SerializeField] private Camera mainCamera;
+    private TargetSelector_HTY _targetSelector;
+    private Camera _mainCam;
 
     private Rigidbody2D _otherRb;
     private bool _isStop = false;
     private GameObject _stopObj;
 
-    private RigidbodyType2D _saveBType;
-    private Vector2 _saveVel;
-    private float _saveAngVel;
+    private RigidbodyType2D _saveType;
+    private Vector2 _saveDir;
+    private float _saveAng;
 
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
 
-    private void Awake()
-    {
-        mainCamera = Camera.main;
-    }
-
-    private void Start()
-    {
-        Init();
-    }
-
-    private void Update()
-    {
-        if (_isStop && _stopObj != null)
-        {
-            if (!IsVisible(_stopObj))
-            {
-                ReSetObject();
-            }
-        }
-    }
 
     public void Init()
     {
+        _mainCam = Camera.main;
+        _targetSelector = GetComponentInParent<TargetSelector_HTY>();
         _skillState = SkillState.TimeStop;
         _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
 
     public bool CanUse()
     {
-        if (targetSelector == null)
+        if (_targetSelector == null)
             return false;
-        Transform currentTarget = targetSelector._currentTarget;
+        Transform currentTarget = _targetSelector._currentTarget;
 
         if (currentTarget == null)
             return false;
@@ -59,10 +42,9 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 
     public void UseSkill()
     {
-        if (!CanUse())
-            return;
+        if (!CanUse()) return;
 
-        GameObject target =targetSelector._currentTarget.gameObject;
+        GameObject target =_targetSelector._currentTarget.gameObject;
 
         if (_isStop)
         {
@@ -73,9 +55,7 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
         StopObject(target);
     }
 
-    
-
-    private void StopObject(GameObject target)
+    private void StopObject(GameObject target)//멈추기 용
     {
         Rigidbody2D rb = target.GetComponent<Rigidbody2D>();
 
@@ -83,9 +63,9 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 
         _otherRb = rb;
         _stopObj = target;
-        _saveVel = rb.linearVelocity;
-        _saveAngVel = rb.angularVelocity;
-        _saveBType = rb.bodyType;
+        _saveDir = rb.linearVelocity;
+        _saveAng = rb.angularVelocity;
+        _saveType = rb.bodyType;
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
         rb.bodyType = RigidbodyType2D.Kinematic;
@@ -93,13 +73,13 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
         _isStop = true;
     }
 
-    private void ReSetObject()
+    private void ReSetObject()//돌아오기용
     {
         if (_otherRb != null)
         {
-            _otherRb.bodyType = _saveBType;
-            _otherRb.linearVelocity = _saveVel;
-            _otherRb.angularVelocity = _saveAngVel;
+            _otherRb.bodyType = _saveType;
+            _otherRb.linearVelocity = _saveDir;
+            _otherRb.angularVelocity = _saveAng;
         }
 
         _isStop = false;
@@ -107,32 +87,45 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
         _otherRb = null;
     }
 
-    private bool IsVisible(GameObject target)
+    private bool IsVisible(GameObject target)//화면 처리
     {
         if (target == null) return false;
 
-        Vector3 screenPos = mainCamera.WorldToViewportPoint(target.transform.position);
+        Vector3 screenPos = _mainCam.WorldToViewportPoint(target.transform.position);
 
         return screenPos.z > 0 && screenPos.x >= 0 && screenPos.x <= 1 && screenPos.y >= 0 && screenPos.y <= 1;
     }
 
-    private void OnDisable()
-    {
-        ReSetObject();
-    }
-
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        _isStop = false;
+        _stopObj = null;
+        _saveType = RigidbodyType2D.Dynamic;
+        _saveDir = Vector2.zero;
+        _saveAng = 0;
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void UpdateState()
     {
-        throw new System.NotImplementedException();
+        if (_isStop && _stopObj != null)
+        {
+            if (!IsVisible(_stopObj))
+            {
+                ReSetObject();
+            }
+        }
+
+        if (Keyboard.current.yKey.wasPressedThisFrame)
+        {
+            UseSkill();
+        }
+
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+            _targetSelector.TargetDetectAndSelect();
     }
 }
