@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class OpacityPlayer_HTY : MonoBehaviour, ISkill_HTY
+public class OpacitySkill_HTY : MonoBehaviour, ISkill_HTY
 {
-    public TargetSelector_HTY _targetSelector;
+    private TargetSelector_HTY _targetSelector;
     private bool _isOpacity;
 
     public SkillSo_HTY _skillSO { get; set; }
@@ -10,13 +11,9 @@ public class OpacityPlayer_HTY : MonoBehaviour, ISkill_HTY
 
     public bool CanUse() => true;
 
-    private void Start()
-    {
-        Init();
-    }
-
     public void Init()
     {
+        _targetSelector = GetComponentInParent<TargetSelector_HTY>();
         _skillState = SkillState.Opacity;
         _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
@@ -34,16 +31,18 @@ public class OpacityPlayer_HTY : MonoBehaviour, ISkill_HTY
 
     public void Enter()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void Exit()
-    {
-        throw new System.NotImplementedException();
+        
     }
 
     public void UpdateState()
     {
-        throw new System.NotImplementedException();
+        if (Keyboard.current.yKey.wasPressedThisFrame)
+            UseSkill();
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+            _targetSelector.TargetDetectAndSelect();
+    }
+
+    public void Exit()
+    {
     }
 }

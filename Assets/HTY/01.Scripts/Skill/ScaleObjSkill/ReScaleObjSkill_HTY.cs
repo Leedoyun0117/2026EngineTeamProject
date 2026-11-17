@@ -1,20 +1,17 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ReScaleObjSkill_HTY : MonoBehaviour, ISkill_HTY
 {
-    [SerializeField] private TargetSelector_HTY _targetSelector;
+    private TargetSelector_HTY _targetSelector;
 
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
 
 
-    private void Start()
-    {
-        Init();
-    }
-
     public void Init()
     {
+        _targetSelector = GetComponentInParent<TargetSelector_HTY>();
         _skillState = SkillState.ReSizeObj;
         _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
@@ -44,16 +41,19 @@ public class ReScaleObjSkill_HTY : MonoBehaviour, ISkill_HTY
 
     public void Enter()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void Exit()
-    {
-        throw new System.NotImplementedException();
+        
     }
 
     public void UpdateState()
     {
-        throw new System.NotImplementedException();
+        if(Keyboard.current.yKey.wasPressedThisFrame)
+            UseSkill();
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+            _targetSelector.TargetDetectAndSelect();
+    }
+
+    public void Exit()
+    {
+        
     }
 }

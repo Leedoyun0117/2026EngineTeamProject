@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class SkillManager_HTY : MonoBehaviour
 {
     public List<ISkill_HTY> _skillList = new();
     public Dictionary<SkillSo_HTY, ISkill_HTY> _skillDict = new();
-    public SkillSo_HTY _currentSkill;
+    private SkillSo_HTY _currentSkill;
 
     private void Start()
     {
