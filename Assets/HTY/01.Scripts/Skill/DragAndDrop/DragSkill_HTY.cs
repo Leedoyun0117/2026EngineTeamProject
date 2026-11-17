@@ -1,19 +1,15 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
 {
     private FixedJoint2D _joint;
     private bool _canDrag;
-    [SerializeField] private float _maxDistance = 2.0f;
+    private float _maxDistance = 2.0f;
     private GameObject _dragObj;
 
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
-
-    private void Start()
-    {
-        Init();
-    }
 
     public void Init()
     {
@@ -35,9 +31,34 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
         }
     }
 
-
-    private void Update()
+    public void Enter()
     {
+        _joint.connectedBody = null;
+        _joint.enabled = false;
+        _dragObj = null;
+        _canDrag = false;
+    }
+
+    public void Exit()
+    {
+        if (_dragObj == null) return;
+        if (_dragObj.TryGetComponent(out DragObj Obj))
+        {
+            _joint.connectedBody = null;
+            _joint.enabled = false;
+            _dragObj = null;
+            _canDrag = false;
+            Obj._rb.mass = 1000;
+        }
+    }
+
+    public void UpdateState()
+    {
+        if(Keyboard.current.yKey.wasPressedThisFrame)
+            UseSkill();
+
+
+
         if (_joint.connectedBody == null)
         {
             if (CanUse())
@@ -69,20 +90,5 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
                 }
             }
         }
-    }
-
-    public void Enter()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Exit()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void UpdateState()
-    {
-        throw new System.NotImplementedException();
     }
 }

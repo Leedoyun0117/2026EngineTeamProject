@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c0667e324d5644cae0ab3c092fb6a7, type: 3}
   m_Name: SkillListSo_HTY
   m_EditorClassIdentifier: Assembly-CSharp::SkillListSo_HTY
-  _stateList: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
+  _stateList: 020000000400000005000000060000000700000008000000090000000a000000
   _skillSoList:
-  - {fileID: 11400000, guid: 90e945e28939fd64ca13bbf933dbf83a, type: 2}
   - {fileID: 11400000, guid: 3490dff776d39724a8f0d47d30703e84, type: 2}
-  - {fileID: 11400000, guid: 7d1221673ff388049a8154cd1f8945c8, type: 2}
   - {fileID: 11400000, guid: 6a6e0dc0e23635c40adbc83580089bcf, type: 2}
   - {fileID: 11400000, guid: cd0b2b4360a436b47807242873cedf01, type: 2}
   - {fileID: 11400000, guid: d94abec47d862174ca6a8a07f2de143f, type: 2}
