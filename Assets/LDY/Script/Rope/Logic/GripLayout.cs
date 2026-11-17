@@ -1,6 +1,7 @@
 using UnityEngine;
 
 namespace LDY.Script {
+    // 스프라이트 픽셀 좌표(왼쪽 위 원점)를 피벗 기준 월드/로컬 오프셋으로 바꾸는 변환기.
     public readonly struct GripLayout {
         private const float PixelCenter = 0.5f;
 
@@ -19,24 +20,29 @@ namespace LDY.Script {
             return new GripLayout(_pixelsPerUnit / Mathf.Max(Mathf.Abs(scale), Mathf.Epsilon), _pivotPixel, _handPixel);
         }
 
+        // 손의 피벗 기준 로컬 위치
         public Vector2 HandLocal(bool flipped) {
             return Local(_handPixel, flipped);
         }
 
+        // 픽셀 -> 피벗 기준 로컬(픽셀 중심 보정, y축 뒤집기, 좌우 반전)
         public Vector2 Local(Vector2 pixel, bool flipped) {
             var x = (pixel.x + PixelCenter - _pivotPixel.x) / _pixelsPerUnit;
             var y = (_pivotPixel.y - pixel.y - PixelCenter) / _pixelsPerUnit;
             return new Vector2(flipped ? -x : x, y);
         }
 
+        // 손 기준 해당 픽셀까지의 오프셋을 radians만큼 회전
         public Vector2 OffsetFromHand(Vector2 pixel, bool flipped, float radians) {
             return Rotate(Local(pixel, flipped) - HandLocal(flipped), radians);
         }
 
+        // 손의 월드 위치에서 해당 픽셀의 월드 위치
         public Vector2 PointWorld(Vector2 handWorld, Vector2 pixel, bool flipped, float radians) {
             return handWorld + OffsetFromHand(pixel, flipped, radians);
         }
 
+        // 2D 벡터 회전
         public static Vector2 Rotate(Vector2 value, float radians) {
             var sin = Mathf.Sin(radians);
             var cos = Mathf.Cos(radians);

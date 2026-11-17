@@ -1,0 +1,315 @@
+{
+ "tileset_stage1": {
+  "size": [
+   160,
+   240
+  ],
+  "tile": 40,
+  "layout": [
+   [
+    "ground_top_L",
+    "ground_top_C",
+    "ground_top_R",
+    "ground_top_LR"
+   ],
+   [
+    "ground_mid_L",
+    "ground_mid_C",
+    "ground_mid_R",
+    "ground_mid_LR"
+   ],
+   [
+    "ground_bottom_L",
+    "ground_bottom_C",
+    "ground_bottom_R",
+    "ground_bottom_LR"
+   ],
+   [
+    "ground_strip_L",
+    "ground_strip_C",
+    "ground_strip_R",
+    "ground_strip_LR"
+   ],
+   [
+    "platform_L",
+    "platform_C",
+    "platform_R",
+    "platform_single"
+   ],
+   [
+    "spike_up",
+    "spike_down",
+    "spike_left",
+    "spike_right"
+   ]
+  ],
+  "note": "40px grid (1 tile = 1 unit at PPU 40). Ground uses 4-bit edge set; platform is one-way (top 10px)."
+ },
+ "button": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 2,
+  "tags": [
+   "idle",
+   "pressed"
+  ],
+  "note": "40x20, bottom plate sits on the ground"
+ },
+ "long_press_button": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 6,
+  "tags": [
+   "idle",
+   "hold",
+   "done"
+  ],
+  "note": "hold: one LED per step; set step time in code to the required hold time / 4"
+ },
+ "signal_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 6,
+  "tags": [
+   "on",
+   "disappear",
+   "off",
+   "appear"
+  ],
+  "note": "appear ends on frame 5, then play on"
+ },
+ "signal_floor": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 6,
+  "tags": [
+   "on",
+   "disappear",
+   "off",
+   "appear"
+  ],
+  "note": "40x20, collider = top 10px"
+ },
+ "moving_platform_h": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "40x20, 9-slice border L/R 6px, use Tiled draw mode for wider platforms; collider top 10px"
+ },
+ "moving_platform_v": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "same as moving_platform_h, up/down arrows"
+ },
+ "rotating_platform": {
+  "size": [
+   120,
+   20
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "120x20, pivot = centre (60,10)"
+ },
+ "rotating_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "40x40, pivot = centre"
+ },
+ "guillotine_frame": {
+  "size": [
+   56,
+   120
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "56x120, posts are inner-spaced for the 48px blade"
+ },
+ "guillotine_blade": {
+  "size": [
+   48,
+   30
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "48x30, kill hitbox = steel edge (lower 16px)"
+ },
+ "gear": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 4,
+  "tags": [
+   "spin"
+  ],
+  "note": "40x40 saw gear, 8 teeth; loop spin"
+ },
+ "cannon": {
+  "size": [
+   48,
+   40
+  ],
+  "frames": 4,
+  "tags": [
+   "idle",
+   "fire"
+  ],
+  "note": "48x40, faces right; muzzle at (39,19). Rotate the object for other directions"
+ },
+ "cannonball_cd": {
+  "size": [
+   12,
+   12
+  ],
+  "frames": 4,
+  "tags": [
+   "spin"
+  ],
+  "note": "12x12 mini CD projectile"
+ },
+ "box_cd_case": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "40x40 pushable box (CD jewel case)"
+ },
+ "breakable_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 5,
+  "tags": [
+   "intact",
+   "crack1",
+   "crack2",
+   "shatter"
+  ],
+  "note": "disable collider when shatter starts"
+ },
+ "cut_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 4,
+  "tags": [
+   "idle",
+   "cut"
+  ],
+  "note": "disable collider when cut starts"
+ },
+ "ghost_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 3,
+  "tags": [
+   "solid",
+   "to_clear",
+   "clear"
+  ],
+  "note": "transparency block"
+ },
+ "wall_barrier": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 5,
+  "tags": [
+   "idle",
+   "vanish"
+  ],
+  "note": "button-door wall; last frame is empty"
+ },
+ "goal_music_file": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 4,
+  "tags": [
+   "idle"
+  ],
+  "note": "goal (file) with sparkle loop"
+ },
+ "ui_pause": {
+  "size": [
+   32,
+   32
+  ],
+  "frames": 4,
+  "tags": [
+   "idle"
+  ],
+  "note": "absorbable UI: 일시정지; 32x32, marching-ants frame loops"
+ },
+ "ui_cut": {
+  "size": [
+   32,
+   32
+  ],
+  "frames": 4,
+  "tags": [
+   "idle"
+  ],
+  "note": "absorbable UI: 자르기; 32x32, marching-ants frame loops"
+ },
+ "ui_drag": {
+  "size": [
+   32,
+   32
+  ],
+  "frames": 4,
+  "tags": [
+   "idle"
+  ],
+  "note": "absorbable UI: 드래그 앤 드롭; 32x32, marching-ants frame loops"
+ },
+ "ui_zoom": {
+  "size": [
+   32,
+   32
+  ],
+  "frames": 4,
+  "tags": [
+   "idle"
+  ],
+  "note": "absorbable UI: 확대·축소; 32x32, marching-ants frame loops"
+ },
+ "ui_alpha": {
+  "size": [
+   32,
+   32
+  ],
+  "frames": 4,
+  "tags": [
+   "idle"
+  ],
+  "note": "absorbable UI: 투명도; 32x32, marching-ants frame loops"
+ }
+}
