@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 857499356243254538}
   - component: {fileID: 798714095594226140}
   - component: {fileID: 4628340695903815511}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: Hazard
   m_TagString: Untagged
   m_Icon: {fileID: 0}

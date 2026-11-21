@@ -188,10 +188,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a657b57b708441ec96905b6192c54449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayerJump
-  jumpSpeed: 16
+  jumpSpeed: 11
   maxJumpHoldTime: 0.5
   groundCheck: {fileID: 4858722054392970039}
-  groundCheckSize: {x: 1, y: 0.25}
+  groundCheckSize: {x: 0.5, y: 0.25}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
