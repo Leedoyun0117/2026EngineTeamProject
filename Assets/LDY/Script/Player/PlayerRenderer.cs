@@ -14,6 +14,7 @@ namespace LDY.Script {
         private PoseSourceSet _pose;
         private SpriteFramePlayer _player;
         private bool _ready;
+        private bool _landAvailable;
 
         private IPlayerMotionSource _source;
 
@@ -46,6 +47,7 @@ namespace LDY.Script {
             _alt = alt;
             _pose = new PoseSourceSet(grab, rowMove, rope);
             _ready = true;
+            _landAvailable = animSet.Has(PlayerAnimId.Land);
             Play(_machine.Current, 0);
         }
 
@@ -63,7 +65,8 @@ namespace LDY.Script {
             var velocity = _source.Velocity;
 
             var input = new PlayerAnimInput(velocity, _source.IsGrounded, _source.IsInputLocked, dt,
-                _player.Finished, _player.Frame, _pose.IsGrabbing, _pose.RowMove, _pose.IsRopeHanging);
+                _player.Finished, _player.Frame, _pose.IsGrabbing, _pose.RowMove, _pose.IsRopeHanging,
+                _landAvailable);
             var id = _machine.Tick(input);
             if (_machine.Changed)
                 Play(id, _machine.EntryFrame);

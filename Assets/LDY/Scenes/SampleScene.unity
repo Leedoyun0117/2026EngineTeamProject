@@ -195,10 +195,6 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8120000000000000004, guid: 65b933f5f82ec99458c601f66f4f7bd2, type: 3}
-      propertyPath: animSet
-      value: 
-      objectReference: {fileID: 11400000, guid: ffea8a995f7a29941b52c97429c52749, type: 2}
     - target: {fileID: 8873279029567852155, guid: 65b933f5f82ec99458c601f66f4f7bd2, type: 3}
       propertyPath: m_SortingOrder
       value: 6

@@ -28,6 +28,20 @@ namespace LDY.StageEditor {
             report.Print("LDY Stage1 ArtTest");
         }
 
+        [MenuItem("LDY/Stage1/Apply Guitar Pendulum")]
+        private static void ApplyGuitarPendulum() {
+            var report = new SetupReport();
+            try {
+                var art = new AsepriteArtLoader(new ArtLocator());
+                new VariantBuilder(new VariantContext(art)).Build(report, "Guillotine");
+            }
+            finally {
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                report.Print("LDY Stage1 Guitar Pendulum");
+            }
+        }
+
         private static void Run(SetupReport report) {
             StagePaths.EnsureFolder(StagePaths.Prefabs);
             StagePaths.EnsureFolder(StagePaths.Tiles);

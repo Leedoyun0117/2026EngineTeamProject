@@ -76,28 +76,12 @@ namespace LDY.StageEditor {
     }
 
     internal sealed class GuillotineVariant : IVariantRecipe {
-        private const float KillEdgeUnits = 16f / 40f;
-
         public string SourceName => "Guillotine";
-        public string[] RequiredArt => new[] { "guillotine_blade" };
+        public string[] RequiredArt => new[] { "axe_guillotine_anchor", "axe_guillotine_chain", "guitar_pendulum_body" };
 
         public void Apply(GameObject root, GameObject source, VariantContext context) {
-            var blade = ObjectTools.FindDeep(root.transform, "GameObject");
-            if (blade == null) return;
-            var art = context.Art("guillotine_blade");
-            blade.localScale = Vector3.one;
-            ObjectTools.SetSprite(blade.gameObject, art.First);
-
-            var polygon = blade.GetComponent<PolygonCollider2D>();
-            if (polygon == null) return;
-            var half = art.SizeUnits * 0.5f;
-            polygon.pathCount = 1;
-            polygon.SetPath(0, new[] {
-                new Vector2(-half.x, -half.y),
-                new Vector2(half.x, -half.y),
-                new Vector2(half.x, -half.y + KillEdgeUnits),
-                new Vector2(-half.x, -half.y + KillEdgeUnits)
-            });
+            new GuitarPendulumBuilder().Build(root, context.Art("axe_guillotine_anchor"),
+                context.Art("axe_guillotine_chain"), context.Art("guitar_pendulum_body"));
         }
     }
 
@@ -158,9 +142,10 @@ namespace LDY.StageEditor {
             _context = context;
         }
 
-        public IReadOnlyList<string> Build(SetupReport report) {
+        public IReadOnlyList<string> Build(SetupReport report, string onlySourceName = null) {
             var built = new List<string>();
             foreach (var recipe in Recipes) {
+                if (onlySourceName != null && recipe.SourceName != onlySourceName) continue;
                 var source = FindTeamPrefab(recipe.SourceName);
                 if (source == null) {
                     report.Skipped($"Variant {recipe.SourceName}: 팀원 프리팹을 찾지 못함");
