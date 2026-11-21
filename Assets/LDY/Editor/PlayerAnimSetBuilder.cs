@@ -12,6 +12,10 @@ namespace LDY.Script {
         public const string SetPath = "Assets/LDY/Data/PlayerAnimSet.asset";
         public const string AsepriteV2Path = "Assets/LDY/Sprites/Character/player_anim_pinkV2.aseprite";
         public const string SetV2Path = "Assets/LDY/Data/PlayerAnimSetV2.asset";
+        public const string CursorSetPath = "Assets/LDY/Data/PlayerAnimSet_Cursor.asset";
+
+        // idle의 110ms 눈 깜빡임 프레임(전체 인덱스 2)
+        private const int CursorAltFrame = 2;
 
         // 기존 aseprite 임포트 설정(Pixels Per Unit 100)과 같다.
         private const float ExpectedPpu = 100f;
@@ -37,9 +41,8 @@ namespace LDY.Script {
             new(PlayerAnimId.RopeClimbDown, 39, true, 110, 120, 110, 120)
         };
 
-        private static readonly Source Original = new(AsepritePath, SetPath, 33, BaseTags);
-        private static readonly Source V2 = new(AsepriteV2Path, SetV2Path, 43, Concat(BaseTags, RopeTags));
-
+        private static readonly Source Original = new(AsepritePath, SetPath, 33, BaseTags, 1);
+        private static readonly Source V2 = new(AsepriteV2Path, SetV2Path, 43, Concat(BaseTags, RopeTags), 1);
         [MenuItem("LDY/Build Player Anim Set")]
         public static void Build() {
             Build(Original);
@@ -50,13 +53,34 @@ namespace LDY.Script {
             Build(V2);
         }
 
+        public static bool BuildCursor() {
+            var report = new List<string>();
+            if (!CursorAssetLocator.TryFind(CursorAssetLocator.CursorFile, out var path, report)) {
+                Debug.LogError($"[PlayerAnimSetBuilder] {string.Join("\n", report)}");
+                return false;
+            }
+
+            return Build(new Source(path, CursorSetPath, 0, Array.Empty<Tag>(), CursorAltFrame, CursorTagSpecs.All));
+        }
+
         // 편집기 메뉴 밖에서 고른 aseprite 경로로 V2 세트를 만든다.
         public static bool BuildV2From(string asepritePath) {
-            return Build(new Source(asepritePath, SetV2Path, V2.FrameCount, V2.Tags));
+            return Build(new Source(asepritePath, SetV2Path, V2.FrameCount, V2.Tags, V2.AltFrame));
         }
 
         private static bool Build(Source source) {
+            AsepriteTagInfo info = null;
+            if (source.Specs != null) {
+                if (!TryReadInfo(source, out info))
+                    return false;
+
+                source = source.WithFile(info);
+            }
+
             if (!TryCollectFrames(source, out var frames))
+                return false;
+
+            if (info != null && !TryValidateTags(source, info, frames))
                 return false;
 
             var entries = new List<PlayerAnimSet.Entry>();
@@ -75,24 +99,52 @@ namespace LDY.Script {
             }
 
             set.Clips = entries.ToArray();
-            // 인스펙터에서 바꾼 값을 덮어쓰지 않도록 비어 있을 때만 idle의 눈 깜빡임 프레임(전체 인덱스 1)으로 채운다.
+            // 인스펙터에서 바꾼 값을 덮어쓰지 않도록 비어 있을 때만 idle의 눈 깜빡임 프레임으로 채운다.
             if (set.AltSprite == null)
-                set.AltSprite = frames[1];
+                set.AltSprite = frames[source.AltFrame];
             EditorUtility.SetDirty(set);
             AssetDatabase.SaveAssets();
             Debug.Log($"[PlayerAnimSetBuilder] {source.SetPath} 갱신 완료 ({entries.Count}개 클립)");
             return true;
         }
 
+        private static bool TryReadInfo(Source source, out AsepriteTagInfo info) {
+            if (AsepriteTagParser.TryParse(File.ReadAllBytes(source.AsepritePath), out info, out var error))
+                return true;
+
+            Debug.LogError($"[PlayerAnimSetBuilder] 중단: {source.AsepritePath} 태그를 읽지 못함 ({error})");
+            return false;
+        }
+
+        // 파일의 태그 범위와 임포터가 만든 스프라이트 번호가 어긋나면 어떤 태그가 어긋났는지 출력하고 중단한다.
+        private static bool TryValidateTags(Source source, AsepriteTagInfo info, Sprite[] frames) {
+            var present = new bool[frames.Length];
+            for (var i = 0; i < frames.Length; i++)
+                present[i] = frames[i] != null;
+
+            var names = new List<string>();
+            foreach (var spec in source.Specs)
+                names.Add(spec.Name);
+
+            var errors = TagRangeValidator.Validate(info, present, names);
+            if (errors.Count == 0)
+                return true;
+
+            Debug.LogError($"[PlayerAnimSetBuilder] 중단: {source.AsepritePath} 태그 범위가 스프라이트와 어긋남\n- {string.Join("\n- ", errors)}");
+            return false;
+        }
+
         // 프레임 이름/개수/순서 또는 임포트 설정이 어긋나면 에러를 내고 중단한다.
         private static bool TryCollectFrames(Source source, out Sprite[] frames) {
             frames = new Sprite[source.FrameCount];
             var errors = new List<string>();
+            var names = new List<string>();
 
             foreach (var asset in AssetDatabase.LoadAllAssetsAtPath(source.AsepritePath)) {
                 if (!(asset is Sprite sprite))
                     continue;
 
+                names.Add(sprite.name);
                 var match = FrameName.Match(sprite.name);
                 if (!match.Success) {
                     errors.Add($"예상하지 못한 스프라이트 이름: {sprite.name}");
@@ -118,7 +170,8 @@ namespace LDY.Script {
             if (errors.Count == 0)
                 return true;
 
-            Debug.LogError($"[PlayerAnimSetBuilder] 중단: {source.AsepritePath}\n- {string.Join("\n- ", errors)}");
+            Debug.LogError($"[PlayerAnimSetBuilder] 중단: {source.AsepritePath}\n- {string.Join("\n- ", errors)}"
+                           + $"\n실제 스프라이트 {names.Count}개: {string.Join(", ", names)}");
             return false;
         }
 
@@ -145,12 +198,28 @@ namespace LDY.Script {
             public readonly string SetPath;
             public readonly int FrameCount;
             public readonly Tag[] Tags;
+            public readonly int AltFrame;
+            public readonly TagSpec[] Specs;
 
-            public Source(string asepritePath, string setPath, int frameCount, Tag[] tags) {
+            public Source(string asepritePath, string setPath, int frameCount, Tag[] tags, int altFrame,
+                TagSpec[] specs = null) {
                 AsepritePath = asepritePath;
                 SetPath = setPath;
                 FrameCount = frameCount;
                 Tags = tags;
+                AltFrame = altFrame;
+                Specs = specs;
+            }
+
+            // 태그 범위와 프레임 시간을 파일에서 읽은 값으로 채운 복사본. 범위 검증은 따로 한다.
+            public Source WithFile(AsepriteTagInfo info) {
+                var tags = new List<Tag>();
+                foreach (var spec in Specs)
+                    foreach (var tag in info.Tags)
+                        if (tag.Name == spec.Name && tag.From >= 0 && tag.To >= tag.From && tag.To < info.FrameCount)
+                            tags.Add(Tag.FromFile(spec, tag, info));
+
+                return new Source(AsepritePath, SetPath, info.FrameCount, tags.ToArray(), AltFrame, Specs);
             }
         }
 
@@ -167,6 +236,14 @@ namespace LDY.Script {
                 Seconds = new float[ms.Length];
                 for (var i = 0; i < ms.Length; i++)
                     Seconds[i] = ms[i] / 1000f;
+            }
+
+            public static Tag FromFile(TagSpec spec, AsepriteTag tag, AsepriteTagInfo info) {
+                var ms = new float[tag.Length];
+                for (var i = 0; i < ms.Length; i++)
+                    ms[i] = info.DurationsMs[tag.From + i];
+
+                return new Tag(spec.Id, tag.From, spec.Loop, ms);
             }
         }
     }

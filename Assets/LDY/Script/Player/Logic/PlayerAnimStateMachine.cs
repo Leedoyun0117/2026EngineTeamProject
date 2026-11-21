@@ -11,10 +11,12 @@ namespace LDY.Script {
         public readonly bool Grabbing;
         public readonly bool RopeHanging;
         public readonly RowMoveDirection RowMove;
+        public readonly bool LandAvailable;
 
         public PlayerAnimInput(Vector2 velocity, bool grounded, bool locked, float deltaTime,
             bool clipFinished, int clipFrame, bool grabbing = false, RowMoveDirection rowMove = RowMoveDirection.None,
-            bool ropeHanging = false) {
+            bool ropeHanging = false, bool landAvailable = false) {
+            LandAvailable = landAvailable;
             Velocity = velocity;
             Grounded = grounded;
             Locked = locked;
@@ -31,6 +33,7 @@ namespace LDY.Script {
         private readonly AirStateTracker _air;
         private readonly PlayerAnimRules _rules;
         private float _idleTimer;
+        private bool _airborne;
 
         public PlayerAnimStateMachine(PlayerAnimRules rules) {
             _rules = rules;
@@ -47,17 +50,20 @@ namespace LDY.Script {
 
             if (input.RopeHanging) {
                 _air.Reset();
+                _airborne = false;
                 Enter(RopePose.For(input.RowMove));
                 return Current;
             }
 
             if (input.Grabbing) {
                 _air.Reset();
+                _airborne = false;
                 Enter(PlayerAnimId.Grab);
                 return Current;
             }
 
             if (_air.TryResolve(input, out var airState)) {
+                _airborne = input.RowMove == RowMoveDirection.None;
                 Enter(airState);
                 return Current;
             }
@@ -65,7 +71,19 @@ namespace LDY.Script {
             var speed = Mathf.Abs(input.Velocity.x);
             var moving = speed >= _rules.idleSpeedThreshold;
 
+            var landed = _airborne;
+            _airborne = false;
+            if (landed && input.LandAvailable && !moving) {
+                Enter(PlayerAnimId.Land);
+                return Current;
+            }
+
             switch (Current) {
+                case PlayerAnimId.Land:
+                    if (moving || input.ClipFinished)
+                        Enter(Locomotion(speed));
+                    break;
+
                 case PlayerAnimId.StandUp:
                     if (input.ClipFinished)
                         Enter(Locomotion(speed));
