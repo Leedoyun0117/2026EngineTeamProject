@@ -10,6 +10,12 @@ namespace LDY.Script {
                 case PlayerAnimId.Land:
                     next = PlayerAnimId.Idle;
                     return true;
+                case PlayerAnimId.Death:
+                    next = PlayerAnimId.Trapped;
+                    return true;
+                case PlayerAnimId.Trapped:
+                    next = PlayerAnimId.Idle;
+                    return true;
                 case PlayerAnimId.Push:
                     next = PlayerAnimId.Walk;
                     return true;

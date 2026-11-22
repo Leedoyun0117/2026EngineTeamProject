@@ -1,3 +1,4 @@
+using LDY.PlayerMerge;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +19,7 @@ namespace LDY.Script {
         private const int CursorAltFrame = 2;
 
         // 기존 aseprite 임포트 설정(Pixels Per Unit 100)과 같다.
-        private const float ExpectedPpu = 100f;
+        private const float DefaultPpu = 100f;
 
         private static readonly Regex FrameName = new(@"^Frame_(\d+)$");
 
@@ -60,7 +61,8 @@ namespace LDY.Script {
                 return false;
             }
 
-            return Build(new Source(path, CursorSetPath, 0, Array.Empty<Tag>(), CursorAltFrame, CursorTagSpecs.All));
+            return Build(new Source(path, CursorSetPath, 0, Array.Empty<Tag>(), CursorAltFrame, CursorTagSpecs.All,
+                PlayerArt.PixelsPerUnit));
         }
 
         // 편집기 메뉴 밖에서 고른 aseprite 경로로 V2 세트를 만든다.
@@ -165,7 +167,7 @@ namespace LDY.Script {
                     errors.Add($"Frame_{i} 가 없음");
 
             if (errors.Count == 0)
-                CheckImportSettings(frames[0], errors);
+                CheckImportSettings(frames[0], source.ExpectedPpu, errors);
 
             if (errors.Count == 0)
                 return true;
@@ -175,9 +177,9 @@ namespace LDY.Script {
             return false;
         }
 
-        private static void CheckImportSettings(Sprite sample, List<string> errors) {
-            if (!Mathf.Approximately(sample.pixelsPerUnit, ExpectedPpu))
-                errors.Add($"PPU가 {sample.pixelsPerUnit} (기대값 {ExpectedPpu}). 임포터 Inspector에서 Pixels Per Unit을 맞추세요");
+        private static void CheckImportSettings(Sprite sample, float expectedPpu, List<string> errors) {
+            if (!Mathf.Approximately(sample.pixelsPerUnit, expectedPpu))
+                errors.Add($"PPU가 {sample.pixelsPerUnit} (기대값 {expectedPpu}). 임포터 Inspector에서 Pixels Per Unit을 맞추세요");
             if (sample.texture.filterMode != FilterMode.Point)
                 errors.Add($"필터 모드가 {sample.texture.filterMode} (기대값 Point)");
 
@@ -200,9 +202,11 @@ namespace LDY.Script {
             public readonly Tag[] Tags;
             public readonly int AltFrame;
             public readonly TagSpec[] Specs;
+            public readonly float ExpectedPpu;
 
             public Source(string asepritePath, string setPath, int frameCount, Tag[] tags, int altFrame,
-                TagSpec[] specs = null) {
+                TagSpec[] specs = null, float expectedPpu = DefaultPpu) {
+                ExpectedPpu = expectedPpu;
                 AsepritePath = asepritePath;
                 SetPath = setPath;
                 FrameCount = frameCount;
@@ -219,7 +223,7 @@ namespace LDY.Script {
                         if (tag.Name == spec.Name && tag.From >= 0 && tag.To >= tag.From && tag.To < info.FrameCount)
                             tags.Add(Tag.FromFile(spec, tag, info));
 
-                return new Source(AsepritePath, SetPath, info.FrameCount, tags.ToArray(), AltFrame, Specs);
+                return new Source(AsepritePath, SetPath, info.FrameCount, tags.ToArray(), AltFrame, Specs, ExpectedPpu);
             }
         }
 

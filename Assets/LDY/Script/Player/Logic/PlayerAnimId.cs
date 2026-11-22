@@ -13,6 +13,8 @@ namespace LDY.Script {
         RopeClimb,
         RopeClimbDown,
         Push,
-        Land
+        Land,
+        Trapped,
+        Death
     }
 }

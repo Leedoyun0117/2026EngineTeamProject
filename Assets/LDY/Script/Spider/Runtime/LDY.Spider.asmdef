@@ -1,0 +1,16 @@
+{
+    "name": "LDY.Spider",
+    "rootNamespace": "LDY.Spider",
+    "references": [
+        "LDY.SpiderLogic"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
