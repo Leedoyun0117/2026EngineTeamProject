@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb675b60ab8837c479abad7348964d73, type: 3}
   m_Name: Drag
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo_HTY
-  skillName: 
-  des: 
-  coolTime: 0
+  skillName: "\uB4DC\uB798\uADF8 & \uB4DC\uB86D"
+  des: "\uC8FC\uBCC0 \uC0AC\uBB3C\uC744 \uC7A1\uC544 \uC6C0\uC9C1\uC785\uB2C8\uB2E4"
+  prefab: {fileID: 938297847385247349, guid: edc727a9cc2449c4fb2d11aab31cb6f8, type: 3}
