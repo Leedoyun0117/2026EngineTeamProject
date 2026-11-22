@@ -8,10 +8,6 @@ public class MovingBlock : MonoBehaviour
     [SerializeField] private float moveDistance = 3f;
     [SerializeField] private float moveDuration = 2f;
     
-    [Header("Push Settings")]
-    [SerializeField] private float blockedSpeedThreshold = 0.05f;
-    [SerializeField] private float blockedDuration = 0.15f;
-    
     private Vector2 _currentDirection;
     private Tween _moveTween;
     

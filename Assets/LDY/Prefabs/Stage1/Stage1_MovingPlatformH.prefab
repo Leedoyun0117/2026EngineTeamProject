@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5120638441260097264}
   m_Layer: 6
   m_Name: Stage1_MovingPlatformH
-  m_TagString: Untagged
+  m_TagString: MovingBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
