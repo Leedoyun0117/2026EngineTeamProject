@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb675b60ab8837c479abad7348964d73, type: 3}
   m_Name: TimeStop
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo_HTY
-  skillName: 
-  des: 
-  coolTime: 0
+  skillName: "\uC2DC\uAC04 \uC815\uC9C0"
+  des: "\uC120\uD0DD\uB41C \uC0AC\uBB3C\uC744 \uC815\uC9C0\uD569\uB2C8\uB2E4"
+  prefab: {fileID: 7577770505021860882, guid: b7be1422aee5ff94b9c04651f445ef86, type: 3}

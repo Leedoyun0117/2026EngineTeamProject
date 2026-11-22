@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb675b60ab8837c479abad7348964d73, type: 3}
   m_Name: Cutting
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo_HTY
-  skillName: 
-  des: 
-  coolTime: 0
+  skillName: "\uC790\uB974\uAE30"
+  des: "\uC120\uD0DD\uD55C \uC0AC\uBB3C\uC744 \uC790\uB985\uB2C8\uB2E4"
+  prefab: {fileID: 3954851874714637466, guid: b22e75498dcf2ea47b76615d6594161b, type: 3}
