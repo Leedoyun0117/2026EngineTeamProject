@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &563092794695800861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7205903339647117694}
+  m_Layer: 3
+  m_Name: AbsorbPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7205903339647117694
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 563092794695800861}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1958505177104004771}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4795741176147510555
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,13 +72,15 @@ GameObject:
   m_Component:
   - component: {fileID: 1958505177104004771}
   - component: {fileID: 2292553430186940250}
+  - component: {fileID: 4308229041950994844}
   - component: {fileID: 3248388300194663053}
   - component: {fileID: 7683471756168471692}
   - component: {fileID: 8433421294336298226}
   - component: {fileID: 5261737706415661176}
   - component: {fileID: 6170050676816018684}
+  - component: {fileID: 3326940700115874584}
+  - component: {fileID: 8882775585133793051}
   - component: {fileID: 1708431226086117192}
-  - component: {fileID: 5072927888159376186}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -72,6 +105,7 @@ Transform:
   - {fileID: 3480614805342516475}
   - {fileID: 8120000000000000002}
   - {fileID: 3611205657020235517}
+  - {fileID: 7205903339647117694}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &2292553430186940250
@@ -100,7 +134,63 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
+--- !u!60 &4308229041950994844
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5369741352164875639}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.011475176, y: 0.6098448}
+      - {x: -0.37083653, y: 0.070955284}
+      - {x: -0.29325622, y: -0.29263502}
+      - {x: -0.15824875, y: -0.28824878}
+      - {x: -0.07649723, y: -0.13929877}
+      - {x: 0.069215536, y: -0.12325421}
+      - {x: 0.1411396, y: -0.2895456}
+      - {x: 0.2633362, y: -0.28876498}
+      - {x: 0.3704526, y: 0.067269646}
+  m_UseDelaunayMesh: 1
 --- !u!114 &3248388300194663053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,10 +240,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a657b57b708441ec96905b6192c54449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayerJump
-  jumpSpeed: 16
+  jumpSpeed: 12
   maxJumpHoldTime: 0.5
   groundCheck: {fileID: 3480614805342516475}
-  groundCheckSize: {x: 1, y: 0.25}
+  groundCheckSize: {x: 0.5, y: 0.1}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -174,8 +264,37 @@ MonoBehaviour:
   interactPoint: {fileID: 3611205657020235517}
   objectLayer:
     serializedVersion: 2
-    m_Bits: 0
-  interactSize: 1
+    m_Bits: 512
+  interactSize: 0.5
+--- !u!114 &3326940700115874584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5369741352164875639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fddfa9d0614f59877307870536c76c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.Player.JJBPlayerAbsorb
+  absorbPoint: {fileID: 7205903339647117694}
+  absorbLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  absorbSize: 0.5
+--- !u!114 &8882775585133793051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5369741352164875639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72497c042c6740eab58f0b4a5834e7e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.Player.JJBPlayerGimmick
 --- !u!114 &1708431226086117192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,43 +325,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!70 &5072927888159376186
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5369741352164875639}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.74, y: 0.61}
-  m_Direction: 0
 --- !u!1 &6096132488470128448
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,7 +564,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -6108610172886080474, guid: 5f31aecef1fd43745a3a5f52603186e5, type: 3}
+  m_Sprite: {fileID: 7606111193268341362, guid: 5f31aecef1fd43745a3a5f52603186e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
