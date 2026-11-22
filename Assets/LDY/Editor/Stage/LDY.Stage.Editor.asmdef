@@ -1,0 +1,23 @@
+{
+    "name": "LDY.Stage.Editor",
+    "rootNamespace": "LDY.StageEditor",
+    "references": [
+        "LDY.StageLogic",
+        "LDY.Stage",
+        "Unity.2D.Tilemap.Extras",
+        "Unity.2D.Tilemap.Editor",
+        "Unity.2D.Sprite.Editor",
+        "Unity.2D.Aseprite.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

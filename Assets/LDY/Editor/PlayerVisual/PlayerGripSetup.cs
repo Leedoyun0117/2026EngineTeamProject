@@ -46,18 +46,8 @@ namespace LDY.Script {
                 AssetDatabase.CreateAsset(profile, ProfilePath);
             }
 
-            profile.Feet = new[] {
-                Foot(33, 48, 54), Foot(34, 47, 54),
-                Foot(35, 48, 54), Foot(36, 48, 54), Foot(37, 48, 53), Foot(38, 48, 54),
-                Foot(39, 48, 54), Foot(40, 48, 53), Foot(41, 48, 54), Foot(42, 48, 54)
-            };
-            EditorUtility.SetDirty(profile);
-            AssetDatabase.SaveAssets();
+            CursorGripProfileUpdater.Apply(profile);
             return profile;
-        }
-
-        private static RopeGripProfile.FootEntry Foot(int frame, float x, float y) {
-            return new RopeGripProfile.FootEntry { frame = frame, pixel = new Vector2(x, y) };
         }
 
         private static SpriteRenderer EnsureHierarchy(Transform visual) {

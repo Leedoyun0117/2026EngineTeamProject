@@ -126,7 +126,7 @@ namespace LDY.Script.Editor {
             var wallpaper = _art.screenWallpaper;
             var arrow = _art.playerCursor;
             // 애니메이션 세트가 있으면 idle 첫 프레임을 초기 스프라이트로 쓴다. 이후에는 PlayerRenderer가 덮어쓴다.
-            var animSet = AssetDatabase.LoadAssetAtPath<PlayerAnimSet>(PlayerAnimSetBuilder.SetPath);
+            var animSet = AssetDatabase.LoadAssetAtPath<PlayerAnimSet>(PlayerAnimSetBuilder.CursorSetPath);
             var idleFrame = animSet != null ? animSet.FirstFrame(PlayerAnimId.Idle) : null;
             if (idleFrame != null)
                 arrow = idleFrame;
@@ -733,10 +733,10 @@ namespace LDY.Script.Editor {
 
         // 플레이어 애니메이션 컴포넌트를 붙이고 PlayerAnimSet을 연결한다. 이미 만들어진 프리팹에도 적용된다.
         private static void ApplyPlayerAnimation() {
-            var animSet = AssetDatabase.LoadAssetAtPath<PlayerAnimSet>(PlayerAnimSetBuilder.SetPath);
+            var animSet = AssetDatabase.LoadAssetAtPath<PlayerAnimSet>(PlayerAnimSetBuilder.CursorSetPath);
             if (animSet == null)
                 Debug.LogWarning(
-                    $"{PlayerAnimSetBuilder.SetPath} 가 없습니다. 'LDY/Build Player Anim Set'을 먼저 실행한 뒤 다시 설정하세요.");
+                    $"{PlayerAnimSetBuilder.CursorSetPath} 가 없습니다. 'LDY/Cursor Character/2. Build Anim Set'을 먼저 실행한 뒤 다시 설정하세요.");
 
             var root = PrefabUtility.LoadPrefabContents(PrefabPath);
             if (root.GetComponent<JJBPlayerMotionSource>() == null)

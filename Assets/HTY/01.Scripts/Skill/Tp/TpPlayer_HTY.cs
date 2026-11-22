@@ -1,18 +1,12 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TpPlayer_HTY : MonoBehaviour, ISkill_HTY
 {
-    [SerializeField] private Transform _player;
-
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
 
     public bool CanUse() => true;
-
-    private void Start()
-    {
-        Init();
-    }
 
     public void Init()
     {
@@ -22,31 +16,35 @@ public class TpPlayer_HTY : MonoBehaviour, ISkill_HTY
 
     public void UseSkill()
     {
+        Vector2 pointer = GameManager_HTY.Instance.GetPointerPos();
         if (CanUse())
         {
-            //Collider2D[] coll = Physics2D.OverlapPointAll(Pointer().position);
-            /*foreach (Collider2D coll2d in coll)
+            Collider2D[] coll = Physics2D.OverlapPointAll(pointer);
+            foreach (Collider2D coll2d in coll)
             {
                 if (coll2d.gameObject.TryGetComponent<TpObj_HTY>(out _))
                 {
-                    //_player.position = Pointer().position;
+                    GameManager_HTY.Instance._player.transform.position = pointer;
                 }
-            }*/
+            }
         }
     }
 
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        GameManager_HTY.Instance._utiltyCompo.OnPointer();
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        GameManager_HTY.Instance._utiltyCompo.OffPointer();
     }
 
     public void UpdateState()
     {
-        throw new System.NotImplementedException();
+        if (Keyboard.current.yKey.wasPressedThisFrame)
+        {
+            UseSkill();
+        }
     }
 }

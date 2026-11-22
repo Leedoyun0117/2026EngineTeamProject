@@ -11,14 +11,9 @@ public class CursorLighting_HTY : MonoBehaviour, ISkill_HTY
     public SkillState _skillState { get; set; }
 
 
-    private void Start()
-    {
-        Init();
-    }
-
     public void Init()
     {
-        _light = GetComponentInChildren<Light2D>();
+        _light = transform.parent.gameObject.GetComponentInChildren<Light2D>();
         _skillState = SkillState.Luminosity;
         _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
@@ -53,6 +48,4 @@ public class CursorLighting_HTY : MonoBehaviour, ISkill_HTY
         _light.enabled = false;
         _isLight = false;
     }
-
-    
 }

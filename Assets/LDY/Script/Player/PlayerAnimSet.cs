@@ -35,12 +35,8 @@ namespace LDY.Script {
 #endif
 
         public PlayerAnimClip Resolve(PlayerAnimId id) {
-            if (TryGet(id, out var clip))
+            if (PlayerAnimFallback.TryResolve(Lookup, id, out var clip))
                 return clip;
-
-            var fallback = RopePose.FallbackFor(id);
-            if (fallback != id && TryGet(fallback, out var fallbackClip))
-                return fallbackClip;
 
             if ((id == PlayerAnimId.Jump || id == PlayerAnimId.Fall) && TryGet(PlayerAnimId.Run, out var run))
                 return _airHold ??= PlayerAnimClip.Hold(run.frames[Mathf.Min(airHoldRunFrame, run.frames.Length - 1)]);
@@ -48,19 +44,29 @@ namespace LDY.Script {
             return null;
         }
 
+        public bool Has(PlayerAnimId id) {
+            return TryGet(id, out _);
+        }
+
         public Sprite FirstFrame(PlayerAnimId id) {
             return TryGet(id, out var clip) ? clip.frames[0] : null;
         }
 
-        private bool TryGet(PlayerAnimId id, out PlayerAnimClip clip) {
-            if (_lookup == null) {
-                _lookup = new Dictionary<PlayerAnimId, PlayerAnimClip>();
-                foreach (var entry in clips)
-                    if (entry.clip != null && entry.clip.IsValid)
-                        _lookup[entry.id] = entry.clip;
-            }
+        private Dictionary<PlayerAnimId, PlayerAnimClip> Lookup {
+            get {
+                if (_lookup == null) {
+                    _lookup = new Dictionary<PlayerAnimId, PlayerAnimClip>();
+                    foreach (var entry in clips)
+                        if (entry.clip != null && entry.clip.IsValid)
+                            _lookup[entry.id] = entry.clip;
+                }
 
-            return _lookup.TryGetValue(id, out clip);
+                return _lookup;
+            }
+        }
+
+        private bool TryGet(PlayerAnimId id, out PlayerAnimClip clip) {
+            return Lookup.TryGetValue(id, out clip);
         }
 
         [Serializable]

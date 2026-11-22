@@ -11,6 +11,8 @@ namespace LDY.Script {
         Grab,
         RopeHang,
         RopeClimb,
-        RopeClimbDown
+        RopeClimbDown,
+        Push,
+        Land
     }
 }
