@@ -5,6 +5,6 @@ public class SkillSo_HTY : ScriptableObject
 {
     public string skillName;
     [TextArea] public string des;
-    public float coolTime;
+    public GameObject prefab;
 }
 
