@@ -1,0 +1,248 @@
+{
+ "tileset_stage2": {
+  "size": [
+   160,
+   240
+  ],
+  "tile": 40,
+  "layout": [
+   [
+    "ground_top_L",
+    "ground_top_C",
+    "ground_top_R",
+    "ground_top_LR"
+   ],
+   [
+    "ground_mid_L",
+    "ground_mid_C",
+    "ground_mid_R",
+    "ground_mid_LR"
+   ],
+   [
+    "ground_bottom_L",
+    "ground_bottom_C",
+    "ground_bottom_R",
+    "ground_bottom_LR"
+   ],
+   [
+    "ground_strip_L",
+    "ground_strip_C",
+    "ground_strip_R",
+    "ground_strip_LR"
+   ],
+   [
+    "platform_L",
+    "platform_C",
+    "platform_R",
+    "platform_single"
+   ],
+   [
+    "spike_up",
+    "spike_down",
+    "spike_left",
+    "spike_right"
+   ]
+  ],
+  "note": "same layout as tileset_stage1: folder ground (4-bit edges), selected-row one-way platform, spikes reused"
+ },
+ "ok_button": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 2,
+  "tags": [
+   "idle",
+   "pressed"
+  ],
+  "note": "40x20 signal button (Win95 OK), bottom pivot on the plate"
+ },
+ "tree_row_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 6,
+  "tags": [
+   "on",
+   "disappear",
+   "off",
+   "appear"
+  ],
+  "note": "40x40 signal block: folder tree rows expand/collapse"
+ },
+ "drop_zone": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 4,
+  "tags": [
+   "idle",
+   "pressed"
+  ],
+  "note": "40x20 button pressed only by a file box; idle = marching dashed outline"
+ },
+ "document_box": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "40x40 pushable/draggable file (stage 2 box)"
+ },
+ "scroll_thumb": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "40x20 elevator platform (scrollbar thumb); collider top 20px"
+ },
+ "scroll_track": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "40x40 elevator rail, tiles vertically (Tiled draw mode); decoration only"
+ },
+ "scroll_arrow_up": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 2,
+  "tags": [
+   "idle",
+   "pressed"
+  ],
+  "note": "40x40 elevator switch (up)"
+ },
+ "scroll_arrow_down": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 2,
+  "tags": [
+   "idle",
+   "pressed"
+  ],
+  "note": "40x40 elevator switch (down)"
+ },
+ "shortcut_platform": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 3,
+  "tags": [
+   "idle",
+   "shake"
+  ],
+  "note": "40x20 falling platform: play shake, then let it fall; collider top 10px"
+ },
+ "error_dialog": {
+  "size": [
+   48,
+   40
+  ],
+  "frames": 3,
+  "tags": [
+   "idle",
+   "fire"
+  ],
+  "note": "48x40 turret, faces right, muzzle at (46,25). Rotate/flip for other directions"
+ },
+ "error_bullet": {
+  "size": [
+   12,
+   12
+  ],
+  "frames": 2,
+  "tags": [
+   "spin"
+  ],
+  "note": "12x12 straight projectile"
+ },
+ "mouse_trap": {
+  "size": [
+   40,
+   20
+  ],
+  "frames": 2,
+  "tags": [
+   "open",
+   "snap"
+  ],
+  "note": "40x20 draggable hazard (spike rules); play snap when the player touches it"
+ },
+ "hidden_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 3,
+  "tags": [
+   "hidden",
+   "reveal",
+   "shown"
+  ],
+  "note": "40x40 hidden folder area; or fade the Tilemap colour alpha with the same look"
+ },
+ "spider_leg_upper": {
+  "size": [
+   150,
+   14
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "150x14 upper leg. Pivot (0,7) goes on a body socket; knee at (149,7)"
+ },
+ "spider_leg_lower": {
+  "size": [
+   250,
+   12
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "250x12 lower needle leg. Pivot (0,6) goes on the knee; stab point = tip (249,6). Sample standing angles (deg, screen clockwise) upper/lower: (-165,119) (-148,90) (-32,89) (-15,58); stab = raise lower to about -15 then drop"
+ },
+ "spider_thread": {
+  "size": [
+   4,
+   40
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "4x40 silk thread, tiles vertically (Tiled) for descending"
+ },
+ "bug_enemy": {
+  "size": [
+   40,
+   24
+  ],
+  "frames": 7,
+  "tags": [
+   "walk",
+   "death"
+  ],
+  "note": "40x24 left-right patrol bug (spider family: black silhouette, red LED eyes, scanline noise, screen-tear on frames 1/3). Faces right, flip for left. Bottom pivot (20,23). death = pixel shatter, last frame then destroy"
+ },
+ "spider_body": {
+  "size": [
+   160,
+   96
+  ],
+  "frames": 2,
+  "tags": [
+   "idle",
+   "glitch"
+  ],
+  "note": "160x96 silhouette body with scanline noise; glitch = screen-tear frame to flash occasionally. Leg sockets (pixel): [(58, 60), (72, 64), (88, 66), (104, 66)]. Pivot = centre"
+ }
+}
