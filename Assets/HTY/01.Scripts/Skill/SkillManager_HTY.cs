@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SkillManager_HTY : MonoBehaviour
 {
@@ -43,6 +44,10 @@ public class SkillManager_HTY : MonoBehaviour
     {
         if (_currentSkill != null)
             _skillDict[_currentSkill].UpdateState();
+
+
+        if (Keyboard.current.yKey.wasPressedThisFrame)
+            SkillDrop();
     }
 
     public void ChangeSkillState(SkillSo_HTY changeSkill)
@@ -55,5 +60,15 @@ public class SkillManager_HTY : MonoBehaviour
 
         if (_currentSkill != null)
             _skillDict[_currentSkill].Enter();
+    }
+
+    public void SkillDrop()
+    {
+        if (_currentSkill != null)
+            _skillDict[_currentSkill].Exit();
+
+        Instantiate(_currentSkill.prefab,transform.position,Quaternion.identity);
+
+        _currentSkill = null;
     }
 }
