@@ -5,7 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Glass
-  - Reverse
+  - Invisible
+  - Visible
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - Spike
+  - 
   - Desk
   - Object
   - Gimmick

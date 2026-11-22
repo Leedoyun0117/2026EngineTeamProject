@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb675b60ab8837c479abad7348964d73, type: 3}
   m_Name: ReSizeObj
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo_HTY
-  skillName: 
-  des: 
-  coolTime: 0
+  skillName: "\uD655\uB300/\uCD95\uC18C"
+  des: "\uC120\uD0DD\uD55C \uBB3C\uCCB4\uB97C \uD655\uB300 \uBC0F \uCD95\uC18C \uC2DC\uD0B5\uB2C8\uB2E4"
+  prefab: {fileID: 3901818847368616791, guid: 3b2b733288e51374c80d6d2542babfab, type: 3}
