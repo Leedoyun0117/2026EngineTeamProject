@@ -5,7 +5,7 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
 {
     private FixedJoint2D _joint;
     private bool _canDrag;
-    private float _maxDistance = 2.0f;
+    private float _detectRange = 2.0f;
     private GameObject _dragObj;
 
     public SkillSo_HTY _skillSO { get; set; }
@@ -16,18 +16,46 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
         _joint = GetComponentInParent<FixedJoint2D>();
         _joint.enabled = false;
         _skillState = SkillState.Drag;
-        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
     }
 
     public bool CanUse() => _canDrag;
 
     public void UseSkill()
     {
-        _canDrag = !_canDrag;
-        if (_canDrag == false)
+        Debug.Log(_canDrag);
+
+
+        if (CanUse())
         {
-            _joint.connectedBody = null;
-            _joint.enabled = false;
+            Collider2D[] _rbColl = Physics2D.OverlapCircleAll(transform.position, _detectRange);
+
+            foreach (Collider2D coll in _rbColl)
+            {
+                if (coll.TryGetComponent(out DragObj Obj))
+                {
+
+                    Debug.Log(0101);
+                    _joint.connectedBody = Obj._rb;
+                    _joint.enabled = true;
+                    _dragObj = Obj.gameObject;
+                    _canDrag = false;
+                    Obj._rb.mass = 10;
+                }
+            }
+        }
+        else
+        {
+            if (_dragObj == null) return;
+
+            if (_dragObj.TryGetComponent(out DragObj Obj))
+            {
+                _joint.connectedBody = null;
+                _joint.enabled = false;
+                _dragObj = null;
+                _canDrag = true;
+                Obj._rb.mass = 1000;
+            }
         }
     }
 
@@ -36,12 +64,13 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
         _joint.connectedBody = null;
         _joint.enabled = false;
         _dragObj = null;
-        _canDrag = false;
+        _canDrag = true;
     }
 
     public void Exit()
     {
         if (_dragObj == null) return;
+
         if (_dragObj.TryGetComponent(out DragObj Obj))
         {
             _joint.connectedBody = null;
@@ -58,27 +87,11 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
             UseSkill();
 
 
-
-        if (_joint.connectedBody == null)
-        {
-            if (CanUse())
-            {
-                Collider2D _rbColl = Physics2D.OverlapCircle(transform.position, _maxDistance);
-                if (_rbColl.gameObject.TryGetComponent(out DragObj Obj))
-                {
-                    _joint.connectedBody = Obj._rb;
-                    _joint.enabled = true;
-                    _dragObj = Obj.gameObject;
-                    _canDrag = true;
-                    Obj._rb.mass = 10;
-                }
-            }
-        }
-        else
+        if(_joint.connectedBody != null)
         {
             float distance = Vector2.Distance(transform.position, _joint.connectedBody.transform.position);
 
-            if (distance > _maxDistance)
+            if (distance > _detectRange)
             {
                 if (_dragObj.TryGetComponent(out DragObj Obj))
                 {
@@ -90,5 +103,11 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
                 }
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, _detectRange);
     }
 }

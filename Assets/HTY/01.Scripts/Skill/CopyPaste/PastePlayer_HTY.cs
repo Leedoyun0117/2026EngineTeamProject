@@ -10,14 +10,14 @@ public class PastePlayer_HTY : MonoBehaviour, ISkill_HTY
 
     private void Start()
     {
-        _playObj = GameManager_HTY.Instance._player;
+        //_playObj = ;
         Init();
     }
 
     public void Init()
     {
         _skillState = SkillState.Paste;
-        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
+        _skillSO = GetComponentInParent<SkillManager_HTY>()._skillSoList._skillDict[_skillState];
     }
 
     public bool CanUse() => _otherObj != null;

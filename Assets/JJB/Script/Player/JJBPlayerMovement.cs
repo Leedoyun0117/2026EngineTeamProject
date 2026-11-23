@@ -6,6 +6,7 @@ namespace JJB.Script.Player
     public class JJBPlayerMovement : MonoBehaviour 
     {
         [SerializeField] [Min(1)] private float moveSpeed;
+        public bool IsPlayObj { get; private set; } = true;
 
         public Rigidbody2D Rb { get; private set; }
 
@@ -16,7 +17,13 @@ namespace JJB.Script.Player
 
         public void Move(float direction) 
         {
+            if (!IsPlayObj) return;
             Rb.linearVelocityX = direction * moveSpeed;
+        }
+
+        public void SetPlay(bool play)
+        {
+            IsPlayObj = play;
         }
     }
 }

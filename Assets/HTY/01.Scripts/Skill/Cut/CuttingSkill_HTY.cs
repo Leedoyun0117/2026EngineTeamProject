@@ -12,7 +12,7 @@ public class CuttingSkill_HTY : MonoBehaviour, ISkill_HTY
     {
         _targetSelector = GetComponentInParent<TargetSelector_HTY>();
         _skillState = SkillState.Cutting;
-        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
     }
 
     public bool CanUse() => true;//나중에 연결할떄 타겟이 null이 아니면 true
@@ -22,6 +22,7 @@ public class CuttingSkill_HTY : MonoBehaviour, ISkill_HTY
         if (_targetSelector._currentTarget != null)//나중에 canskill로 이전하기
         {
             Destroy(_targetSelector._currentTarget.gameObject);
+            _targetSelector.TargetDetectAndSelect();
         }
     }
 

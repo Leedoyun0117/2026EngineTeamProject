@@ -32,7 +32,7 @@ public class CursorResize_HTY : MonoBehaviour
     public void Init()
     {
         _skillState = SkillState.ReSize;
-        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
+        //_skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
     }
 
     public bool CanUse()

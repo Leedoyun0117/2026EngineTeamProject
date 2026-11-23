@@ -1,16 +1,19 @@
+using JJB.Script.Player;
+using UnityEditor.Searcher;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CopyPlayer_HTY : MonoBehaviour, ISkill_HTY
 {
     [Header("CopySetting")]
-    private GameObject _playerPrefab;
+    [SerializeField] private GameObject _playerPrefab;
     private bool _canCopy = true;
     private GameObject _currentCopyObj;
     private CopyState _currentState;
 
     private GameObject _playerObj;
     private GameObject _copyObj;
+    private bool _isPlayerControll = true;
 
     public enum CopyState
     {
@@ -25,17 +28,14 @@ public class CopyPlayer_HTY : MonoBehaviour, ISkill_HTY
 
     public void Init()
     {
-        _playerPrefab = GameManager_HTY.Instance._playerPrefab;
-        _playerObj = GameManager_HTY.Instance._player;
+        _playerObj = transform.parent.gameObject;
         _skillState = SkillState.Copy;
-        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
     }
 
     public void UseSkill()
     {
-        
-
-        Vector2 pointer = GameManager_HTY.Instance._utiltyCompo.Pointer_HTY.transform.position;
+        Vector2 pointer = SkillManager_HTY.Instance.GetPointerPos();
 
         _currentState = _copyObj == null ? CopyState.Copy : CopyState.Paste;
 
@@ -44,32 +44,37 @@ public class CopyPlayer_HTY : MonoBehaviour, ISkill_HTY
             if (!CanUse()) return;
 
             _currentCopyObj = Instantiate(_playerPrefab, pointer, Quaternion.identity);
-            _currentCopyObj.GetComponent<TestPlayerMove_HTY>().SetPlay(false);//이동 컴포 바꾸기
+            _currentCopyObj.GetComponent<JJBPlayerMovement>().SetPlay(false);//이동 컴포 바꾸기
             _copyObj = _currentCopyObj;
             _canCopy = false;
             _currentState = CopyState.Paste;
         }
         else if( _currentState == CopyState.Paste) //paste모드
         {
-            if (_playerObj.TryGetComponent(out TestPlayerMove_HTY moveCompo))
+            _isPlayerControll = !_isPlayerControll;
+
+            if (_playerObj.TryGetComponent(out JJBPlayerMovement moveCompo))
             {
-                moveCompo.SetPlay(false);
-                if (_copyObj.TryGetComponent(out TestPlayerMove_HTY moveCompoOther))
-                {
-                    moveCompoOther.SetPlay(true);
-                }
+                moveCompo.Rb.simulated = _isPlayerControll;
+                if (!_isPlayerControll) moveCompo.Move(0);
+                moveCompo.SetPlay(_isPlayerControll);
             }
-            GameObject someObj = _playerObj;
-            _playerObj = _copyObj;
-            _copyObj = someObj;
+
+            if (_copyObj.TryGetComponent(out JJBPlayerMovement copyMoveCompo))
+            {
+                copyMoveCompo.Rb.simulated = !_isPlayerControll;
+                if (_isPlayerControll) copyMoveCompo.Move(0);
+                copyMoveCompo.SetPlay(!_isPlayerControll);
+            }
         }
     }
 
     public void Enter()
     {
         _canCopy = true;
+        _isPlayerControll = true;
         _currentState = CopyState.Copy;
-        GameManager_HTY.Instance._utiltyCompo.OnPointer();
+        SkillManager_HTY.Instance._utilityCompo.OnPointer();
     }
 
     public void UpdateState()
@@ -83,8 +88,16 @@ public class CopyPlayer_HTY : MonoBehaviour, ISkill_HTY
     public void Exit()
     {
         Destroy(_currentCopyObj);
+
+        if (_playerObj.TryGetComponent(out JJBPlayerMovement moveCompo))
+        {
+            moveCompo.Rb.simulated = true;
+            moveCompo.SetPlay(true);
+            _isPlayerControll = true;
+        }
+
         _canCopy = true;
-        GameManager_HTY.Instance._utiltyCompo.OffPointer();
+        SkillManager_HTY.Instance._utilityCompo.OffPointer();
         _currentState = CopyState.Copy;
     }
 }
