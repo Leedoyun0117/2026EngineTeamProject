@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using LDY.PlayerMerge;
 using LDY.Stage;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -10,7 +11,7 @@ using UnityEngine.Tilemaps;
 namespace LDY.StageEditor {
     internal sealed class Stage1ArtTestSceneBuilder {
         private const string ScenePath = StagePaths.Scenes + "/Stage1_ArtTest.unity";
-        private const string PlayerPath = "Assets/JJB/Prefab/Player.prefab";
+        private const string PlayerPath = PlayerPrefabPaths.Shared;
         private const float GimmickSpacing = 3f;
         private const int GimmickFloorY = 10;
 

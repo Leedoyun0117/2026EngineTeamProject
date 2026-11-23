@@ -1,4 +1,5 @@
 using System;
+using LDY.PlayerMerge;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace LDY.Script {
     internal static class PlayerVisualContext {
-        public const string PrefabPath = "Assets/prefab/Player.prefab";
+        public const string PrefabPath = PlayerPrefabPaths.Shared;
         public const string ScenePath = "Assets/LDY/Scenes/SampleScene.unity";
         public const string PinkName = "PinkVisual";
         public const string OldName = "Visual";

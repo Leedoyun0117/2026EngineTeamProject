@@ -238,11 +238,30 @@
    160,
    96
   ],
-  "frames": 2,
+  "frames": 4,
   "tags": [
    "idle",
-   "glitch"
+   "glitch",
+   "hurt"
   ],
-  "note": "160x96 silhouette body with scanline noise; glitch = screen-tear frame to flash occasionally. Leg sockets (pixel): [(58, 60), (72, 64), (88, 66), (104, 66)]. Pivot = centre"
+  "note": "160x96 silhouette body. idle / glitch (occasional flash) / hurt (white-flash eyes + heavy tear, then settle). Leg sockets (pixel): [(58,60),(72,64),(88,66),(104,66)]. Pivot = centre"
+ },
+ "spider_leg_upper_cut": {
+  "size": [
+   150,
+   14
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "150x14 upper leg after the needle is cut: swap the upper leg sprite to this. Same pivot (0,7)"
+ },
+ "spider_leg_lower_piece": {
+  "size": [
+   250,
+   12
+  ],
+  "frames": 1,
+  "tags": [],
+  "note": "250x12 cut-off needle that falls away (Rigidbody2D piece). Same size/pivot as spider_leg_lower"
  }
 }

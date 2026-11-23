@@ -2,6 +2,7 @@
     "name": "LDY.Stage.Editor",
     "rootNamespace": "LDY.StageEditor",
     "references": [
+        "LDY.PlayerMerge",
         "LDY.StageLogic",
         "LDY.Stage",
         "Unity.2D.Tilemap.Extras",
