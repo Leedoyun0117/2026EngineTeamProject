@@ -1,0 +1,21 @@
+{
+    "name": "LDY.Spider.Editor",
+    "rootNamespace": "LDY.SpiderEditor",
+    "references": [
+        "LDY.PlayerMerge",
+        "LDY.SpiderLogic",
+        "LDY.Spider",
+        "Unity.2D.Aseprite.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

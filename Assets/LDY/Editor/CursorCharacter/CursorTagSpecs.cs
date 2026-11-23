@@ -30,7 +30,9 @@ namespace LDY.Script {
             new("rope_climb", PlayerAnimId.RopeClimb, true),
             new("rope_climb_down", PlayerAnimId.RopeClimbDown, true),
             new("push", PlayerAnimId.Push, true),
-            new("land", PlayerAnimId.Land, false)
+            new("land", PlayerAnimId.Land, false),
+            new("trapped", PlayerAnimId.Trapped, false),
+            new("death", PlayerAnimId.Death, false)
         };
 
         public static IReadOnlyCollection<string> Names => All.Select(s => s.Name).ToArray();

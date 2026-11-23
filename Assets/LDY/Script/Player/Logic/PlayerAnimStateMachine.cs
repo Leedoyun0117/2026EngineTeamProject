@@ -12,11 +12,15 @@ namespace LDY.Script {
         public readonly bool RopeHanging;
         public readonly RowMoveDirection RowMove;
         public readonly bool LandAvailable;
+        public readonly bool Trapped;
+        public readonly bool Dead;
 
         public PlayerAnimInput(Vector2 velocity, bool grounded, bool locked, float deltaTime,
             bool clipFinished, int clipFrame, bool grabbing = false, RowMoveDirection rowMove = RowMoveDirection.None,
-            bool ropeHanging = false, bool landAvailable = false) {
+            bool ropeHanging = false, bool landAvailable = false, bool trapped = false, bool dead = false) {
             LandAvailable = landAvailable;
+            Trapped = trapped;
+            Dead = dead;
             Velocity = velocity;
             Grounded = grounded;
             Locked = locked;
@@ -47,6 +51,13 @@ namespace LDY.Script {
         public PlayerAnimId Tick(in PlayerAnimInput input) {
             Changed = false;
             EntryFrame = 0;
+
+            if (input.Dead || input.Trapped) {
+                _air.Reset();
+                _airborne = false;
+                Enter(input.Dead ? PlayerAnimId.Death : PlayerAnimId.Trapped);
+                return Current;
+            }
 
             if (input.RopeHanging) {
                 _air.Reset();

@@ -11,6 +11,18 @@ namespace LDY.Script {
         public bool IsValid => frames != null && durations != null && frames.Length > 0
                                && frames.Length == durations.Length;
 
+        public float TotalDuration => TailDuration(frames?.Length ?? 0);
+
+        public int TailStartFrame(int frameCount) => Math.Max(0, frames.Length - frameCount);
+
+        public float TailDuration(int frameCount) {
+            var total = 0f;
+            for (var i = TailStartFrame(frameCount); i < durations.Length; i++)
+                total += durations[i];
+
+            return total;
+        }
+
         public static PlayerAnimClip Hold(Sprite sprite) {
             return new PlayerAnimClip { frames = new[] { sprite }, durations = new[] { 1f }, loop = true };
         }
