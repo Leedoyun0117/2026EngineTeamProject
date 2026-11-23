@@ -34,6 +34,13 @@ MonoBehaviour:
     prefab: {fileID: 0}
     cluster: 0
     fixedSize: {x: 0, y: 0}
+  - key: invisible
+    kind: 0
+    tile: {fileID: 11400000, guid: e89230e2b76ba4c4197070f58cf87490, type: 2}
+    tileLayer: 3
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 0, y: 0}
   - key: start
     kind: 1
     tile: {fileID: 0}

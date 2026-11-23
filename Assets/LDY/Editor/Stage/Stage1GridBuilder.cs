@@ -1,4 +1,5 @@
 using System;
+using LDY.Stage;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -24,6 +25,13 @@ namespace LDY.StageEditor {
             ConfigureGround(Layer(root, "Ground", 0));
             ConfigurePlatform(Layer(root, "Platform", 1));
             ConfigureHazard(Layer(root, "Hazard", 2));
+            ConfigureInvisible(Layer(root, "InvisibleBlock", 3));
+        }
+
+        // 안 보이지만 막는 블록: 벽과 같은 Ground 레이어 + 합쳐진 콜라이더, 렌더러는 런타임에만 끈다.
+        private static void ConfigureInvisible(GameObject go) {
+            ConfigureGround(go);
+            ObjectTools.EnsureComponent<HideTilemapRendererAtRuntime>(go);
         }
 
         private static GameObject Layer(GameObject root, string name, int sortingOrder) {

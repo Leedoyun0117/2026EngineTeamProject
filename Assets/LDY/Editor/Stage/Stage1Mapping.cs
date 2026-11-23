@@ -13,6 +13,7 @@ namespace LDY.StageEditor {
                 TileEntry("ground", tiles.Ground, TileLayerKind.Ground),
                 TileEntry("platform", tiles.Platform, TileLayerKind.Platform),
                 TileEntry("spike", tiles.Spikes[(int)SpikeDirection.Up], TileLayerKind.Hazard),
+                TileEntry("invisible", tiles.Invisible, TileLayerKind.Invisible),
                 PrefabEntry("start", "Start", ClusterMode.PerCell),
                 PrefabEntry("goal", "GoalMusicFile", ClusterMode.PerCell),
                 PrefabEntry("box", "BoxCdCase", ClusterMode.PerCell),

@@ -11,11 +11,13 @@ namespace LDY.StageEditor {
         public RuleTile Ground;
         public RuleTile Platform;
         public Tile[] Spikes;
+        public Tile Invisible;
 
         public IEnumerable<TileBase> All() {
             yield return Ground;
             yield return Platform;
             foreach (var spike in Spikes) yield return spike;
+            yield return Invisible;
         }
     }
 
@@ -90,6 +92,48 @@ namespace LDY.StageEditor {
         }
     }
 
+    // 투명 블록 위치를 에디터에서 보기 위한 반투명 마커 타일. 런타임에는 렌더러가 꺼진다.
+    internal sealed class InvisibleTileFactory {
+        private const string TileName = "Stage1_InvisibleBlock";
+        private const int Size = 16;
+
+        public Tile Build(SetupReport report) {
+            var sprite = EnsureSprite(StagePaths.Tiles + "/" + TileName + ".png");
+            var tile = AssetUpsert.LoadOrCreate<Tile>(StagePaths.Tile(TileName), out var created);
+            tile.sprite = sprite;
+            tile.colliderType = Tile.ColliderType.Grid;
+            EditorUtility.SetDirty(tile);
+            report.Record(created, "Tile " + TileName);
+            return tile;
+        }
+
+        private static Sprite EnsureSprite(string path) {
+            if (!System.IO.File.Exists(path)) {
+                var texture = new Texture2D(Size, Size, TextureFormat.RGBA32, false);
+                var fill = new Color(0.6f, 0.2f, 1f, 0.35f);
+                var edge = new Color(0.6f, 0.2f, 1f, 0.9f);
+                for (var y = 0; y < Size; y++)
+                for (var x = 0; x < Size; x++)
+                    texture.SetPixel(x, y, x == 0 || y == 0 || x == Size - 1 || y == Size - 1 ? edge : fill);
+                System.IO.File.WriteAllBytes(path, texture.EncodeToPNG());
+                Object.DestroyImmediate(texture);
+                AssetDatabase.ImportAsset(path);
+            }
+
+            var importer = (TextureImporter)AssetImporter.GetAtPath(path);
+            if (importer.textureType != TextureImporterType.Sprite || importer.spritePixelsPerUnit != Size) {
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spriteImportMode = SpriteImportMode.Single;
+                importer.spritePixelsPerUnit = Size;
+                importer.filterMode = FilterMode.Point;
+                importer.textureCompression = TextureImporterCompression.Uncompressed;
+                importer.SaveAndReimport();
+            }
+
+            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
+        }
+    }
+
     internal sealed class Stage1TileBuilder {
         public Stage1TileSet Build(string tilesetPath, SetupReport report) {
             var sprites = AssetDatabase.LoadAllAssetsAtPath(tilesetPath).OfType<Sprite>()
@@ -104,7 +148,8 @@ namespace LDY.StageEditor {
             var set = new Stage1TileSet {
                 Ground = factory.Ground(sprites, out var groundCreated),
                 Platform = factory.Platform(sprites, out var platformCreated),
-                Spikes = new SpikeTileFactory().Build(sprites, report)
+                Spikes = new SpikeTileFactory().Build(sprites, report),
+                Invisible = new InvisibleTileFactory().Build(report)
             };
             report.Record(groundCreated, "RuleTile Stage1_Ground");
             report.Record(platformCreated, "RuleTile Stage1_Platform");
