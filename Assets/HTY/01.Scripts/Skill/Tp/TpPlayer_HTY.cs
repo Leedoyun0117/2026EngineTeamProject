@@ -5,18 +5,19 @@ public class TpPlayer_HTY : MonoBehaviour, ISkill_HTY
 {
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
+    
 
     public bool CanUse() => true;
 
     public void Init()
     {
         _skillState = SkillState.Tp;
-        _skillSO = GameManager_HTY.Instance._skillList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
     }
 
     public void UseSkill()
     {
-        Vector2 pointer = GameManager_HTY.Instance.GetPointerPos();
+        Vector2 pointer = SkillManager_HTY.Instance.GetPointerPos();
         if (CanUse())
         {
             Collider2D[] coll = Physics2D.OverlapPointAll(pointer);
@@ -24,7 +25,7 @@ public class TpPlayer_HTY : MonoBehaviour, ISkill_HTY
             {
                 if (coll2d.gameObject.TryGetComponent<TpObj_HTY>(out _))
                 {
-                    GameManager_HTY.Instance._player.transform.position = pointer;
+                    transform.parent.position = pointer;
                 }
             }
         }
@@ -32,12 +33,12 @@ public class TpPlayer_HTY : MonoBehaviour, ISkill_HTY
 
     public void Enter()
     {
-        GameManager_HTY.Instance._utiltyCompo.OnPointer();
+        SkillManager_HTY.Instance._utilityCompo.OnPointer();
     }
 
     public void Exit()
     {
-        GameManager_HTY.Instance._utiltyCompo.OffPointer();
+        SkillManager_HTY.Instance._utilityCompo.OffPointer();
     }
 
     public void UpdateState()

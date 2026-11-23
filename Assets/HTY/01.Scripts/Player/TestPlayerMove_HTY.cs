@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class TestPlayerMove_HTY : MonoBehaviour
 {
-    private float _speed = 7f;
+    //private float _speed = 7f;
     private Rigidbody2D _rb;
     [field:SerializeField] public bool _isPlayObj {  get; private set; } = true;
 
@@ -15,8 +15,8 @@ public class TestPlayerMove_HTY : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_isPlayObj) _rb.linearVelocityX = _speed * GameManager_HTY.Instance._inputValue._moveDir.x;
-        else _rb.linearVelocityX = Vector2.zero.x;
+        //if (_isPlayObj) _rb.linearVelocityX = _speed * GameManager_HTY.Instance._inputValue.MoveDir.x;
+        //else _rb.linearVelocityX = Vector2.zero.x;
     }
 
     public void SetPlay(bool isPlay)
