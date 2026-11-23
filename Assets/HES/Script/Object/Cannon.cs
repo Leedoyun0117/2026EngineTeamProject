@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace HES.Script.Object {
     public class Cannon : MonoBehaviour {
         [SerializeField] private float coolTime;
         [SerializeField] private GameObject bulletPrefab;
-        
+
         private void Awake() {
             StartCoroutine(Shoot());
         }
