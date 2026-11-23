@@ -1,49 +1,49 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CuttingSkill_HTY : MonoBehaviour, ISkill_HTY
+public class OpacitySkill_HTY : MonoBehaviour, ISkill_HTY
 {
     private TargetSelector_HTY _targetSelector;
+    private bool _isOpacity;
+    public LayerMask _targetLayer;
 
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
 
+    public bool CanUse() => true;
+
     public void Init()
     {
         _targetSelector = GetComponentInParent<TargetSelector_HTY>();
-        _skillState = SkillState.Cutting;
+        _skillState = SkillState.Opacity;
         _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
     }
 
-    public bool CanUse() => true;//나중에 연결할떄 타겟이 null이 아니면 true
-
     public void UseSkill()
     {
-        if (_targetSelector._currentTarget != null)//나중에 canskill로 이전하기
+        if (CanUse())
         {
-            Destroy(_targetSelector._currentTarget.gameObject);
-            _targetSelector.TargetDetectAndSelect();
+            Color _targetColor = _targetSelector._currentTarget.gameObject.GetComponent<SpriteRenderer>().color;
+            _targetColor.a = _isOpacity ? 1 : 0.5f;
+            _targetSelector._currentTarget.gameObject.GetComponent<SpriteRenderer>().color = _targetColor;
+            _isOpacity = !_isOpacity;
         }
     }
 
     public void Enter()
     {
-        //공란
+        _targetSelector.ChangeLayer(_targetLayer);
     }
 
     public void UpdateState()
     {
         if (Keyboard.current.yKey.wasPressedThisFrame)
-        {
             UseSkill();
-        }
-
         if (Keyboard.current.rKey.wasPressedThisFrame)
             _targetSelector.TargetDetectAndSelect();
     }
 
     public void Exit()
     {
-        //공란
     }
 }
