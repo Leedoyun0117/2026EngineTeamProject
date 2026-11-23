@@ -1,3 +1,4 @@
+using System.Linq;
 using LDY.Script;
 using NUnit.Framework;
 using UnityEngine;
@@ -90,16 +91,49 @@ namespace LDY.Tests {
         }
 
         [Test]
-        public void NeedleSkipsPullAndTrapped() {
+        public void InPlaceDeathSkipsPullButStillShowsTrappedFace() {
             var sequence = new DeathSequence();
-            sequence.BeginNeedle(Timings);
+            sequence.BeginInPlace(Timings);
 
+            Assert.AreEqual(DeathStage.Trapped, sequence.Stage);
+            Assert.IsTrue(sequence.IsTrapped);
+            Assert.IsFalse(sequence.IsDead);
+            sequence.Tick(0.55f);
+            Assert.AreEqual(DeathStage.TrappedTail, sequence.Stage);
+            sequence.Tick(0.2f);
             Assert.AreEqual(DeathStage.Death, sequence.Stage);
-            Assert.IsFalse(sequence.IsTrapped);
-            sequence.Tick(0.3f);
-            Assert.AreEqual(DeathStage.Death, sequence.Stage);
-            sequence.Tick(0.5f);
+            Assert.IsFalse(sequence.Finished);
+            sequence.Tick(0.7f);
+            Assert.AreEqual(DeathStage.Done, sequence.Stage);
             Assert.IsTrue(sequence.Finished);
+        }
+
+        [Test]
+        public void InPlaceDeathVisitsSameStagesAsTrapExceptPull() {
+            var trap = Visit(s => s.BeginTrapped(Timings));
+            var needle = Visit(s => s.BeginInPlace(Timings));
+
+            CollectionAssert.AreEqual(trap.Skip(1).ToArray(), needle.ToArray());
+            Assert.AreEqual(DeathStage.Pull, trap.First());
+        }
+
+        private static System.Collections.Generic.List<DeathStage> Visit(System.Action<DeathSequence> begin) {
+            var sequence = new DeathSequence();
+            begin(sequence);
+            var stages = new System.Collections.Generic.List<DeathStage> { sequence.Stage };
+            for (var i = 0; i < 400 && sequence.Stage != DeathStage.Done; i++) {
+                sequence.Tick(0.01f);
+                if (sequence.Stage != stages[stages.Count - 1])
+                    stages.Add(sequence.Stage);
+            }
+
+            return stages;
+        }
+
+        [Test]
+        public void PullTargetIsCurrentXWhenNotPulling() {
+            Assert.AreEqual(2f, DeathPull.TargetX(false, 2f, 9f));
+            Assert.AreEqual(9f, DeathPull.TargetX(true, 2f, 9f));
         }
 
         [Test]

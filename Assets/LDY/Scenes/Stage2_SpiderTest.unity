@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &1350172145
+--- !u!1001 &1378970197
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -129,11 +129,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 23022486557546144, guid: 1d7a25b4a5770814b87d5cdeb8f63521, type: 3}
       propertyPath: m_Name
-      value: MouseTrap
+      value: MouseTrap (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2422918335109535383, guid: 1d7a25b4a5770814b87d5cdeb8f63521, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 0.37
       objectReference: {fileID: 0}
     - target: {fileID: 2422918335109535383, guid: 1d7a25b4a5770814b87d5cdeb8f63521, type: 3}
       propertyPath: m_LocalPosition.y
@@ -637,5 +637,5 @@ SceneRoots:
   - {fileID: 1985214220}
   - {fileID: 2059894274}
   - {fileID: 2050870481}
-  - {fileID: 1350172145}
+  - {fileID: 1378970197}
   - {fileID: 2013080391}

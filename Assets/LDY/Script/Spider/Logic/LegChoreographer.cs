@@ -9,6 +9,7 @@ namespace LDY.Spider {
         public float TremorAmplitude;
         public float TremorHertz;
         public float StabTime;
+        public float FollowSpeed;
         public float HoldShake;
         public float HoldShakeHertz;
         public float RetractLiftShare;
@@ -26,6 +27,7 @@ namespace LDY.Spider {
         private Vec2 _from;
         private Vec2 _raised;
         private float _stabElapsed;
+        private float _trackedX;
 
         public LegChoreographer(SpiderBrain brain, IGroundProbe probe, AttackMotionConfig config) {
             _brain = brain;
@@ -35,8 +37,7 @@ namespace LDY.Spider {
 
         public Vec2 TargetPoint { get; private set; }
 
-        public bool ShowsMarker => _brain.State == SpiderState.Telegraph || _brain.State == SpiderState.Stab ||
-                                   _brain.State == SpiderState.Stuck;
+        public bool ShowsMarker => _brain.State == SpiderState.Telegraph;
 
         public float MarkerGrowth => _brain.State == SpiderState.Telegraph ? _brain.Progress : 1f;
 
@@ -54,6 +55,7 @@ namespace LDY.Spider {
 
             switch (state) {
                 case SpiderState.Telegraph:
+                    Track(deltaTime, currentTip.Y, plantedFoot.Y);
                     tip = Raise();
                     break;
                 case SpiderState.Stab:
@@ -70,6 +72,30 @@ namespace LDY.Spider {
             }
 
             return true;
+        }
+
+        // 목표가 굳기 전까지는 올라간 다리 끝이 플레이어의 움직임을 따라간다.
+        private void Track(float deltaTime, float tipY, float plantedY) {
+            if (_brain.IsTargetLocked)
+                return;
+
+            _trackedX = MoveToward(_trackedX, _brain.TargetX, _config.FollowSpeed * deltaTime);
+            Aim(_trackedX, tipY, plantedY);
+        }
+
+        private void Aim(float x, float tipY, float plantedY) {
+            var found = _probe.TryGetGroundY(x, tipY + _config.RaiseHeight, out var y);
+            var groundY = found ? y : plantedY;
+            TargetPoint = new Vec2(x, groundY);
+            _raised = new Vec2(x, groundY + _config.RaiseHeight);
+        }
+
+        private static float MoveToward(float from, float to, float maxDelta) {
+            var delta = to - from;
+            if (delta < 0f ? -delta <= maxDelta : delta <= maxDelta)
+                return to;
+
+            return from + (delta < 0f ? -maxDelta : maxDelta);
         }
 
         private Vec2 Raise() {
@@ -104,11 +130,8 @@ namespace LDY.Spider {
         private void OnEnter(SpiderState state, Vec2 currentTip, Vec2 plantedFoot) {
             if (state == SpiderState.Telegraph) {
                 _from = currentTip;
-                var x = _brain.TargetX;
-                var found = _probe.TryGetGroundY(x, currentTip.Y + _config.RaiseHeight, out var y);
-                var groundY = found ? y : plantedFoot.Y;
-                TargetPoint = new Vec2(x, groundY);
-                _raised = new Vec2(x, groundY + _config.RaiseHeight);
+                _trackedX = _brain.IsTargetLocked || _config.FollowSpeed <= 0f ? _brain.TargetX : currentTip.X;
+                Aim(_trackedX, currentTip.Y, plantedFoot.Y);
                 _stabElapsed = 0f;
             }
         }

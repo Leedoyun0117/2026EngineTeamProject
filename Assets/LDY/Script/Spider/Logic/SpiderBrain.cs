@@ -20,6 +20,7 @@ namespace LDY.Spider {
         public int LegCount;
         public float AimDuration;
         public float TelegraphTime;
+        public float LockTime;
         public float StuckTime;
         public float RetractTime;
         public float Cooldown;
@@ -40,6 +41,7 @@ namespace LDY.Spider {
         private readonly bool[] _alive;
         private float _idleLength;
         private float _nextIdleLength;
+        private float _targetOffset;
 
         public SpiderBrain(SpiderBrainConfig config, Func<float> signedRandom) {
             _config = config;
@@ -58,6 +60,9 @@ namespace LDY.Spider {
         public float BodyGoalX { get; private set; }
         public int SeveredCount { get; private set; }
         public IReadOnlyList<bool> LegAlive => _alive;
+
+        // 텔레그래프 앞부분은 플레이어를 따라가고, LockTime 이후와 그 뒤 상태에서는 목표가 굳는다.
+        public bool IsTargetLocked => State != SpiderState.Telegraph || Elapsed >= _config.LockTime;
 
         public bool IsStriking => State == SpiderState.Stab || State == SpiderState.Stuck;
         public bool IsFleeing => State == SpiderState.Flee || State == SpiderState.Gone;
@@ -86,8 +91,8 @@ namespace LDY.Spider {
                 case SpiderState.Reposition:
                     TickReposition(playerX, bodyX, legX);
                     break;
-                case SpiderState.Telegraph when Elapsed >= _config.TelegraphTime:
-                    Enter(SpiderState.Stab);
+                case SpiderState.Telegraph:
+                    TickTelegraph(playerX);
                     break;
                 case SpiderState.Stuck when Elapsed >= _config.StuckTime:
                     Enter(SpiderState.Retract);
@@ -125,6 +130,14 @@ namespace LDY.Spider {
             return true;
         }
 
+        private void TickTelegraph(float playerX) {
+            if (!IsTargetLocked)
+                TargetX = playerX + _targetOffset;
+
+            if (Elapsed >= _config.TelegraphTime)
+                Enter(SpiderState.Stab);
+        }
+
         private void TickAim(float playerX, float bodyX, IReadOnlyList<float> legX) {
             if (!Reaches(playerX, bodyX, legX))
                 Enter(SpiderState.Reposition);
@@ -141,9 +154,11 @@ namespace LDY.Spider {
         }
 
         private void BeginTelegraph(float playerX, float bodyX, IReadOnlyList<float> legX) {
-            TargetX = playerX + _signedRandom() * _config.TargetError;
+            _targetOffset = _signedRandom() * _config.TargetError;
+            TargetX = playerX + _targetOffset;
             var leg = PickLeg(TargetX, bodyX, legX);
             if (leg < 0) {
+                _targetOffset = 0f;
                 TargetX = playerX;
                 leg = PickLeg(TargetX, bodyX, legX);
             }

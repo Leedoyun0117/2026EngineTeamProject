@@ -107,6 +107,26 @@ namespace LDY.Tests {
         }
 
         [Test]
+        public void TargetFollowsPlayerUntilLockTimeThenFreezes() {
+            var brain = new SpiderBrain(new SpiderBrainConfig {
+                LegCount = 4, AimDuration = 0f, TelegraphTime = 1f, LockTime = 0.6f, StuckTime = 2f,
+                RetractTime = 1f, Cooldown = 0f, SeversToDefeat = 2, FleeTime = 3f
+            }, () => 0f);
+            brain.Tick(0.1f, 0f, LegX);
+            brain.Tick(0.1f, 0f, LegX);
+            Assert.AreEqual(SpiderState.Telegraph, brain.State);
+            Assert.IsFalse(brain.IsTargetLocked);
+
+            brain.Tick(0.3f, 1f, LegX);
+            Assert.AreEqual(1f, brain.TargetX, 1e-4f);
+            brain.Tick(0.3f, 2f, LegX);
+            Assert.IsTrue(brain.IsTargetLocked);
+            Assert.AreEqual(2f, brain.TargetX, 1e-4f);
+            brain.Tick(0.2f, 5f, LegX);
+            Assert.AreEqual(2f, brain.TargetX, 1e-4f);
+        }
+
+        [Test]
         public void FollowsStateOrderWithElapsedTime() {
             var brain = Create();
             Assert.AreEqual(SpiderState.Idle, brain.State);

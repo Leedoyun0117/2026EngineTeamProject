@@ -36,13 +36,18 @@ namespace LDY.Script {
         public float EndHold;
     }
 
+    // 끌어당길 때 닿을 x. 끌어당기지 않는 사망은 맞은 자리에 머문다.
+    public static class DeathPull {
+        public static float TargetX(bool pulls, float currentX, float anchorX) => pulls ? anchorX : currentX;
+    }
+
     public interface IDeathPose {
         bool IsTrapped { get; }
         bool IsDead { get; }
         DeathStage Stage { get; }
     }
 
-    // 쥐덫: 끌어당김 → trapped → trapped 끝 두 프레임 한 번 더 → death. 바늘: death만.
+    // 쥐덫: 끌어당김 → trapped → trapped 끝 두 프레임 한 번 더 → death. 바늘: 끌어당김만 빼고 같다.
     public sealed class DeathSequence {
         private DeathTimings _timings;
         private float _elapsed;
@@ -64,7 +69,7 @@ namespace LDY.Script {
 
         public void BeginTrapped(DeathTimings timings) => Begin(DeathStage.Pull, timings);
 
-        public void BeginNeedle(DeathTimings timings) => Begin(DeathStage.Death, timings);
+        public void BeginInPlace(DeathTimings timings) => Begin(DeathStage.Trapped, timings);
 
         public void Tick(float deltaTime) {
             Finished = false;

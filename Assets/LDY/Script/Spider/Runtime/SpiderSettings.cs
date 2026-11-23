@@ -9,9 +9,10 @@ namespace LDY.Spider {
 
         [Header("Attack Timing")]
         [SerializeField] [Min(0f)] private float aimDuration = 0.4f;
-        [SerializeField] [Min(0.05f)] private float raiseTime = 0.7f;
-        [SerializeField] [Min(0f)] private float tremorTime = 0.18f;
-        [SerializeField] [Min(0.02f)] private float stabTime = 0.12f;
+        [SerializeField] [Min(0.05f)] private float raiseTime = 1f;
+        [SerializeField] [Min(0f)] private float tremorTime = 0.35f;
+        [SerializeField] [Min(0.02f)] private float stabTime = 0.2f;
+        [SerializeField] [Min(0f)] private float trackSpeed = 6f;
         [SerializeField] [Min(0f)] private float holdTime = 2f;
         [SerializeField] [Min(0.1f)] private float retractTime = 1f;
         [SerializeField] [Min(0f)] private float cooldown = 1.2f;
@@ -45,7 +46,7 @@ namespace LDY.Spider {
 
         [Header("Attack Range")]
         [SerializeField] private LegReach[] legReach = {
-            new LegReach(3f, 8f), new LegReach(1.5f, 7f), new LegReach(1.5f, 7f), new LegReach(3f, 8f)
+            new LegReach(3.5f, 6.5f), new LegReach(2f, 5.5f), new LegReach(2f, 5.5f), new LegReach(3.5f, 6.5f)
         };
         [SerializeField] [Min(0.5f)] private float standoff = 4.5f;
         [SerializeField] [Min(0.01f)] private float arriveTolerance = 0.3f;
@@ -109,6 +110,7 @@ namespace LDY.Spider {
                 LegCount = legCount,
                 AimDuration = aimDuration,
                 TelegraphTime = raiseTime + tremorTime,
+                LockTime = raiseTime,
                 StuckTime = holdTime,
                 RetractTime = retractTime,
                 Cooldown = cooldown,
@@ -131,6 +133,7 @@ namespace LDY.Spider {
                 TremorAmplitude = tremorAmplitude,
                 TremorHertz = tremorHertz,
                 StabTime = stabTime,
+                FollowSpeed = trackSpeed,
                 HoldShake = holdShake,
                 HoldShakeHertz = holdShakeHertz,
                 RetractLiftShare = retractLiftShare,
