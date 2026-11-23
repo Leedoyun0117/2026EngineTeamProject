@@ -5,6 +5,7 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 {
     private TargetSelector_HTY _targetSelector;
     private Camera _mainCam;
+    public LayerMask _targetLayer;
 
     private Rigidbody2D _otherRb;
     private bool _isStop = false;
@@ -98,6 +99,7 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 
     public void Enter()
     {
+        _targetSelector.ChangeLayer(_targetLayer);
         _isStop = false;
         _stopObj = null;
         _saveType = RigidbodyType2D.Dynamic;

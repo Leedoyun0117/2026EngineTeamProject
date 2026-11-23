@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class ReScaleObject_HTY : MonoBehaviour {
-    public enum ScaleState {
+public class ReScaleObject_HTY : MonoBehaviour
+{
+    public enum ScaleState
+    {
         Small,
         Normal,
         Large
@@ -13,12 +15,15 @@ public class ReScaleObject_HTY : MonoBehaviour {
     private Vector3 _originScale;
     public ScaleState CurrentState { get; private set; } = ScaleState.Normal;
 
-    private void Awake() {
+    private void Awake()
+    {
         _originScale = transform.localScale;
     }
 
-    public void ChangeScale() {
-        switch (CurrentState) {
+    public void ChangeScale()
+    {
+        switch (CurrentState)
+        {
             case ScaleState.Small:
                 SetScale(ScaleState.Normal);
                 break;
@@ -33,11 +38,13 @@ public class ReScaleObject_HTY : MonoBehaviour {
         }
     }
 
-    private void SetScale(ScaleState state) {
+    private void SetScale(ScaleState state)
+    {
         CurrentState = state;
         float multi = 1;
 
-        switch (state) {
+        switch (state)
+        {
             case ScaleState.Small:
                 multi = _smallScale;
                 break;
