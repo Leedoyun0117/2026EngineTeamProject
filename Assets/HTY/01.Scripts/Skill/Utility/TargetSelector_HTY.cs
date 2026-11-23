@@ -6,12 +6,15 @@ public class TargetSelector_HTY : MonoBehaviour
 {
     [Header("Detection")]
     [SerializeField] private float _detectRange = 5f;
-    [SerializeField] private LayerMask _targetLayer;
+    public LayerMask _targetLayer;
 
     private readonly List<Transform> _targets = new();
 
     private int _currentIndex = -1;
     public Transform _currentTarget;
+
+    public Material _originMat;
+    public Material _outLineMat;
 
     public void TargetDetectAndSelect()
     {
@@ -50,7 +53,7 @@ public class TargetSelector_HTY : MonoBehaviour
         {
             if (_currentTarget != null && _currentTarget == tran)
             {
-                _currentTarget.GetComponent<SpriteRenderer>().material = GameManager_HTY.Instance._originMat;
+                _currentTarget.GetComponent<SpriteRenderer>().material = _originMat;
                 _currentTarget = null;
                 _targets.Remove(tran);
             }
@@ -84,11 +87,16 @@ public class TargetSelector_HTY : MonoBehaviour
 
         _currentIndex = targetIndex >= 0? (targetIndex + 1) % _targets.Count:0;
 
-        _currentTarget.GetComponent<SpriteRenderer>().material = GameManager_HTY.Instance._originMat;
+        _currentTarget.GetComponent<SpriteRenderer>().material = _originMat;
         _currentTarget = _targets[_currentIndex];
-        _currentTarget.GetComponent<SpriteRenderer>().material = GameManager_HTY.Instance._outLineMat;
+        _currentTarget.GetComponent<SpriteRenderer>().material = _outLineMat;
 
         Debug.Log($"{_currentTarget.name}");
+    }
+
+    public void ChangeLayer(LayerMask needLayer)
+    {
+        _targetLayer = needLayer;
     }
 
     private void OnDrawGizmos()

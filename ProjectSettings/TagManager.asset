@@ -7,6 +7,9 @@ TagManager:
   - Glass
   - Invisible
   - Visible
+  - Reverse
+  - MovingBlock
+  - Box
   layers:
   - Default
   - TransparentFX
@@ -15,7 +18,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Spike
   - Desk
   - Object
   - Gimmick
@@ -28,11 +31,11 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Cut
+  - Opacity
+  - Rescale
+  - Stop
+  - Drag
   - 
   - 
   - 

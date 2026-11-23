@@ -9,7 +9,8 @@ namespace LDY.Stage {
     public enum TileLayerKind {
         Ground,
         Platform,
-        Hazard
+        Hazard,
+        Invisible
     }
 
     public enum EntryKind {

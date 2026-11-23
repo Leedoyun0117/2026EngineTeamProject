@@ -1,3 +1,4 @@
+using LDY.PlayerMerge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,17 @@ namespace LDY.Script {
     // 새 캐릭터 aseprite의 임포트 설정 여섯 가지(Import Mode, Layer Import Mode, PPU, Pivot, Filter, Compression)만
     // pinkV2에서 읽어 직접 대입한다. 스프라이트 이름, 레이어 데이터, ID는 건드리지 않는다.
     internal static class CursorImportMatcher {
-        private const string Settings = "asepriteImporterSettings.";
+        private static readonly string[] SettingsPrefixes = { "asepriteImporterSettings.", "m_AsepriteImporterSettings." };
         private static readonly BuildTarget Platform = BuildTarget.StandaloneWindows64;
 
         public static bool MatchByName(List<string> report) {
             return CursorAssetLocator.TryFind(CursorAssetLocator.PinkV2File, out var reference, report)
                    && CursorAssetLocator.TryFind(CursorAssetLocator.CursorFile, out var target, report)
-                   && Match(reference, target, report);
+                   && Match(reference, target, report, PlayerArt.PixelsPerUnit);
         }
 
-        public static bool Match(string referencePath, string targetPath, List<string> report) {
+        public static bool Match(string referencePath, string targetPath, List<string> report,
+            float? pixelsPerUnit = null) {
             if (!TryLoad(referencePath, report, out var reference) || !TryLoad(targetPath, report, out var target))
                 return false;
 
@@ -29,8 +31,11 @@ namespace LDY.Script {
                 return false;
             }
 
+            if (pixelsPerUnit.HasValue)
+                wanted.PixelsPerUnit = pixelsPerUnit.Value;
+
             if (wanted.Equals(current)) {
-                report.Add("임포트 설정 6가지가 이미 pinkV2와 같음");
+                report.Add("임포트 설정 6가지가 이미 pinkV2와 같음 (PPU는 스테이지 기준 값)");
                 return true;
             }
 
@@ -80,11 +85,22 @@ namespace LDY.Script {
         }
 
         private static SerializedProperty Find(SerializedObject so, string name, string path, List<string> problems) {
-            var property = so.FindProperty(Settings + name);
+            var property = Lookup(so, name);
             if (property == null)
-                problems.Add($"중단: {path} 에 속성 {Settings}{name} 이 없음");
+                problems.Add($"중단: {path} 에 속성 {name} 이 없음 (시도: {string.Join(", ", SettingsPrefixes)})");
 
             return property;
+        }
+
+        private static SerializedProperty Lookup(SerializedObject so, string name) {
+            var memberName = "m_" + char.ToUpperInvariant(name[0]) + name.Substring(1);
+            foreach (var prefix in SettingsPrefixes) {
+                var property = so.FindProperty(prefix + name) ?? so.FindProperty(prefix + memberName);
+                if (property != null)
+                    return property;
+            }
+
+            return null;
         }
 
         private static IEnumerable<string> TopLevelNames(SerializedObject so) {
@@ -98,10 +114,10 @@ namespace LDY.Script {
 
         private static void Apply(AsepriteImporter importer, ImportValues values) {
             var so = new SerializedObject(importer);
-            so.FindProperty(Settings + "fileImportMode").intValue = values.FileImportMode;
-            so.FindProperty(Settings + "layerImportMode").intValue = values.LayerImportMode;
-            so.FindProperty(Settings + "defaultPivotSpace").intValue = values.PivotSpace;
-            so.FindProperty(Settings + "customPivotPosition").vector2Value = values.PivotPosition;
+            Lookup(so, "fileImportMode").intValue = values.FileImportMode;
+            Lookup(so, "layerImportMode").intValue = values.LayerImportMode;
+            Lookup(so, "defaultPivotSpace").intValue = values.PivotSpace;
+            Lookup(so, "customPivotPosition").vector2Value = values.PivotPosition;
             so.ApplyModifiedPropertiesWithoutUndo();
 
             importer.spritePixelsPerUnit = values.PixelsPerUnit;
