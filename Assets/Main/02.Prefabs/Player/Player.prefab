@@ -534,7 +534,6 @@ GameObject:
   - component: {fileID: 1699398432928264559}
   - component: {fileID: 7203818839845124652}
   - component: {fileID: 181284469651236864}
-  - component: {fileID: 7642081104254461444}
   - component: {fileID: 8709105108449649906}
   - component: {fileID: 1650177763703774341}
   m_Layer: 3
@@ -767,19 +766,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillManager_HTY
   _skillSoList: {fileID: 11400000, guid: 132e4a1a0b3f2324cb45d81bdd4c7b0a, type: 2}
   _utilityCompo: {fileID: 1650177763703774341}
---- !u!114 &7642081104254461444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8113779949451774986}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad1cea1dc52465840b7cf8eddc777365, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Playerinterskill_HTY
-  _sizeBox: {x: 1.5, y: 1.5}
 --- !u!114 &8709105108449649906
 MonoBehaviour:
   m_ObjectHideFlags: 0
