@@ -1,10 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HES.Script.Object {
     public class Bullet : MonoBehaviour {
-        private Rigidbody2D _rb;
         [SerializeField] private float speed;
+        private Rigidbody2D _rb;
 
         private void Awake() {
             _rb = GetComponent<Rigidbody2D>();

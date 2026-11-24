@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HES.Script.Object {
     public class Semaphore : ButtonParent {

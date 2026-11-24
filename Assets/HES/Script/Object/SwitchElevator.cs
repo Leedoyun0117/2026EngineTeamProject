@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace HES.Script.Object {
@@ -12,7 +11,7 @@ namespace HES.Script.Object {
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
-            if(other.CompareTag("Player")&&_t + _elevator.Duration > Time.time) return;
+            if (other.CompareTag("Player") && _t + _elevator.Duration > Time.time) return;
             _t = Time.time;
             _elevator.MoveElevator();
         }

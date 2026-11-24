@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace HES.Script.Object {
@@ -10,7 +9,7 @@ namespace HES.Script.Object {
         }
 
         private void OnCollisionEnter2D(Collision2D other) {
-             if(other.gameObject.CompareTag("Player")) _rb.gravityScale = 1;
+            if (other.gameObject.CompareTag("Player")) _rb.gravityScale = 1;
         }
     }
 }

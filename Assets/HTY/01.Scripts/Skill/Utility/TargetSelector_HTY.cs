@@ -6,7 +6,7 @@ public class TargetSelector_HTY : MonoBehaviour
 {
     [Header("Detection")]
     [SerializeField] private float _detectRange = 5f;
-    [SerializeField] private LayerMask _targetLayer;
+    public LayerMask _targetLayer;
 
     private readonly List<Transform> _targets = new();
 
@@ -92,6 +92,11 @@ public class TargetSelector_HTY : MonoBehaviour
         _currentTarget.GetComponent<SpriteRenderer>().material = _outLineMat;
 
         Debug.Log($"{_currentTarget.name}");
+    }
+
+    public void ChangeLayer(LayerMask needLayer)
+    {
+        _targetLayer = needLayer;
     }
 
     private void OnDrawGizmos()
