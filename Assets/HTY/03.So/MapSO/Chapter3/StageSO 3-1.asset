@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff355ce182f44840a2032491ef82f65, type: 3}
   m_Name: StageSO 3-1
   m_EditorClassIdentifier: Assembly-CSharp::StageSO_HTY
+  _stageName: 3-1
+  _stageMap: {fileID: 0}
+  _icon: {fileID: 0}
+  _unLock: 0
