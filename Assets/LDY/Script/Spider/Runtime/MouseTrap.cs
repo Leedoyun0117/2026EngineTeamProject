@@ -1,3 +1,4 @@
+using LDY.Death;
 using UnityEngine;
 
 namespace LDY.Spider {
@@ -9,7 +10,6 @@ namespace LDY.Spider {
         [SerializeField] private MouseTrapView view;
 
         private readonly TrapState _state = new TrapState();
-        private readonly PresentedDeath _death = new PresentedDeath(new DestroyPlayerKiller());
 
         public bool IsArmed => _state.Phase == TrapPhase.Armed;
 
@@ -22,7 +22,7 @@ namespace LDY.Spider {
 
         private void OnTriggerEnter2D(Collider2D other) {
             if (other.CompareTag(PlayerTag)) {
-                Resolve(_state.PlayerTouched(), other.gameObject, null);
+                Resolve(_state.PlayerTouched(), other, null);
                 return;
             }
 
@@ -31,13 +31,13 @@ namespace LDY.Spider {
                 Resolve(_state.NeedleTouched(), null, severable);
         }
 
-        private void Resolve(TrapOutcome outcome, GameObject player, ISeverable target) {
+        private void Resolve(TrapOutcome outcome, Collider2D player, ISeverable target) {
             if (outcome == TrapOutcome.None)
                 return;
 
             view.PlaySnap();
             if (outcome == TrapOutcome.KillPlayer)
-                _death.Request(player, DeathCause.Trap, transform.position);
+                PlayerKill.Request(player, DeathCause.Trap, transform.position.x);
             else
                 target.Sever();
         }

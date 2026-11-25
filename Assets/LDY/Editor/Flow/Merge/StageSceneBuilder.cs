@@ -1,4 +1,5 @@
 using System.IO;
+using LDY.Death;
 using LDY.Flow;
 using Unity.Cinemachine;
 using UnityEditor;
@@ -157,7 +158,9 @@ namespace LDY.FlowEditor {
                 var box = go.AddComponent<BoxCollider2D>();
                 box.isTrigger = true;
                 box.size = new Vector2(half.x * 2f + 8f, 2f);
-                go.AddComponent<StageDeathZone>();
+                var zone = new SerializedObject(go.AddComponent<StageDeathZone>());
+                zone.FindProperty("cause").enumValueIndex = (int)DeathCause.Fall;
+                zone.ApplyModifiedPropertiesWithoutUndo();
             }
 
             public void Camera(Transform target, Collider2D bounds) {

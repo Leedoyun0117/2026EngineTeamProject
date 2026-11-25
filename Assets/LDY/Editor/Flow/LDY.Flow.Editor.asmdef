@@ -4,6 +4,7 @@
     "references": [
         "LDY.Flow.Core",
         "LDY.Flow",
+        "LDY.Death.Core",
         "LDY.StageSelect",
         "LDY.Background.Core",
         "Unity.Cinemachine",

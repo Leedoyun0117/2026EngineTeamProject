@@ -1,3 +1,4 @@
+using LDY.Death;
 using LDY.Flow.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,9 +6,8 @@ using UnityEngine.SceneManagement;
 
 namespace LDY.Flow {
     // 선택 화면 → 스테이지 → 클리어/종료 → 선택 화면. 선택 화면을 거치지 않고 스테이지 씬을 바로 실행해도 동작한다.
-    public sealed class SceneFlow : MonoBehaviour {
+    public sealed class SceneFlow : MonoBehaviour, IStageRestarter {
         private readonly StageSession _session = new StageSession();
-        private readonly PlayerWatch _watch = new PlayerWatch();
         private FlowSettings _settings;
         private SceneLoadRunner _loader;
         private string _pendingStageId;
@@ -19,6 +19,9 @@ namespace LDY.Flow {
         public ProgressService Progress { get; private set; }
         public string CurrentStageId => _session.StageId;
         public string LastStageId { get; private set; }
+
+        // 방금 클리어하고 선택 화면으로 돌아온 스테이지. 다른 스테이지에 들어가거나 타이틀로 가면 지운다.
+        public string LastClearedId { get; private set; }
         public bool IsBusy => _loader.IsBusy;
 
         public void Initialize(FlowSettings settings, ProgressService progress, SceneLoadRunner loader) {
@@ -39,7 +42,6 @@ namespace LDY.Flow {
         }
 
         private void Update() {
-            if (!IsBusy && _watch.PollLost()) HandlePlayerLost();
             var keyboard = Keyboard.current;
             if (_session.IsActive && !IsBusy && keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
                 ReturnToSelect();
@@ -57,12 +59,17 @@ namespace LDY.Flow {
             if (!_loader.Load(entry.scenePath, entry.fileName + " 실행 중...")) return false;
             _pendingStageId = id;
             LastStageId = id;
+            LastClearedId = null;
             return true;
         }
 
         public bool ReturnToSelect() => _loader.Load(_settings.selectScenePath, "스테이지 선택.exe 실행 중...");
 
-        public bool ReturnToTitle() => _loader.Load(_settings.titleScenePath, "타이틀.exe 실행 중...");
+        public bool ReturnToTitle() {
+            if (!_loader.Load(_settings.titleScenePath, "타이틀.exe 실행 중...")) return false;
+            LastClearedId = null;
+            return true;
+        }
 
         public void ReloadProgress() => Progress.Reload();
 
@@ -76,12 +83,10 @@ namespace LDY.Flow {
 
             if (string.IsNullOrEmpty(id)) {
                 _session.End();
-                _watch.Stop();
                 return;
             }
 
             _session.Begin(id);
-            _watch.Track();
         }
 
         // 바로 실행한 씬: StageRoot id → 씬 하나짜리 항목 → 켜져 있는 다중 스테이지 루트 순으로 찾는다.
@@ -100,6 +105,7 @@ namespace LDY.Flow {
                 var seconds = _session.Elapsed;
                 var improved = Progress.RecordClear(_session.StageId, seconds);
                 LastStageId = _session.StageId;
+                LastClearedId = _session.StageId;
                 Debug.Log($"[Flow] {_session.StageId} 클리어 {StageNaming.FormatTime(seconds)}{(improved ? " (최고 기록)" : "")}");
             }
             else {
@@ -110,13 +116,18 @@ namespace LDY.Flow {
             if (!ReturnToSelect()) Debug.LogWarning("[Flow] 선택 화면을 열 수 없어 이 씬에 머문다.");
         }
 
-        private void HandlePlayerLost() {
+        // 사망 연출이 이미 끝난 뒤의 요청이라 추가 대기 없이 다시 연다.
+        public void RequestRestart() => Restart(0f);
+
+        private void HandlePlayerLost() => Restart(_settings.restartDelaySeconds);
+
+        private void Restart(float delay) {
             if (IsBusy) return;
             var scene = SceneManager.GetActiveScene();
             var entry = _session.IsActive ? Catalog.Find(_session.StageId) : null;
             var caption = (entry != null ? entry.fileName : scene.name) + " 다시 실행 중...";
             _pendingStageId = _session.StageId;
-            if (!_loader.Load(scene.path, caption, _settings.restartDelaySeconds)) _pendingStageId = null;
+            if (!_loader.Load(scene.path, caption, delay)) _pendingStageId = null;
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

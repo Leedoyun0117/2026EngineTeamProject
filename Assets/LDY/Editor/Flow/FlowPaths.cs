@@ -19,6 +19,7 @@ namespace LDY.FlowEditor {
         public const string GoalVisual = "Assets/LDY/Prefabs/Stage1/Stage1_GoalMusicFile.prefab";
 
         public const string SharedPlayer = "Assets/prefab/Player.prefab";
+        public const string AltPlayer = "Assets/LDY/Prefab/AltPlayer.prefab";
 
         public static readonly string[] KnownPlayers = {
             SharedPlayer,

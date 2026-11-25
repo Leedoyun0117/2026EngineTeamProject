@@ -1,6 +1,7 @@
 using System;
 using LDY.Flow;
 using LDY.Flow.Core;
+using LDY.StageSelect.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,10 +10,11 @@ using UnityEngine.UI;
 namespace LDY.StageSelect {
     // 썸네일 + 파일명 + 상태 한 칸. 클릭은 선택, 더블클릭은 실행.
     public sealed class FileItemView : MonoBehaviour, IPointerClickHandler {
-        private const float NameTop = 61f;
         private const float LineHeight = 12f;
-        private const float StatusTop = NameTop + LineHeight + 1f;
-        public static readonly Vector2 Size = new Vector2(104f, StatusTop + LineHeight + 2f);
+        private static readonly PixelRect Frame = FileGridLayout.Thumbnail;
+        private static readonly float NameTop = Frame.Bottom + 3f;
+        private static readonly float StatusTop = NameTop + LineHeight + 1f;
+        public static readonly Vector2 Size = new Vector2(FileGridLayout.ItemWidth, FileGridLayout.ItemHeight);
         private static readonly Color DimTint = new Color(0.55f, 0.55f, 0.55f, 1f);
         private static readonly Vector2 IconSize = new Vector2(16f, 16f);
         private static readonly Vector2 LockSize = new Vector2(16f, 20f);
@@ -50,7 +52,7 @@ namespace LDY.StageSelect {
             UiFactory.Stretch(_focus.rectTransform);
 
             var frame = ui.NewImage("Frame", transform, _skin.thumbFrame, _skin.face);
-            UiFactory.Place(frame.rectTransform, 4f, 2f, 96f, 56f);
+            UiFactory.Place(frame.rectTransform, Frame.X, Frame.Y, Frame.Width, Frame.Height);
             _thumbnail = ui.NewImage("Thumbnail", frame.transform, null, Color.black);
             UiFactory.Stretch(_thumbnail.rectTransform, 2f, 2f, 2f, 2f);
             _fileIcon = ui.NewImage("FileIcon", frame.transform, _skin.exe);

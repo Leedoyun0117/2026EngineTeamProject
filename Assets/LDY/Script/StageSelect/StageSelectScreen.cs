@@ -1,10 +1,12 @@
+using System;
+using System.Collections.Generic;
 using LDY.Flow;
 using LDY.Flow.Core;
 using UnityEngine;
 
 namespace LDY.StageSelect {
     // 뷰와 모델을 잇는 진입점. 상태 판정은 모델(=Core)에서 받고 여기서는 이벤트만 연결한다.
-    public sealed class StageSelectScreen : MonoBehaviour {
+    public sealed class StageSelectScreen : MonoBehaviour, IFileBoardHost {
         [SerializeField] private TitleBarView titleBar;
         [SerializeField] private AddressBarView addressBar;
         [SerializeField] private TreeView tree;
@@ -26,6 +28,28 @@ namespace LDY.StageSelect {
         private bool ModalOpen => dialog.IsOpen || SettingsOpen;
         private bool HasSettings => settings != null && settingsSource is IStageSelectSettings;
 
+        public bool IsReady => _model != null;
+        public bool Blocking => IsReady && (ModalOpen || _flow.IsBusy);
+        public string SelectedId => _model?.SelectedId;
+        public IReadOnlyList<string> VisibleIds => grid.VisibleIds;
+        public RectTransform FileArea => grid.Area;
+
+        public event Action LayoutChanged {
+            add => grid.LayoutChanged += value;
+            remove => grid.LayoutChanged -= value;
+        }
+
+        // 걷는 플레이어가 올라선 파일. 클릭 선택과 같은 경로다.
+        public void Select(string id) {
+            if (!IsReady || id == _model.SelectedId) return;
+            _model.Select(id);
+            Render();
+        }
+
+        public void Execute(string id) {
+            if (IsReady) Run(id);
+        }
+
         private void Start() {
             _flow = SceneFlow.Instance;
             if (_flow == null) {
@@ -35,7 +59,7 @@ namespace LDY.StageSelect {
 
             var ui = new UiFactory(_flow.Skin);
             _model = new StageSelectModel(_flow.Catalog);
-            _model.Focus(_flow.LastStageId, Progress);
+            _model.Focus(_flow.LastClearedId, Progress);
 
             titleBar.Build(ui, StageSelectText.WindowTitle);
             addressBar.Build(ui);
@@ -67,7 +91,7 @@ namespace LDY.StageSelect {
                 _model.Select(id);
                 Render();
             };
-            grid.Executed += Execute;
+            grid.Executed += Run;
             input.Moved += step => {
                 if (ModalOpen) return;
                 _model.MoveSelection(step);
@@ -76,7 +100,7 @@ namespace LDY.StageSelect {
             input.Executed += () => {
                 if (SettingsOpen) settings.Close();
                 else if (dialog.IsOpen) dialog.Close();
-                else if (_model.SelectedId != null) Execute(_model.SelectedId);
+                else if (_model.SelectedId != null) Run(_model.SelectedId);
             };
             input.Back += () => {
                 if (SettingsOpen) settings.Close();
@@ -109,7 +133,7 @@ namespace LDY.StageSelect {
             Render();
         }
 
-        private void Execute(string id) {
+        private void Run(string id) {
             if (_flow.IsBusy || ModalOpen) return;
             _model.Select(id);
             Render();

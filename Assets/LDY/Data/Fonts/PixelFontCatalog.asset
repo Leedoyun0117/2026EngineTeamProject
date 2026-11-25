@@ -25,6 +25,3 @@ MonoBehaviour:
   - sourcePath: Assets/Main/05.Fonts/fonts/Galmuri9.ttf
     samplingPointSize: 10
     outputPath: Assets/LDY/Fonts/Galmuri9 Pixel.asset
-  - sourcePath: Assets/LDY/Fonts/Source/Galmuri7.ttf
-    samplingPointSize: 8
-    outputPath: Assets/LDY/Fonts/Galmuri7 Pixel.asset

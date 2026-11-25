@@ -3,6 +3,7 @@
     "rootNamespace": "LDY.StageSelect",
     "references": [
         "LDY.Flow.Core",
+        "LDY.StageSelect.Core",
         "LDY.Flow",
         "Unity.TextMeshPro",
         "Unity.InputSystem",

@@ -20,12 +20,24 @@ namespace LDY.FlowEditor {
         private const float WindowHeight = 330f;
         private const float BodyTop = 54f;
         private const float StatusHeight = 15f;
-        private const float TreeWidth = 150f;
+
+        // 트리 연결선(들여쓰기 16px)이 들어가도록 150 → 163. 파일 목록은 4칸(8 + 4x104 + 3x8 = 448)이 들어가는 456px로 줄어든다.
+        private const float TreeWidth = 163f;
         private const float TabsHeight = FilterTabsView.Height;
         private const float TaskbarHeight = 22f;
 
+        // 캔버스를 Screen Space - Camera로 두고 플레이어 스프라이트를 그 위에, 대화상자 캔버스를 다시 그 위에 그린다.
+        private const float CanvasPlaneDistance = 10f;
+        private const int PlayerSortingOrder = 10;
+        private const int ModalSortingOrder = 100;
+        private const string PlayerName = "AltPlayer";
+        private const string BoardName = "FileBoard";
+
         private const string SettingsType = "LDY.Script.StageSelectSettings, Assembly-CSharp";
         private const string VolumeType = "LDY.Script.MixerAudioVolume, Assembly-CSharp";
+        private const string BootstrapType = "LDY.Script.StageSelectPlayerBootstrap, Assembly-CSharp";
+        private const string EntryDirectorType = "LDY.Script.SceneEntryDirector, Assembly-CSharp";
+        private const string InputLockType = "LDY.Script.PlayerInputLock, Assembly-CSharp";
 
         private static readonly string[] EntryTypes = {
             "LDY.Script.PlayerInputLock, Assembly-CSharp",
@@ -49,10 +61,10 @@ namespace LDY.FlowEditor {
             var skin = AssetDatabase.LoadAssetAtPath<UiSkin>(FlowPaths.Skin);
 
             var ui = new UiFactory(skin);
-            Camera(scene, skin);
+            var camera = Camera(scene, skin);
             EventSystem(scene);
             Entry(scene, log);
-            var canvas = Canvas(scene);
+            var canvas = Canvas(scene, camera);
             var screen = Ensure<StageSelectScreen>(canvas.gameObject);
             var input = Ensure<StageSelectInput>(canvas.gameObject);
 
@@ -82,6 +94,8 @@ namespace LDY.FlowEditor {
             var dialog = Area(canvas, "Dialog", r => UiFactory.Stretch(r), null);
             settings.SetAsLastSibling();
             dialog.SetAsLastSibling();
+            ModalLayer(settings);
+            ModalLayer(dialog);
 
             Wire(screen, input,
                 Ensure<TitleBarView>(titleBar.gameObject), Ensure<AddressBarView>(address.gameObject),
@@ -89,6 +103,13 @@ namespace LDY.FlowEditor {
                 Ensure<FileGridView>(grid.gameObject), Ensure<StatusBarView>(status.gameObject),
                 Ensure<TaskbarView>(taskbar.gameObject), Ensure<DialogView>(dialog.gameObject));
             WireSettings(screen, Ensure<SettingsDialogView>(settings.gameObject), SettingsService(scene, log));
+
+            var fit = CameraFit(camera, (RectTransform)canvas);
+            var player = Player(scene, log);
+            if (player != null) {
+                Board(scene, player, screen, fit, log);
+                WireEntryLock(scene, player, log);
+            }
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene, FlowPaths.SelectScene);
@@ -168,22 +189,116 @@ namespace LDY.FlowEditor {
             return rect;
         }
 
-        private static Transform Canvas(Scene scene) {
+        // 타이틀처럼 플레이어(스프라이트)가 화면 위에 보이도록 캔버스를 카메라 공간에 둔다.
+        // 크기 규칙(CanvasScaler 640x360, pixelPerfect)은 그대로다.
+        private static Transform Canvas(Scene scene, Camera camera) {
             var root = Root(scene, "StageSelectCanvas");
-            if (root != null) return root.transform;
-            var canvas = UiFactory.CreateCanvas("StageSelectCanvas", 0);
-            SceneManager.MoveGameObjectToScene(canvas.gameObject, scene);
+            Canvas canvas;
+            if (root != null) {
+                canvas = root.GetComponent<Canvas>();
+            }
+            else {
+                canvas = UiFactory.CreateCanvas("StageSelectCanvas", 0);
+                SceneManager.MoveGameObjectToScene(canvas.gameObject, scene);
+            }
+
+            canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            canvas.worldCamera = camera;
+            canvas.planeDistance = CanvasPlaneDistance;
+            canvas.sortingOrder = 0;
             return canvas.transform;
         }
 
-        private static void Camera(Scene scene, UiSkin skin) {
+        // 대화상자·설정창은 플레이어보다 위에 그린다(중첩 캔버스 + 정렬 덮어쓰기). 클릭을 받도록 레이캐스터도 단다.
+        private static void ModalLayer(RectTransform area) {
+            var canvas = Ensure<Canvas>(area.gameObject);
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = ModalSortingOrder;
+            Ensure<UnityEngine.UI.GraphicRaycaster>(area.gameObject);
+        }
+
+        private static Camera Camera(Scene scene, UiSkin skin) {
             var go = Root(scene, "Main Camera") ?? Create(scene, "Main Camera");
             go.tag = "MainCamera";
+            go.transform.SetPositionAndRotation(new Vector3(0f, 0f, -CanvasPlaneDistance), Quaternion.identity);
             var camera = Ensure<Camera>(go);
             camera.orthographic = true;
             camera.clearFlags = CameraClearFlags.SolidColor;
             camera.backgroundColor = skin.desktop;
             Ensure<AudioListener>(go);
+            return camera;
+        }
+
+        // 캔버스 1px = 1/PPU 유닛이 되게 카메라 크기를 런타임에 맞춘다.
+        private static PixelCameraFit CameraFit(Camera camera, RectTransform canvas) {
+            var fit = Ensure<PixelCameraFit>(camera.gameObject);
+            var so = new SerializedObject(fit);
+            so.FindProperty("canvas").objectReferenceValue = canvas;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            return fit;
+        }
+
+        // 타이틀과 같은 AltPlayer 프리팹 인스턴스. 프리팹은 고치지 않고 정렬 순서만 씬 인스턴스에서 덮어쓴다.
+        private static GameObject Player(Scene scene, FlowLog log) {
+            var player = Root(scene, PlayerName);
+            if (player == null) {
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(FlowPaths.AltPlayer);
+                if (prefab == null) {
+                    log.Warn("AltPlayer 프리팹 없음 " + FlowPaths.AltPlayer);
+                    return null;
+                }
+
+                player = (GameObject)PrefabUtility.InstantiatePrefab(prefab, scene);
+                player.name = PlayerName;
+                player.transform.position = Vector3.zero;
+                log.Info("AltPlayer 배치 (위치는 실행 시 시작 파일 위로 옮긴다)");
+            }
+
+            var sprite = player.GetComponent<SpriteRenderer>();
+            if (sprite != null && sprite.sortingOrder != PlayerSortingOrder) {
+                var so = new SerializedObject(sprite);
+                so.FindProperty("m_SortingOrder").intValue = PlayerSortingOrder;
+                so.ApplyModifiedPropertiesWithoutUndo();
+                log.Info("AltPlayer 정렬 순서 " + PlayerSortingOrder + " (캔버스 0 위, 대화상자 " + ModalSortingOrder + " 아래)");
+            }
+
+            return player;
+        }
+
+        private static void Board(Scene scene, GameObject player, StageSelectScreen screen, PixelCameraFit fit,
+            FlowLog log) {
+            var type = Type.GetType(BootstrapType);
+            if (type == null) {
+                log.Warn("타입 없음 " + BootstrapType);
+                return;
+            }
+
+            var go = Root(scene, BoardName) ?? Create(scene, BoardName);
+            var bootstrap = go.GetComponent(type);
+            if (bootstrap == null) bootstrap = go.AddComponent(type);
+            var so = new SerializedObject(bootstrap);
+            so.FindProperty("player").objectReferenceValue = player;
+            so.FindProperty("screen").objectReferenceValue = screen;
+            so.FindProperty("cameraFit").objectReferenceValue = fit;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // 타이틀 전환으로 들어올 때 잠그는 대상을 플레이어로 고정한다(SceneEntry에도 PlayerInputLock이 있어 FindFirst가 헷갈린다).
+        private static void WireEntryLock(Scene scene, GameObject player, FlowLog log) {
+            var entry = Root(scene, "SceneEntry");
+            var directorType = Type.GetType(EntryDirectorType);
+            var lockType = Type.GetType(InputLockType);
+            if (entry == null || directorType == null || lockType == null) {
+                log.Warn("SceneEntryDirector 잠금 연결 생략");
+                return;
+            }
+
+            var director = entry.GetComponent(directorType);
+            var playerLock = player.GetComponent(lockType);
+            if (director == null || playerLock == null) return;
+            var so = new SerializedObject(director);
+            so.FindProperty("playerLock").objectReferenceValue = playerLock;
+            so.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void EventSystem(Scene scene) {

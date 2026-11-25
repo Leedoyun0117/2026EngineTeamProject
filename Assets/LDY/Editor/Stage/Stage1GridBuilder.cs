@@ -9,7 +9,7 @@ namespace LDY.StageEditor {
         public const string GridName = "Stage1_Grid";
         private const string GroundLayer = "Ground";
         private const string HazardLayer = "Gimmick";
-        private const string KillHitboxType = "HES.Script.Object.KillHitbox, Assembly-CSharp";
+        private const string DeathZoneType = "LDY.Flow.StageDeathZone, LDY.Flow";
 
         public void Build(SetupReport report) {
             PrefabUpsert.Edit(StagePaths.Prefab(GridName), CreateRoot, Configure, out var created);
@@ -70,13 +70,13 @@ namespace LDY.StageEditor {
         private static void ConfigureHazard(GameObject go) {
             ObjectTools.SetLayer(go, HazardLayer);
             ObjectTools.EnsureComponent<TilemapCollider2D>(go).isTrigger = true;
-            var killHitbox = Type.GetType(KillHitboxType);
-            if (killHitbox == null) {
-                Debug.LogWarning("KillHitbox 타입을 찾지 못해 Hazard에 사망 판정을 붙이지 못했다");
+            var deathZone = Type.GetType(DeathZoneType);
+            if (deathZone == null) {
+                Debug.LogWarning("StageDeathZone 타입을 찾지 못해 Hazard에 사망 판정을 붙이지 못했다");
                 return;
             }
 
-            if (go.GetComponent(killHitbox) == null) go.AddComponent(killHitbox);
+            if (go.GetComponent(deathZone) == null) go.AddComponent(deathZone);
         }
     }
 }

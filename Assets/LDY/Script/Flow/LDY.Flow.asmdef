@@ -3,6 +3,7 @@
     "rootNamespace": "LDY.Flow",
     "references": [
         "LDY.Flow.Core",
+        "LDY.Death.Core",
         "Unity.TextMeshPro",
         "Unity.Cinemachine",
         "Unity.InputSystem",

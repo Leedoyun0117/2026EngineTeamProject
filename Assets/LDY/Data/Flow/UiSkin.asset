@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59042faa4b8ac6a46afe8539282f0b79, type: 3}
   m_Name: UiSkin
   m_EditorClassIdentifier: LDY.Flow::LDY.Flow.UiSkin
-  font: {fileID: 11400000, guid: b0b1208febe3ae24ab85abdcf13a3f27, type: 2}
-  fontSize: 8
+  font: {fileID: 11400000, guid: c33a59187ec319b4fb91407b64d4055a, type: 2}
+  fontSize: 10
   panelRaised: {fileID: 21300000, guid: 439d76cc6b2a5cd46ad36c5c4b9b78f1, type: 3}
   windowFrame: {fileID: 21300000, guid: f1c692bd36fca6d4681ad26e042ad963, type: 3}
   titlebar: {fileID: 21300000, guid: bd8eea39f20fb60468473fb1d4e7443f, type: 3}

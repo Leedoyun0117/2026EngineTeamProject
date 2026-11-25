@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LDY.Flow;
 using LDY.Flow.Core;
+using LDY.StageSelect.Core;
 using UnityEngine;
 
 namespace LDY.StageSelect {
@@ -71,13 +72,11 @@ namespace LDY.StageSelect {
 
         public void Select(string id) => SelectedId = id;
 
-        // 돌아온 스테이지가 있으면 그것, 없으면 지금 열려 있는 가장 앞 칸에 포커스.
-        public void Focus(string lastId, ProgressModel progress) {
+        // 방금 클리어한 스테이지가 있으면 그것, 없으면 가장 앞의 미완료 칸에 포커스(SpawnRule). 플레이어도 이 칸 위에 선다.
+        public void Focus(string justClearedId, ProgressModel progress) {
             Refresh(progress);
             if (_slots.Length == 0) return;
-            var index = _catalog.IndexOf(lastId);
-            if (index < 0) index = System.Array.IndexOf(_statuses, StageStatus.Open);
-            if (index < 0) index = 0;
+            var index = SpawnRule.Pick(_slots.Select(s => s.Id).ToArray(), _statuses, justClearedId);
             World = _slots[index].World;
             SelectedId = _slots[index].Id;
             Refresh(progress);

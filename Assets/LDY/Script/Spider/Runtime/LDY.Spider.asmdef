@@ -2,7 +2,8 @@
     "name": "LDY.Spider",
     "rootNamespace": "LDY.Spider",
     "references": [
-        "LDY.SpiderLogic"
+        "LDY.SpiderLogic",
+        "LDY.Death.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

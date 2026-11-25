@@ -25,9 +25,25 @@ namespace LDY.Script {
         void Disable();
     }
 
+    // 강조를 받는 대상. 대상이 자기 강조 방법을 안다(docs/IHighlightable-proposal.md).
+    public interface IHighlightable {
+        void SetHighlighted(bool highlighted);
+    }
+
+    // 메뉴 선택기(MenuSelector)가 고르고 실행하는 대상. 타이틀 아이콘(MenuIcon)과 선택 화면 파일 발판이 구현한다.
+    public interface IMenuTarget : IHighlightable {
+        bool IsUsable(IMenuGate gate);
+        void Execute();
+    }
+
+    // 플레이어가 올라서서 고르는 대상
+    public interface IStandTarget : IMenuTarget {
+        bool IsStoodOn(Collider2D body);
+    }
+
     // 현재 선택 가능한 메뉴 항목을 찾는다. 플레이어 발판 방식과 커서 hover 방식이 각각 구현한다.
     public interface IMenuTargetFinder {
-        MenuIcon Find();
+        IMenuTarget Find();
     }
 
     // 게임 시작 이후 화면으로 넘어가는 훅.

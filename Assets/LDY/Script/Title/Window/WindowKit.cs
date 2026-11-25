@@ -6,7 +6,7 @@ namespace LDY.Script {
     // uGUI 대신 월드 오브젝트로 창을 만듦. 길이는 월드 유닛, 도트 1픽셀 = Pixel(1/60)
     public sealed class WindowKit {
         public const float Pixel = 1f / 60f;
-        private const float PlatformThickness = 0.1f;
+        private const float PlatformThickness = OneWayPlatform.Thickness;
 
         private static Sprite _pixelSprite;
         private readonly TMP_FontAsset _font;
@@ -101,16 +101,8 @@ namespace LDY.Script {
         // 아래에서 점프하면 통과하는 단방향 발판(PlatformEffector2D)
         // 플레이어 바닥 판정이 쓰는 Ground 레이어에 둬야 함
         public BoxCollider2D Platform(string name, Transform parent, float xMin, float xMax, float top, bool visible) {
-            var go = new GameObject(name) { layer = GroundLayer };
-            go.transform.SetParent(parent, false);
-            go.transform.localPosition = new Vector3((xMin + xMax) * 0.5f, top - PlatformThickness * 0.5f, 0f);
-
-            var box = go.AddComponent<BoxCollider2D>();
-            box.size = new Vector2(xMax - xMin, PlatformThickness);
-            box.usedByEffector = true;
-            var effector = go.AddComponent<PlatformEffector2D>();
-            effector.useOneWay = true;
-            effector.surfaceArc = WindowStyle.PlatformSurfaceArc;
+            var box = OneWayPlatform.Create(name, parent, xMin, xMax, top, GroundLayer);
+            var go = box.gameObject;
             _platforms.Add(box);
 
             if (!visible)
