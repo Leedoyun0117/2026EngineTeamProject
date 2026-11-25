@@ -73,7 +73,7 @@ namespace JJB.Script.Player
 
         private void Update()
         {
-            PlayerRenderer.FilpX(PlayerMovement.Rb.linearVelocityX);
+            //PlayerRenderer.FilpX(PlayerMovement.Rb.linearVelocityX);
         }
         
         private void FixedUpdate()

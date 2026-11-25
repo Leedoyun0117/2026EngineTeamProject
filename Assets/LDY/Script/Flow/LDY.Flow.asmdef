@@ -1,0 +1,20 @@
+{
+    "name": "LDY.Flow",
+    "rootNamespace": "LDY.Flow",
+    "references": [
+        "LDY.Flow.Core",
+        "Unity.TextMeshPro",
+        "Unity.Cinemachine",
+        "Unity.InputSystem",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

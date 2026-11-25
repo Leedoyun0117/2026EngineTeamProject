@@ -4870,7 +4870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e7ca5e3a788d24ca12f4d3f85db385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.AsyncSceneLoader
-  sceneName: SampleScene
+  sceneName: StageSelect
 --- !u!114 &1944014915
 MonoBehaviour:
   m_ObjectHideFlags: 0

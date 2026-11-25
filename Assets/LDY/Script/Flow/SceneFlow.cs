@@ -1,0 +1,125 @@
+using LDY.Flow.Core;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+
+namespace LDY.Flow {
+    // 선택 화면 → 스테이지 → 클리어/종료 → 선택 화면. 선택 화면을 거치지 않고 스테이지 씬을 바로 실행해도 동작한다.
+    public sealed class SceneFlow : MonoBehaviour {
+        private readonly StageSession _session = new StageSession();
+        private readonly PlayerWatch _watch = new PlayerWatch();
+        private FlowSettings _settings;
+        private SceneLoadRunner _loader;
+        private string _pendingStageId;
+
+        public static SceneFlow Instance { get; private set; }
+
+        public StageCatalog Catalog => _settings.catalog;
+        public UiSkin Skin => _settings.skin;
+        public ProgressService Progress { get; private set; }
+        public string CurrentStageId => _session.StageId;
+        public string LastStageId { get; private set; }
+        public bool IsBusy => _loader.IsBusy;
+
+        public void Initialize(FlowSettings settings, ProgressService progress, SceneLoadRunner loader) {
+            Instance = this;
+            _settings = settings;
+            Progress = progress;
+            _loader = loader;
+            SceneManager.sceneLoaded += HandleSceneLoaded;
+            StageSignals.Cleared += HandleCleared;
+            StageSignals.PlayerLost += HandlePlayerLost;
+        }
+
+        private void OnDestroy() {
+            SceneManager.sceneLoaded -= HandleSceneLoaded;
+            StageSignals.Cleared -= HandleCleared;
+            StageSignals.PlayerLost -= HandlePlayerLost;
+            if (Instance == this) Instance = null;
+        }
+
+        private void Update() {
+            if (!IsBusy && _watch.PollLost()) HandlePlayerLost();
+            var keyboard = Keyboard.current;
+            if (_session.IsActive && !IsBusy && keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
+                ReturnToSelect();
+        }
+
+        public StageStatus StatusOf(string id) {
+            var index = Catalog.IndexOf(id);
+            return index < 0 ? StageStatus.NotReady : UnlockPolicy.StatusOf(Catalog.Slots(), index, Progress.Model);
+        }
+
+        public bool TryEnterStage(string id) {
+            var entry = Catalog.Find(id);
+            var status = StatusOf(id);
+            if (entry == null || (status != StageStatus.Open && status != StageStatus.Cleared)) return false;
+            if (!_loader.Load(entry.scenePath, entry.fileName + " 실행 중...")) return false;
+            _pendingStageId = id;
+            LastStageId = id;
+            return true;
+        }
+
+        public bool ReturnToSelect() => _loader.Load(_settings.selectScenePath, "스테이지 선택.exe 실행 중...");
+
+        public bool ReturnToTitle() => _loader.Load(_settings.titleScenePath, "타이틀.exe 실행 중...");
+
+        public void ReloadProgress() => Progress.Reload();
+
+        private void HandleSceneLoaded(Scene scene, LoadSceneMode mode) {
+            if (mode != LoadSceneMode.Single) return;
+            var requested = _pendingStageId != null;
+            var entry = requested ? Catalog.Find(_pendingStageId) : StandaloneEntry(scene);
+            var id = entry != null ? entry.id : RootId(scene);
+            _pendingStageId = null;
+            if (entry != null && entry.UsesSubRoot) SubStageLoader.Prepare(scene, entry, Catalog, requested);
+
+            if (string.IsNullOrEmpty(id)) {
+                _session.End();
+                _watch.Stop();
+                return;
+            }
+
+            _session.Begin(id);
+            _watch.Track();
+        }
+
+        // 바로 실행한 씬: StageRoot id → 씬 하나짜리 항목 → 켜져 있는 다중 스테이지 루트 순으로 찾는다.
+        private StageEntry StandaloneEntry(Scene scene) {
+            var rootId = RootId(scene);
+            if (rootId != null) return Catalog.Find(rootId);
+            return Catalog.FindWholeScene(scene.path) ?? SubStageLoader.DetectActive(scene, Catalog);
+        }
+
+        private static string RootId(Scene scene) =>
+            StageRoot.Current != null && StageRoot.Current.gameObject.scene == scene ? StageRoot.Current.StageId : null;
+
+        private void HandleCleared() {
+            if (IsBusy) return;
+            if (_session.IsActive && Catalog.Find(_session.StageId) != null) {
+                var seconds = _session.Elapsed;
+                var improved = Progress.RecordClear(_session.StageId, seconds);
+                LastStageId = _session.StageId;
+                Debug.Log($"[Flow] {_session.StageId} 클리어 {StageNaming.FormatTime(seconds)}{(improved ? " (최고 기록)" : "")}");
+            }
+            else {
+                Debug.Log("[Flow] 카탈로그에 없는 씬에서 골 도착. 기록 없이 선택 화면으로 간다.");
+            }
+
+            _session.End();
+            if (!ReturnToSelect()) Debug.LogWarning("[Flow] 선택 화면을 열 수 없어 이 씬에 머문다.");
+        }
+
+        private void HandlePlayerLost() {
+            if (IsBusy) return;
+            var scene = SceneManager.GetActiveScene();
+            var entry = _session.IsActive ? Catalog.Find(_session.StageId) : null;
+            var caption = (entry != null ? entry.fileName : scene.name) + " 다시 실행 중...";
+            _pendingStageId = _session.StageId;
+            if (!_loader.Load(scene.path, caption, _settings.restartDelaySeconds)) _pendingStageId = null;
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics() => Instance = null;
+    }
+}

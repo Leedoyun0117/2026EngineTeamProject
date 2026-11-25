@@ -43,7 +43,11 @@ namespace LDY.StageEditor {
 
         public AsepriteArt Load(string name) {
             var path = _locator.Find(name + ".aseprite");
-            if (path == null) return null;
+            return path == null ? null : LoadAt(path);
+        }
+
+        public AsepriteArt LoadAt(string path) {
+            if (string.IsNullOrEmpty(path) || AssetDatabase.LoadMainAssetAtPath(path) == null) return null;
             var assets = AssetDatabase.LoadAllAssetsAtPath(path);
             var first = assets.OfType<Sprite>().OrderBy(s => FrameIndex(s.name)).FirstOrDefault();
             var controller = assets.OfType<RuntimeAnimatorController>().FirstOrDefault();

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using JJB.Script;
-using JJB.Script.Player;
 using TMPro;
+using LDY.TitlePlayer;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -678,6 +677,7 @@ namespace LDY.Script.Editor {
         private GameObject EnsurePlayerPrefab(Sprite sprite) {
             var existing = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
             if (existing != null) {
+                ConvertLegacyPlayer();
                 ApplyJumpTuning();
                 ApplyPlayerAnimation();
                 return existing;
@@ -695,10 +695,6 @@ namespace LDY.Script.Editor {
             rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             rb.sharedMaterial = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>(PhysicsMaterialPath);
 
-            var groundCheck = new GameObject("GroundCheck").transform;
-            groundCheck.SetParent(go.transform, false);
-            groundCheck.localPosition = new Vector3(0f, -0.5f, 0f);
-
             var playerInput = go.AddComponent<PlayerInput>();
             var inputSo = new SerializedObject(playerInput);
             inputSo.FindProperty("m_Actions").objectReferenceValue =
@@ -706,22 +702,9 @@ namespace LDY.Script.Editor {
             inputSo.FindProperty("m_DefaultActionMap").stringValue = "Player";
             inputSo.ApplyModifiedPropertiesWithoutUndo();
 
-            go.AddComponent<JJBPlayerInput>();
-            var movement = go.AddComponent<JJBPlayerMovement>();
-            var jump = go.AddComponent<JJBPlayerJump>();
-            go.AddComponent<JJBPlayer>();
-
-            SetFloat(movement, "moveSpeed", 5f);
-            SetFloat(jump, "jumpSpeed", PlayerJumpSpeed);
-            Wire(jump, "groundCheck", groundCheck);
-            var jumpSo = new SerializedObject(jump);
-            jumpSo.FindProperty("groundCheckSize").vector2Value = new Vector2(0.9f, 0.12f);
-            jumpSo.FindProperty("groundLayer").intValue = 1 << _ground;
-            jumpSo.ApplyModifiedPropertiesWithoutUndo();
-
             go.AddComponent<PlayerInputLock>();
             go.AddComponent<PlayerAbilityGate>();
-            go.AddComponent<JJBControlGate>();
+            TitlePlayerAssembler.Install(go, EnsureTuning());
             go.AddComponent<AltModeController>();
 
             Directory.CreateDirectory(Path.GetDirectoryName(PrefabPath));
@@ -729,6 +712,32 @@ namespace LDY.Script.Editor {
             Object.DestroyImmediate(go);
             ApplyPlayerAnimation();
             return prefab;
+        }
+
+        // 튜닝 에셋이 없을 때만 타이틀 발판 배치 기준 값으로 만든다.
+        private TitlePlayerTuning EnsureTuning() {
+            var tuning = TitlePlayerAssembler.LoadOrCreateTuning(out var created);
+            if (!created) return tuning;
+            tuning.moveSpeed = 5f;
+            tuning.jumpSpeed = PlayerJumpSpeed;
+            tuning.groundCheckSize = new Vector2(0.9f, 0.12f);
+            tuning.groundCheckOffsetY = -0.5f;
+            tuning.groundLayer = 1 << _ground;
+            EditorUtility.SetDirty(tuning);
+            return tuning;
+        }
+
+        // 예전(JJB 컴포넌트) AltPlayer가 남아 있으면 타이틀 전용 플레이어로 바꾼다.
+        private static void ConvertLegacyPlayer() {
+            var root = PrefabUtility.LoadPrefabContents(PrefabPath);
+            try {
+                if (root.GetComponent<TitlePlayerMotor>() != null) return;
+                TitlePlayerConverter.Convert(root, PrefabPath);
+                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
+            }
+            finally {
+                PrefabUtility.UnloadPrefabContents(root);
+            }
         }
 
         // 플레이어 애니메이션 컴포넌트를 붙이고 PlayerAnimSet을 연결한다. 이미 만들어진 프리팹에도 적용된다.
@@ -739,9 +748,6 @@ namespace LDY.Script.Editor {
                     $"{PlayerAnimSetBuilder.CursorSetPath} 가 없습니다. 'LDY/Cursor Character/2. Build Anim Set'을 먼저 실행한 뒤 다시 설정하세요.");
 
             var root = PrefabUtility.LoadPrefabContents(PrefabPath);
-            if (root.GetComponent<JJBPlayerMotionSource>() == null)
-                root.AddComponent<JJBPlayerMotionSource>();
-
             var renderer = root.GetComponent<PlayerRenderer>();
             if (renderer == null)
                 renderer = root.AddComponent<PlayerRenderer>();
@@ -754,16 +760,12 @@ namespace LDY.Script.Editor {
             PrefabUtility.UnloadPrefabContents(root);
         }
 
-        // 이미 만들어진 프리팹도 발판 배치 기준 점프 속도로 맞춘다.
+        // 발판 배치 기준 점프 속도로 맞춘다. Sync Title Tuning From JJB 뒤에 이 셋업을 돌리면 이 값으로 돌아온다.
         private static void ApplyJumpTuning() {
-            var root = PrefabUtility.LoadPrefabContents(PrefabPath);
-            var jump = root.GetComponent<JJBPlayerJump>();
-            if (jump != null) {
-                SetFloat(jump, "jumpSpeed", PlayerJumpSpeed);
-                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
-            }
-
-            PrefabUtility.UnloadPrefabContents(root);
+            var tuning = AssetDatabase.LoadAssetAtPath<TitlePlayerTuning>(TitlePlayerAssembler.TuningPath);
+            if (tuning == null || Mathf.Approximately(tuning.jumpSpeed, PlayerJumpSpeed)) return;
+            tuning.jumpSpeed = PlayerJumpSpeed;
+            EditorUtility.SetDirty(tuning);
         }
 
         private static Material EnsureCrtMaterial() {

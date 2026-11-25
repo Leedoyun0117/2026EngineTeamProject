@@ -1,0 +1,17 @@
+{
+    "name": "LDY.Background",
+    "rootNamespace": "LDY.Background",
+    "references": [
+        "LDY.Background.Core",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

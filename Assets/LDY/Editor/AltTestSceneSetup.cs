@@ -1,5 +1,3 @@
-using JJB.Script;
-using JJB.Script.Player;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -33,7 +31,7 @@ namespace LDY.Script.Editor {
             CreateGround("Platform", box, new Vector2(5f, -1f), new Vector2(5f, 0.6f), groundLayer);
             CreateGround("Wall", box, new Vector2(-8f, -1.5f), new Vector2(1f, 5f), groundLayer);
 
-            var player = CreatePlayer(circle, groundLayer);
+            var player = CreatePlayer(circle);
             cam.transform.position = new Vector3(0f, 0f, -10f);
 
             EditorSceneManager.MarkSceneDirty(player.scene);
@@ -41,7 +39,7 @@ namespace LDY.Script.Editor {
             Debug.Log("Alt 테스트 세팅 완료. Play 후 A/D, Space, Alt(홀드), L(잠금 토글)로 확인하세요.");
         }
 
-        private static GameObject CreatePlayer(Sprite sprite, int groundLayer) {
+        private static GameObject CreatePlayer(Sprite sprite) {
             var go = new GameObject(PlayerName);
             Undo.RegisterCreatedObjectUndo(go, "Create Alt Test Player");
             go.transform.position = new Vector3(0f, -2f, 0f);
@@ -67,21 +65,9 @@ namespace LDY.Script.Editor {
             inputSo.FindProperty("m_DefaultActionMap").stringValue = "Player";
             inputSo.ApplyModifiedPropertiesWithoutUndo();
 
-            go.AddComponent<JJBPlayerInput>();
-            var movement = go.AddComponent<JJBPlayerMovement>();
-            var jump = go.AddComponent<JJBPlayerJump>();
-            go.AddComponent<JJBPlayer>();
-
-            SetFloat(movement, "moveSpeed", 7f);
-            var jumpSo = new SerializedObject(jump);
-            jumpSo.FindProperty("groundCheck").objectReferenceValue = groundCheck;
-            jumpSo.FindProperty("groundCheckSize").vector2Value = new Vector2(col.size.x * 0.9f, 0.1f);
-            jumpSo.FindProperty("groundLayer").intValue = 1 << groundLayer;
-            jumpSo.ApplyModifiedPropertiesWithoutUndo();
-
             go.AddComponent<PlayerInputLock>();
             go.AddComponent<PlayerAbilityGate>();
-            go.AddComponent<JJBControlGate>();
+            TitlePlayerAssembler.Install(go, TitlePlayerAssembler.LoadOrCreateTuning(out _));
             go.AddComponent<AltModeController>();
             go.AddComponent<AltLockTester>();
             return go;
@@ -111,12 +97,6 @@ namespace LDY.Script.Editor {
             cam.orthographic = true;
             cam.orthographicSize = 6f;
             return cam;
-        }
-
-        private static void SetFloat(Object target, string field, float value) {
-            var so = new SerializedObject(target);
-            so.FindProperty(field).floatValue = value;
-            so.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static int EnsureLayer(string layerName) {

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59042faa4b8ac6a46afe8539282f0b79, type: 3}
+  m_Name: UiSkin
+  m_EditorClassIdentifier: LDY.Flow::LDY.Flow.UiSkin
+  font: {fileID: 11400000, guid: b0b1208febe3ae24ab85abdcf13a3f27, type: 2}
+  fontSize: 8
+  panelRaised: {fileID: 21300000, guid: 439d76cc6b2a5cd46ad36c5c4b9b78f1, type: 3}
+  windowFrame: {fileID: 21300000, guid: f1c692bd36fca6d4681ad26e042ad963, type: 3}
+  titlebar: {fileID: 21300000, guid: bd8eea39f20fb60468473fb1d4e7443f, type: 3}
+  fieldSunken: {fileID: 21300000, guid: ee76042168ef9064daf735299962d8ff, type: 3}
+  button: {fileID: 21300000, guid: 424d0f37d19989d428ee36168e689791, type: 3}
+  buttonPressed: {fileID: 21300000, guid: ffbae1bf0fe15c54d88b2ca35ce2a000, type: 3}
+  titleMin: {fileID: 21300000, guid: 123f21bde52856d42980890a6ef3bb56, type: 3}
+  titleMax: {fileID: 21300000, guid: 2ef1b16a7c2dd4349bdb4b37353519a4, type: 3}
+  titleClose: {fileID: 21300000, guid: f4c5a03e63651604284db55eaf4e2830, type: 3}
+  progressSegment: {fileID: 21300000, guid: 45bc606365a188d4a8b044bd08903c2d, type: 3}
+  taskbar: {fileID: 21300000, guid: 09933e9c199e2214fae66a18342c97c0, type: 3}
+  startIcon: {fileID: 21300000, guid: 39ef1e6f480ed1149b83be27785b2385, type: 3}
+  tab: {fileID: 21300000, guid: fc8efde4b621eec4783e14d2342f8622, type: 3}
+  tabActive: {fileID: 21300000, guid: 4d9afa2b9ea9e5841bbc2842320a566b, type: 3}
+  thumbFrame: {fileID: 21300000, guid: c9fa73f9e42776d47822f7d169f37efe, type: 3}
+  focusDotted: {fileID: 21300000, guid: eb566ead67150d44ebaaa459b1b09db5, type: 3}
+  folder: {fileID: 21300000, guid: cae175c14cc1d1e468c96c624819a0bd, type: 3}
+  folderOpen: {fileID: 21300000, guid: 2d6c863473885fb44986237a6a3a5af2, type: 3}
+  folderLocked: {fileID: 21300000, guid: 5f47af94463ee584d8312baeb893f0c6, type: 3}
+  computer: {fileID: 21300000, guid: a2224755be2abda4ab7512df465ca84c, type: 3}
+  disk: {fileID: 21300000, guid: 2ec2ee383f6c9a0458aa464ead16faac, type: 3}
+  ini: {fileID: 21300000, guid: 9c76fb400dbf1ce4f9c1f8aa156c2051, type: 3}
+  exe: {fileID: 21300000, guid: 39c172a6651f6b74b8e4f15f603e4de5, type: 3}
+  missing: {fileID: 21300000, guid: b81147a8997df9b4283735984f188041, type: 3}
+  lockBadge: {fileID: 21300000, guid: 0ae9f58ea6ca2484c9b2f08774db1367, type: 3}
+  checkBadge: {fileID: 21300000, guid: 1e93fd949d9de3940a32656b57fef962, type: 3}
+  iconError: {fileID: 21300000, guid: bc4f3cb0fca5f92438ff14edacb33474, type: 3}
+  iconWarn: {fileID: 21300000, guid: 1e11194f48de9114f8ee972d869e2938, type: 3}
+  iconInfo: {fileID: 21300000, guid: f8c5e6afa9743024cb11a8391379aaaa, type: 3}
+  desktop: {r: 0, g: 0.5019608, b: 0.5019608, a: 1}
+  face: {r: 0.7529412, g: 0.7529412, b: 0.7529412, a: 1}
+  paper: {r: 1, g: 1, b: 1, a: 1}
+  text: {r: 0, g: 0, b: 0, a: 1}
+  titleText: {r: 1, g: 1, b: 1, a: 1}
+  selection: {r: 0, g: 0, b: 0.5019608, a: 1}
+  selectionText: {r: 1, g: 1, b: 1, a: 1}
+  disabled: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
