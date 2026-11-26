@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 4717746436263205315}
   - component: {fileID: 857499356243254538}
   - component: {fileID: 798714095594226140}
-  - component: {fileID: 4628340695903815511}
+  - component: {fileID: 9107764631387028236}
   m_Layer: 7
   m_Name: Hazard
   m_TagString: Untagged
@@ -429,7 +429,7 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
---- !u!114 &4628340695903815511
+--- !u!114 &9107764631387028236
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -438,9 +438,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3077202735116585270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 290cb82f4960496fb2e90d125063dee9, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c3d44c484dca8f48b3baf9d49b57882, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HES.Script.Object.KillHitbox
+  m_EditorClassIdentifier: LDY.Flow::LDY.Flow.StageDeathZone
+  player:
+    playerTag: Player
+    playerLayer: Player
+  cause: 0
 --- !u!1 &5670848420228682556
 GameObject:
   m_ObjectHideFlags: 0

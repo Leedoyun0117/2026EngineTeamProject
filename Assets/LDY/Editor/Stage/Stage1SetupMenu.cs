@@ -28,6 +28,37 @@ namespace LDY.StageEditor {
             report.Print("LDY Stage1 ArtTest");
         }
 
+        [MenuItem("LDY/Stage1/Move Pickup Sprites")]
+        private static void MovePickupSprites() {
+            var report = new SetupReport();
+            try {
+                new PickupSpriteMover().Run(report);
+            }
+            finally {
+                AssetDatabase.SaveAssets();
+                report.Print("LDY Stage1 Move Pickup Sprites");
+            }
+        }
+
+        [MenuItem("LDY/Stage1/Restore Zoom Pickup")]
+        private static void RestoreZoomPickup() {
+            var report = new SetupReport();
+            try {
+                PickupCatalogRestorer.Run(report);
+            }
+            finally {
+                AssetDatabase.SaveAssets();
+                report.Print("LDY Stage1 Restore Zoom Pickup");
+            }
+        }
+
+        [MenuItem("LDY/Stage1/Verify Pickups")]
+        private static void VerifyPickups() {
+            var report = new SetupReport();
+            new PickupVerifier().Run(report);
+            report.Print("LDY Stage1 Verify Pickups");
+        }
+
         [MenuItem("LDY/Stage1/Apply Guitar Pendulum")]
         private static void ApplyGuitarPendulum() {
             var report = new SetupReport();

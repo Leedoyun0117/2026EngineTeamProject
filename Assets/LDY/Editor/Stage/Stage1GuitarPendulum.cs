@@ -12,7 +12,7 @@ namespace LDY.StageEditor {
 
         private const string ArmName = "Square (7)";
         private const string LegacyBladeName = "GameObject";
-        private const string KillHitboxTypeName = "HES.Script.Object.KillHitbox";
+        private const string DeathZoneTypeName = "LDY.Flow.StageDeathZone";
         private const float FallbackArmLength = 7f;
         private const float AnchorOverlapUnits = 0.1f;
         private const float GuitarOverlapUnits = 0.04f;
@@ -96,7 +96,7 @@ namespace LDY.StageEditor {
             var attach = AttachOffsetUnits(sprite);
             go.transform.localPosition = new Vector3(-attach.x, -armLength - attach.y, 0f);
             Render(go, sprite, GuitarOrder);
-            AddKillHitbox(go, sprite);
+            AddDeathZone(go, sprite);
         }
 
         // 기타 스프라이트 피벗 기준 사슬 연결점 위치
@@ -106,7 +106,7 @@ namespace LDY.StageEditor {
             return pixels / sprite.pixelsPerUnit;
         }
 
-        private static void AddKillHitbox(GameObject go, Sprite sprite) {
+        private static void AddDeathZone(GameObject go, Sprite sprite) {
             var polygon = ObjectFactory.AddComponent<PolygonCollider2D>(go);
             polygon.isTrigger = true;
             if (polygon.pathCount == 0) {
@@ -121,9 +121,9 @@ namespace LDY.StageEditor {
             }
 
             var hitboxType = AppDomain.CurrentDomain.GetAssemblies()
-                .Select(assembly => assembly.GetType(KillHitboxTypeName)).FirstOrDefault(type => type != null);
+                .Select(assembly => assembly.GetType(DeathZoneTypeName)).FirstOrDefault(type => type != null);
             if (hitboxType == null)
-                Debug.LogWarning($"[Stage1] {KillHitboxTypeName} 를 찾지 못해 사망 판정 스크립트를 붙이지 못했다");
+                Debug.LogWarning($"[Stage1] {DeathZoneTypeName} 를 찾지 못해 사망 판정 스크립트를 붙이지 못했다");
             else
                 go.AddComponent(hitboxType);
         }

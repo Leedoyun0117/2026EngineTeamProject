@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31111dac63018cd45bfbd2fba7f47be1, type: 3}
+  m_Name: PlayerDeathSettings
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.PlayerDeathSettings
+  animSet: {fileID: 11400000, guid: ff6c0468752e7df44aac7a2cf4a0ab6f, type: 2}
+  restartDelay: 0.3
+  pullTime: 0.25

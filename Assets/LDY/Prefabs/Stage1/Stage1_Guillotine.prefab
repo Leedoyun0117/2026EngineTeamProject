@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 8590941705552455974}
   - component: {fileID: 5574343610939259914}
   - component: {fileID: 6645115312788811859}
-  - component: {fileID: 4857103317221826865}
+  - component: {fileID: 2461092623303193027}
   m_Layer: 0
   m_Name: Guitar
   m_TagString: Untagged
@@ -376,7 +376,7 @@ PolygonCollider2D:
       - {x: -0.64, y: 0.06}
       - {x: -0.52, y: 0.07}
   m_UseDelaunayMesh: 1
---- !u!114 &4857103317221826865
+--- !u!114 &2461092623303193027
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -385,9 +385,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4881172391991963014}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 290cb82f4960496fb2e90d125063dee9, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c3d44c484dca8f48b3baf9d49b57882, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HES.Script.Object.KillHitbox
+  m_EditorClassIdentifier: LDY.Flow::LDY.Flow.StageDeathZone
+  player:
+    playerTag: Player
+    playerLayer: Player
+  cause: 0
 --- !u!1 &5079927666958692105
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +440,10 @@ PrefabInstance:
       objectReference: {fileID: 7523772970707192160, guid: f53c4bd1aabac5945be78ce41a1f0a09, type: 3}
     - target: {fileID: 1260962076656868538, guid: 6912564313c1129409d20e4a9da5b172, type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1260962076656868538, guid: 6912564313c1129409d20e4a9da5b172, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1526688253391735738, guid: 6912564313c1129409d20e4a9da5b172, type: 3}

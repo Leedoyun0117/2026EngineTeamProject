@@ -11,6 +11,7 @@ namespace LDY.StageEditor {
         public const string Tiles = "Assets/LDY/Tiles/Stage1";
         public const string Data = "Assets/LDY/Data/Stage";
         public const string Scenes = "Assets/LDY/Scenes";
+        public const string PickupCatalog = Data + "/Stage1PickupCatalog.asset";
 
         public static string Prefab(string name) => Prefabs + "/" + name + ".prefab";
         public static string Tile(string name) => Tiles + "/" + name + ".asset";

@@ -7,12 +7,9 @@ using UnityEditor;
 using UnityEngine;
 
 namespace LDY.Script {
-    // aseprite 임포터가 만든 스프라이트(Frame_N)를 태그 표대로 나눠 PlayerAnimSet에 담는다. 임시 도구.
+    // aseprite 임포터가 만든 스프라이트(Frame_N)를 태그 표대로 나눠 PlayerAnimSet에 담는다.
+    // 예전 Pink/V2 세트 메뉴는 2026-11-25에 삭제했다(지금 프리팹·씬은 Cursor 세트만 쓴다).
     public static class PlayerAnimSetBuilder {
-        public const string AsepritePath = "Assets/LDY/Art/player_anim_pink (3).aseprite";
-        public const string SetPath = "Assets/LDY/Data/PlayerAnimSet.asset";
-        public const string AsepriteV2Path = "Assets/LDY/Sprites/Character/player_anim_pinkV2.aseprite";
-        public const string SetV2Path = "Assets/LDY/Data/PlayerAnimSetV2.asset";
         public const string CursorSetPath = "Assets/LDY/Data/PlayerAnimSet_Cursor.asset";
 
         // idle의 110ms 눈 깜빡임 프레임(전체 인덱스 2)
@@ -23,37 +20,6 @@ namespace LDY.Script {
 
         private static readonly Regex FrameName = new(@"^Frame_(\d+)$");
 
-        // aseprite 프레임 시간(ms)
-        private static readonly Tag[] BaseTags = {
-            new(PlayerAnimId.Idle, 0, true, 900, 120, 900),
-            new(PlayerAnimId.Walk, 3, true, 90, 90, 90, 90, 90, 90, 90, 90),
-            new(PlayerAnimId.Run, 11, true, 60, 60, 60, 60, 60, 60, 60, 60),
-            new(PlayerAnimId.SitDown, 19, false, 100, 120, 160),
-            new(PlayerAnimId.SitLoop, 22, true, 1000),
-            new(PlayerAnimId.StandUp, 23, false, 100, 120, 100),
-            new(PlayerAnimId.Jump, 26, false, 100, 140),
-            new(PlayerAnimId.Fall, 28, true, 130, 130, 130, 130),
-            new(PlayerAnimId.Grab, 32, true, 200)
-        };
-
-        private static readonly Tag[] RopeTags = {
-            new(PlayerAnimId.RopeHang, 33, true, 450, 450),
-            new(PlayerAnimId.RopeClimb, 35, true, 120, 110, 120, 110),
-            new(PlayerAnimId.RopeClimbDown, 39, true, 110, 120, 110, 120)
-        };
-
-        private static readonly Source Original = new(AsepritePath, SetPath, 33, BaseTags, 1);
-        private static readonly Source V2 = new(AsepriteV2Path, SetV2Path, 43, Concat(BaseTags, RopeTags), 1);
-        [MenuItem("LDY/Build Player Anim Set")]
-        public static void Build() {
-            Build(Original);
-        }
-
-        [MenuItem("LDY/Build Player Anim Set V2")]
-        public static void BuildV2() {
-            Build(V2);
-        }
-
         public static bool BuildCursor() {
             var report = new List<string>();
             if (!CursorAssetLocator.TryFind(CursorAssetLocator.CursorFile, out var path, report)) {
@@ -63,11 +29,6 @@ namespace LDY.Script {
 
             return Build(new Source(path, CursorSetPath, 0, Array.Empty<Tag>(), CursorAltFrame, CursorTagSpecs.All,
                 PlayerArt.PixelsPerUnit));
-        }
-
-        // 편집기 메뉴 밖에서 고른 aseprite 경로로 V2 세트를 만든다.
-        public static bool BuildV2From(string asepritePath) {
-            return Build(new Source(asepritePath, SetV2Path, V2.FrameCount, V2.Tags, V2.AltFrame));
         }
 
         private static bool Build(Source source) {
@@ -186,13 +147,6 @@ namespace LDY.Script {
             var format = sample.texture.format;
             if (format != TextureFormat.RGBA32 && format != TextureFormat.ARGB32 && format != TextureFormat.RGB24)
                 errors.Add($"텍스처가 압축됨({format}). 임포터 Inspector에서 Compression을 None으로 맞추세요");
-        }
-
-        private static Tag[] Concat(Tag[] first, Tag[] second) {
-            var all = new Tag[first.Length + second.Length];
-            first.CopyTo(all, 0);
-            second.CopyTo(all, first.Length);
-            return all;
         }
 
         private readonly struct Source {

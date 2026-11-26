@@ -5,4 +5,5 @@ using UnityEngine;
 public class ChapterSO_HTY : ScriptableObject
 {
     public List<StageSO_HTY> _stageList;
+    public bool _unLock = false;
 }

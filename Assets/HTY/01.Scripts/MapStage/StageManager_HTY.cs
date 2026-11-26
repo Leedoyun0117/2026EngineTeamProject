@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,20 +32,34 @@ public class StageManager_HTY : MonoBehaviour
     {
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
-            OpenLockStage();
-            Debug.Log($"챕터 {_unLockChapter},스테이지 {_unLockStage}");
+            UnLock();
+            Debug.Log($"챕터 {_unLockChapter},스테이지 {_unLockStage-1}");
+            _chapterList._list[_unLockChapter - 1]._stageList[_unLockStage - 1]._unLock = true;
+        }
+
+        if (Keyboard.current.pKey.wasPressedThisFrame)
+        {
+            ResetStage();
         }
         
     }
 
-    public void Init()
+    public void Init()//저장 시스템 도입 시급
     {
         _unLockChapter = 1;
         _unLockStage = 1;
+
+        _chapterList._list[_unLockChapter - 1]._stageList[_unLockStage - 1]._unLock = true;
+        Debug.Log($"챕터 {_unLockChapter},스테이지 {_unLockStage - 1}");
     }
 
-    public void OpenLockStage()
+    public void UnLock()
     {
+        if(_unLockChapter== _chapterList._list.Count && _unLockStage == _chapterList._list[_unLockChapter - 1]._stageList.Count)
+        {
+            Ending();
+            return;
+        }
         _unLockStage++;
         StageSO_HTY stage;
 
@@ -76,6 +89,21 @@ public class StageManager_HTY : MonoBehaviour
 
     private void Ending()
     {
-        //엔딩 컷씬이나 다른 쪽으로 활용
+        Debug.Log($"현재 스테이지 {_unLockChapter} - {_unLockStage-1} 클리어 end");
+    }
+
+
+    public void ResetStage()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            foreach (var stageSo in _chapterList._list[i]._stageList)
+            {
+                stageSo._unLock = false;
+            }
+        }
+
+        Init();
+
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LDY.PlayerLocate;
 using UnityEngine;
 
 namespace LDY.Script {
@@ -22,7 +23,7 @@ namespace LDY.Script {
         [SerializeField] private Transform anchor;
         // 모든 수치가 담긴 데이터 에셋
         [SerializeField] private RopeSettings settings;
-        // 매달릴 플레이어(비워두면 Player 태그로 찾음)
+        // 매달릴 플레이어(비워두면 Player 태그 본체를 PrimaryPlayerLocator로 찾음)
         [SerializeField] private Rigidbody2D player;
 
         // 플레이어 몸(위치/속도) 접근 추상화
@@ -63,7 +64,7 @@ namespace LDY.Script {
         // 필수 참조 확인 후 로직 객체들과 플레이어 쪽 컴포넌트를 조립한다.
         private void Awake() {
             if (player == null) {
-                var found = GameObject.FindWithTag("Player");
+                var found = PrimaryPlayerLocator.Find(this);
                 player = found != null ? found.GetComponent<Rigidbody2D>() : null;
             }
 

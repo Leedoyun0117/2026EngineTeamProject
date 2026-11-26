@@ -6,11 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/LDY/Scenes/RopeTest.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
     path: Assets/Scenes/LDY_TitleScene.unity
     guid: 8dc10e802e908674daaa7cfb620b9d55
+  - enabled: 1
+    path: Assets/LDY/Scenes/StageSelect.unity
+    guid: 3d3badf1b22700f489859674576c98d8
+  - enabled: 1
+    path: Assets/JJB/JJBLevel.unity
+    guid: e90dd3a6bc10a324f954926657e34259
+  - enabled: 1
+    path: Assets/LDY/Scenes/RopeTest.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
