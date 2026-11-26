@@ -24,12 +24,16 @@ namespace HES.Script.Object {
             }
         }
 
-        private void OnRealRun() {
-            
+        private void OnRealRun(bool isPressed) {
+            foreach (var item in realReceiver) {
+                item.SetActive(isPressed);
+            }
         }
 
-        private void OnFakeRun() {
-            
+        private void OnFakeRun(bool isPressed) {
+            foreach (var item in fakeReceiver) {
+                item.SetActive(isPressed);
+            }
         }
     }
 }
