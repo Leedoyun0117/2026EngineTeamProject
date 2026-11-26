@@ -1,0 +1,158 @@
+{
+ "sel_folder": {
+  "size": [
+   16,
+   14
+  ]
+ },
+ "sel_folder_open": {
+  "size": [
+   16,
+   14
+  ]
+ },
+ "sel_folder_locked": {
+  "size": [
+   16,
+   14
+  ]
+ },
+ "sel_computer": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "sel_disk": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "sel_ini": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "sel_exe": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "sel_check_badge": {
+  "size": [
+   12,
+   12
+  ]
+ },
+ "sel_lock": {
+  "size": [
+   16,
+   20
+  ]
+ },
+ "sel_thumb_frame": {
+  "size": [
+   8,
+   8
+  ],
+  "border_LBRT": [
+   2,
+   2,
+   2,
+   2
+  ],
+  "imageType": "Sliced"
+ },
+ "sel_focus_dotted": {
+  "size": [
+   8,
+   8
+  ],
+  "border_LBRT": [
+   2,
+   2,
+   2,
+   2
+  ],
+  "imageType": "Tiled",
+  "note": "Image Type Tiled so the dots repeat"
+ },
+ "sel_tab": {
+  "size": [
+   12,
+   12
+  ],
+  "border_LBRT": [
+   3,
+   1,
+   3,
+   3
+  ],
+  "imageType": "Sliced"
+ },
+ "sel_tab_active": {
+  "size": [
+   12,
+   14
+  ],
+  "border_LBRT": [
+   3,
+   0,
+   3,
+   3
+  ],
+  "imageType": "Sliced"
+ },
+ "sel_panel_raised": {
+  "size": [
+   8,
+   8
+  ],
+  "border_LBRT": [
+   2,
+   2,
+   2,
+   2
+  ],
+  "imageType": "Sliced"
+ },
+ "sel_titlebtn_min": {
+  "size": [
+   12,
+   10
+  ]
+ },
+ "sel_titlebtn_max": {
+  "size": [
+   12,
+   10
+  ]
+ },
+ "sel_titlebtn_close": {
+  "size": [
+   12,
+   10
+  ]
+ },
+ "sel_progress_seg": {
+  "size": [
+   7,
+   10
+  ]
+ },
+ "sel_start_icon": {
+  "size": [
+   12,
+   12
+  ]
+ },
+ "sel_missing": {
+  "size": [
+   16,
+   16
+  ]
+ }
+}

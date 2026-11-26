@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 
 namespace LDY.Script {
-    public class MenuIcon : MonoBehaviour {
+    public class MenuIcon : MonoBehaviour, IStandTarget {
         [SerializeField] private MenuActionBehaviour action;
         [SerializeField] private Collider2D platform;
         [SerializeField] private Collider2D hitArea;
@@ -36,10 +36,7 @@ namespace LDY.Script {
         }
 
         public bool IsStoodOn(Collider2D body) {
-            if (platform == null || !platform.IsTouching(body))
-                return false;
-
-            return body.bounds.min.y >= platform.bounds.max.y - TitleTuning.StandTolerance;
+            return StandCheck.IsStandingOn(body, platform);
         }
 
         // 강조 직전 색을 저장해 뒀다가 되돌림(강조 전에 바뀐 색도 따라가게)

@@ -17,7 +17,6 @@ namespace LDY.Script {
 
             AssignToPrefab(PrefabPath, set, report);
             AssignToPrefab(TitlePrefabPath, set, report);
-            RevertSceneOverride(report);
             AssetDatabase.SaveAssets();
             return true;
         }
@@ -53,30 +52,6 @@ namespace LDY.Script {
                 target.sprite = idle;
 
             report.Add($"{path} {renderer.name}: animSet → {set.name}");
-        }
-
-        // 씬 인스턴스가 이전 세트를 오버라이드하고 있으면 프리팹 값으로 되돌린다.
-        private static void RevertSceneOverride(List<string> report) {
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
-            using var session = SceneSession.Open(ScenePath);
-            var instance = FindInstance(session.Scene, prefab);
-            var visual = instance != null ? instance.transform.Find(PinkName) : null;
-            var renderer = visual != null ? visual.GetComponent<PlayerRenderer>() : null;
-            if (renderer == null) {
-                report.Add("SampleScene: Player 인스턴스를 찾지 못해 오버라이드를 확인하지 못함");
-                return;
-            }
-
-            var property = new SerializedObject(renderer).FindProperty("animSet");
-            if (!property.prefabOverride) {
-                report.Add("SampleScene: animSet 오버라이드 없음");
-                return;
-            }
-
-            PrefabUtility.RevertPropertyOverride(property, InteractionMode.AutomatedAction);
-            report.Add(session.SaveIfSafe()
-                ? "SampleScene: animSet 오버라이드를 되돌리고 저장"
-                : "SampleScene: animSet 오버라이드를 되돌렸지만 저장되지 않은 기존 변경이 있어 저장하지 않음. 직접 저장하세요");
         }
     }
 }

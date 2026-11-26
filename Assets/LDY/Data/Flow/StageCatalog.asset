@@ -1,0 +1,277 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faad675f6a98e3a479e1e463a4e4aec6, type: 3}
+  m_Name: StageCatalog
+  m_EditorClassIdentifier: LDY.Flow::LDY.Flow.StageCatalog
+  worlds:
+  - world: 1
+    displayName: "STAGE_1 \uBBA4\uC9C1"
+    folderName: "STAGE_1_\uBBA4\uC9C1\uD50C\uB808\uC774\uC5B4"
+  - world: 2
+    displayName: "STAGE_2 \uD0D0\uC0C9\uAE30"
+    folderName: "STAGE_2_\uD30C\uC77C\uD0D0\uC0C9\uAE30"
+  - world: 3
+    displayName: "STAGE_3 \uD734\uC9C0\uD1B5"
+    folderName: "STAGE_3_\uD734\uC9C0\uD1B5"
+  entries:
+  - id: 1-T
+    world: 1
+    number: 0
+    fileName: "\uD29C\uD1A0\uB9AC\uC5BC.exe"
+    scenePath: Assets/JJB/JJBLevel.unity
+    sceneAsset: {fileID: 102900000, guid: e90dd3a6bc10a324f954926657e34259, type: 3}
+    subRootName: Stage1-Tutorial
+    thumbnail: {fileID: 0}
+    abilities:
+    - pause
+    state: 1
+  - id: 1-1
+    world: 1
+    number: 1
+    fileName: 1-1.exe
+    scenePath: Assets/JJB/JJBLevel.unity
+    sceneAsset: {fileID: 102900000, guid: e90dd3a6bc10a324f954926657e34259, type: 3}
+    subRootName: Stage1-1
+    thumbnail: {fileID: 0}
+    abilities:
+    - pause
+    state: 1
+  - id: 1-2
+    world: 1
+    number: 2
+    fileName: 1-2.exe
+    scenePath: Assets/JJB/JJBLevel.unity
+    sceneAsset: {fileID: 102900000, guid: e90dd3a6bc10a324f954926657e34259, type: 3}
+    subRootName: Stage1-2
+    thumbnail: {fileID: 0}
+    abilities:
+    - pause
+    state: 1
+  - id: 1-3
+    world: 1
+    number: 3
+    fileName: 1-3.exe
+    scenePath: Assets/JJB/JJBLevel.unity
+    sceneAsset: {fileID: 102900000, guid: e90dd3a6bc10a324f954926657e34259, type: 3}
+    subRootName: Stage1-3
+    thumbnail: {fileID: 0}
+    abilities:
+    - pause
+    - cut
+    state: 1
+  - id: 1-4
+    world: 1
+    number: 4
+    fileName: 1-4.exe
+    scenePath: Assets/JJB/JJBLevel.unity
+    sceneAsset: {fileID: 102900000, guid: e90dd3a6bc10a324f954926657e34259, type: 3}
+    subRootName: Stage1-4
+    thumbnail: {fileID: 0}
+    abilities:
+    - pause
+    - drag
+    state: 1
+  - id: 1-5
+    world: 1
+    number: 5
+    fileName: 1-5.exe
+    scenePath: Assets/JJB/JJBLevel.unity
+    sceneAsset: {fileID: 102900000, guid: e90dd3a6bc10a324f954926657e34259, type: 3}
+    subRootName: Stage1-5
+    thumbnail: {fileID: 0}
+    abilities:
+    - pause
+    - drag
+    - zoom
+    - cut
+    state: 1
+  - id: 1-6
+    world: 1
+    number: 6
+    fileName: 1-6.exe
+    scenePath: Assets/JJB/JJBLevel.unity
+    sceneAsset: {fileID: 102900000, guid: e90dd3a6bc10a324f954926657e34259, type: 3}
+    subRootName: Stage1-6
+    thumbnail: {fileID: 0}
+    abilities:
+    - pause
+    - alpha
+    state: 1
+  - id: 2-T
+    world: 2
+    number: 0
+    fileName: "\uD29C\uD1A0\uB9AC\uC5BC.exe"
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - zoom
+    - drag
+    state: 0
+  - id: 2-1
+    world: 2
+    number: 1
+    fileName: 2-1.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - drag
+    - copy
+    state: 0
+  - id: 2-2
+    world: 2
+    number: 2
+    fileName: 2-2.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - zoom
+    - alpha
+    - drag
+    state: 0
+  - id: 2-3
+    world: 2
+    number: 3
+    fileName: 2-3.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - drag
+    - alpha
+    - zoom
+    state: 0
+  - id: 2-4
+    world: 2
+    number: 4
+    fileName: 2-4.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - drag
+    - zoom
+    state: 0
+  - id: 2-5
+    world: 2
+    number: 5
+    fileName: 2-5.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - drag
+    - alpha
+    state: 0
+  - id: 2-6
+    world: 2
+    number: 6
+    fileName: 2-6.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - drag
+    - alpha
+    - cut
+    state: 0
+  - id: 3-T
+    world: 3
+    number: 0
+    fileName: "\uD29C\uD1A0\uB9AC\uC5BC.exe"
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - light
+    - drag
+    state: 0
+  - id: 3-1
+    world: 3
+    number: 1
+    fileName: 3-1.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - light
+    - cut
+    - drag
+    state: 0
+  - id: 3-2
+    world: 3
+    number: 2
+    fileName: 3-2.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - light
+    - drag
+    state: 0
+  - id: 3-3
+    world: 3
+    number: 3
+    fileName: 3-3.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - drag
+    - light
+    - tab
+    state: 0
+  - id: 3-4
+    world: 3
+    number: 4
+    fileName: 3-4.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities:
+    - light
+    - copy
+    state: 0
+  - id: 3-5
+    world: 3
+    number: 5
+    fileName: 3-5.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities: []
+    state: 0
+  - id: 3-6
+    world: 3
+    number: 6
+    fileName: 3-6.exe
+    scenePath: 
+    sceneAsset: {fileID: 0}
+    subRootName: 
+    thumbnail: {fileID: 0}
+    abilities: []
+    state: 0

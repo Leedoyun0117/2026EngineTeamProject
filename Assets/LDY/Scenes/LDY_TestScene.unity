@@ -301,14 +301,14 @@ GameObject:
   - component: {fileID: 133480539}
   - component: {fileID: 133480538}
   - component: {fileID: 133480537}
-  - component: {fileID: 133480536}
-  - component: {fileID: 133480535}
-  - component: {fileID: 133480534}
-  - component: {fileID: 133480533}
   - component: {fileID: 133480532}
-  - component: {fileID: 133480531}
   - component: {fileID: 133480530}
   - component: {fileID: 133480529}
+  - component: {fileID: 133480546}
+  - component: {fileID: 133480545}
+  - component: {fileID: 133480544}
+  - component: {fileID: 133480543}
+  - component: {fileID: 133480542}
   m_Layer: 0
   m_Name: AltTestPlayer
   m_TagString: Untagged
@@ -342,25 +342,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.AltModeController
   playerSprite: {fileID: 0}
   targetCamera: {fileID: 0}
+  pointerOverride: {fileID: 0}
   cameraLock:
     followBehaviours: []
   returnSettings:
     returnSpeed: 40
     minDuration: 0.05
     maxDuration: 0.3
+    afterimageFadeTime: 0.1
   afterimageTint: {r: 0.78, g: 0.62, b: 0.38, a: 0.75}
---- !u!114 &133480531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133480528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6b56f159ce778340b3fbf11b2befedf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.JJBControlGate
+  maxDeltaTime: 0.05
 --- !u!114 &133480532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,63 +364,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e85ed420ba108244a1b63fa4ae9bd84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.PlayerInputLock
---- !u!114 &133480533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133480528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9af67dcf5e69764db667d022088e0bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayer
---- !u!114 &133480534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133480528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a657b57b708441ec96905b6192c54449, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayerJump
-  jumpSpeed: 12
-  groundCheck: {fileID: 71791376}
-  groundCheckSize: {x: 0.17999999, y: 0.1}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  extraGravity: 30
-  gravityDelay: 0.15
---- !u!114 &133480535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133480528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8be639fdd2345fa9da09df999dd96f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayerMovement
-  moveSpeed: 7
---- !u!114 &133480536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133480528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d9a0bb4370b48cab039ef72003d5a81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayerInput
 --- !u!114 &133480537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,6 +542,70 @@ Transform:
   - {fileID: 71791376}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &133480542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133480528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f6c1348e74d9040b1e5f4375150c2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.TitlePlayerAnimator
+--- !u!114 &133480543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133480528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f96a364b967fa40b786ba62459d754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.TitlePlayerControl
+--- !u!114 &133480544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133480528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4c4633569cab94b83e653777868a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LDY.TitlePlayer::LDY.TitlePlayer.TitlePlayerFacing
+  sprite: {fileID: 133480540}
+  deadZone: 0.05
+--- !u!114 &133480545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133480528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72bffb10b18ab3346a6ccd5706f98545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LDY.TitlePlayer::LDY.TitlePlayer.TitlePlayerMotor
+  tuning: {fileID: 11400000, guid: 853ef43845aebce409e6b2325c5a6267, type: 2}
+  groundCheck: {fileID: 71791376}
+--- !u!114 &133480546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133480528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59bdac52eacffad4daa27d18be98dab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LDY.TitlePlayer::LDY.TitlePlayer.TitlePlayerInput
 --- !u!1 &566620933
 GameObject:
   m_ObjectHideFlags: 0

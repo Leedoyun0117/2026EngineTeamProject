@@ -1,0 +1,21 @@
+{
+    "name": "LDY.Background.Editor",
+    "rootNamespace": "LDY.BackgroundEditor",
+    "references": [
+        "LDY.Background",
+        "LDY.Background.Core",
+        "Unity.TextMeshPro",
+        "Unity.2D.Sprite.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

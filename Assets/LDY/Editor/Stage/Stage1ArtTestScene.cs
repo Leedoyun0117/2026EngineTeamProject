@@ -28,7 +28,7 @@ namespace LDY.StageEditor {
                 AddCamera(scene);
                 var instance = (GameObject)PrefabUtility.InstantiatePrefab(grid, scene);
                 Paint(instance);
-                PlaceGimmicks(scene);
+                PlaceGimmicks(scene, report);
                 PlacePlayer(scene, report);
                 var created = !System.IO.File.Exists(ScenePath);
                 EditorSceneManager.SaveScene(scene, ScenePath);
@@ -84,12 +84,16 @@ namespace LDY.StageEditor {
                 map.SetTile(new Vector3Int(x, y, 0), tile);
         }
 
-        private static void PlaceGimmicks(Scene scene) {
-            var paths = AssetDatabase.FindAssets("t:Prefab", new[] { StagePaths.Prefabs })
+        private static void PlaceGimmicks(Scene scene, SetupReport report) {
+            var pickups = PickupCatalogs.Load(report);
+            var all = AssetDatabase.FindAssets("t:Prefab", new[] { StagePaths.Prefabs })
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Where(p => !p.EndsWith("/" + Stage1GridBuilder.GridName + ".prefab"))
                 .OrderBy(p => p)
                 .ToList();
+            foreach (var unlisted in all.Where(p => PickupCatalogs.IsUnlisted(pickups, p)))
+                report.Skipped(unlisted + ": 카탈로그 외, 보존 (ArtTest에 배치 안 함)");
+            var paths = all.Where(p => !PickupCatalogs.IsUnlisted(pickups, p)).ToList();
 
             var parent = new GameObject("Gimmicks");
             SceneManager.MoveGameObjectToScene(parent, scene);

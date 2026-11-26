@@ -28,7 +28,7 @@ namespace LDY.SpiderEditor {
 
                 var player = AssetDatabase.LoadAssetAtPath<GameObject>(SpiderPaths.PlayerPrefab);
                 if (player != null)
-                    AddDeathPresenter(Instantiate(player, scene, PlayerSpawn));
+                    Instantiate(player, scene, PlayerSpawn);
                 else
                     Debug.LogWarning("[Stage2] Player 프리팹을 찾지 못해 씬에 놓지 못했다: " + SpiderPaths.PlayerPrefab);
 
@@ -53,11 +53,6 @@ namespace LDY.SpiderEditor {
             box.size = ZoneSize;
             SceneManager.MoveGameObjectToScene(go, scene);
             return box;
-        }
-
-        private static void AddDeathPresenter(GameObject player) {
-            if (!ExternalComponents.HasComponent(player, ExternalComponents.DeathPresenter))
-                ExternalComponents.TryAdd(player, ExternalComponents.DeathPresenter);
         }
 
         private static void AddCamera(Scene scene) {
