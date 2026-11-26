@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using LDY.Stage;
 using UnityEditor;
 using UnityEngine;
 
@@ -55,13 +56,20 @@ namespace LDY.StageEditor {
             SolidBlock("GhostBlock", "ghost_block"),
             SolidBlock("WallBarrier", "wall_barrier"),
             Trigger("GoalMusicFile", "goal_music_file", Vector2.one * Cell),
-            Trigger("UiPause", "ui_pause", Vector2.one * 0.8f),
-            Trigger("UiCut", "ui_cut", Vector2.one * 0.8f),
-            Trigger("UiDrag", "ui_drag", Vector2.one * 0.8f),
-            Trigger("UiZoom", "ui_zoom", Vector2.one * 0.8f),
-            Trigger("UiAlpha", "ui_alpha", Vector2.one * 0.8f),
             Marker("Start")
         };
+
+        // 흡수 UI는 Stage1PickupCatalog에서 읽는다. 크기·레이어는 기존 Ui 프리팹과 같다.
+        private static readonly Vector2 PickupSize = Vector2.one * 0.8f;
+
+        public static PlaceholderSpec Pickup(Stage1PickupCatalog.Entry entry) =>
+            new PlaceholderSpec(StripPrefix(entry.prefabName), entry.asepritePath, PlaceholderShape.Box, PickupSize,
+                Vector2.zero, true, false, false, Gimmick);
+
+        private static string StripPrefix(string prefabName) =>
+            prefabName.StartsWith(PickupCatalogs.StagePrefix)
+                ? prefabName.Substring(PickupCatalogs.StagePrefix.Length)
+                : prefabName;
 
         private static PlaceholderSpec Plate(string name, string art) =>
             new PlaceholderSpec(name, art, PlaceholderShape.Box, new Vector2(Cell, 0.5f), new Vector2(0f, 0.25f), true,
@@ -104,24 +112,30 @@ namespace LDY.StageEditor {
 
         public IReadOnlyList<string> Build(SetupReport report) {
             var built = new List<string>();
-            foreach (var spec in PlaceholderCatalog.All) {
-                AsepriteArt art = null;
-                if (spec.ArtName != null) {
-                    art = _art.Load(spec.ArtName);
-                    if (art?.First == null) {
-                        report.Skipped($"Placeholder {spec.Name}: 아트 {spec.ArtName} 없음");
-                        continue;
-                    }
-                }
+            foreach (var spec in PlaceholderCatalog.All)
+                BuildOne(spec, spec.ArtName == null ? null : _art.Load(spec.ArtName), report, built);
 
-                var path = StagePaths.Prefab("Stage1_" + spec.Name);
-                PrefabUpsert.Edit(path, () => new GameObject("Stage1_" + spec.Name), root => Apply(root, spec, art),
-                    out var created);
-                report.Record(created, "Placeholder " + path);
-                built.Add(path);
-            }
+            var pickups = PickupCatalogs.Load(report);
+            if (pickups == null) return built;
+            foreach (var entry in pickups.Entries)
+                BuildOne(PlaceholderCatalog.Pickup(entry), _art.LoadAt(entry.asepritePath), report, built);
+            foreach (var path in PickupCatalogs.UnlistedPickupPrefabs(pickups))
+                report.Skipped(path + ": 카탈로그 외, 보존");
 
             return built;
+        }
+
+        private static void BuildOne(PlaceholderSpec spec, AsepriteArt art, SetupReport report, List<string> built) {
+            if (spec.ArtName != null && art?.First == null) {
+                report.Skipped($"Placeholder {spec.Name}: 아트 {spec.ArtName} 없음");
+                return;
+            }
+
+            var name = PickupCatalogs.StagePrefix + spec.Name;
+            var path = StagePaths.Prefab(name);
+            PrefabUpsert.Edit(path, () => new GameObject(name), root => Apply(root, spec, art), out var created);
+            report.Record(created, "Placeholder " + path);
+            built.Add(path);
         }
 
         private static void Apply(GameObject root, PlaceholderSpec spec, AsepriteArt art) {

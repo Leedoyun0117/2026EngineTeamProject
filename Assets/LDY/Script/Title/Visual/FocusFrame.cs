@@ -1,3 +1,4 @@
+using LDY.Title.Core;
 using UnityEngine;
 
 namespace LDY.Script {
@@ -6,6 +7,9 @@ namespace LDY.Script {
     public sealed class FocusFrame : MonoBehaviour {
         private Renderer _followed;
         private float _padding;
+
+        // 점 주기(로컬 유닛). 0이면 크기를 맞추지 않음(스프라이트 없을 때)
+        private float _period;
         private SpriteRenderer _renderer;
         private Rect _shown;
         private bool _visible;
@@ -75,12 +79,16 @@ namespace LDY.Script {
             // 스프라이트 슬롯이 비었으면 WindowKit과 같은 1x1 흰 사각형을 늘려 씀
             _renderer.sprite = style.sprite != null ? style.sprite : WindowKit.PixelSprite;
             if (style.sprite != null) {
-                _renderer.drawMode = SpriteDrawMode.Sliced;
+                // Sliced는 변 가운데를 늘려서 긴 행에서 점이 막대가 됨. Tiled는 점 크기를 유지하고 반복한다
+                _renderer.drawMode = SpriteDrawMode.Tiled;
                 _renderer.tileMode = style.tileMode;
+                _period = style.dotPeriodPixels > 0f ? style.dotPeriodPixels / style.sprite.pixelsPerUnit : 0f;
             }
         }
 
         private void ShowLocal(Rect local) {
+            // 렌더러 로컬 유닛 = 스프라이트 픽셀 / PPU 라서 부모 스케일과 무관하게 주기를 맞출 수 있음
+            local = DottedFrame.SnapRect(local, _period);
             if (_visible && _shown == local)
                 return;
 
@@ -88,7 +96,7 @@ namespace LDY.Script {
             _shown = local;
             gameObject.SetActive(true);
             transform.localPosition = local.center;
-            if (_renderer.drawMode == SpriteDrawMode.Sliced)
+            if (_renderer.drawMode != SpriteDrawMode.Simple)
                 _renderer.size = local.size;
             else
                 SpriteFit.Stretch(_renderer, local.size);

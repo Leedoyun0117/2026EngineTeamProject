@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LDY.Script {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(Rigidbody2D), typeof(PlayerInputLock), typeof(JJBControlGate))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(PlayerInputLock))]
     public class AltModeController : MonoBehaviour, IAltStatus {
         [SerializeField] private SpriteRenderer playerSprite;
         [SerializeField] private Camera targetCamera;

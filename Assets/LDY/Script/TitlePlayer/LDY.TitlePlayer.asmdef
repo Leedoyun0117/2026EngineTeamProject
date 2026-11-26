@@ -1,0 +1,17 @@
+{
+    "name": "LDY.TitlePlayer",
+    "rootNamespace": "LDY.TitlePlayer",
+    "references": [
+        "LDY.TitlePlayer.Core",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

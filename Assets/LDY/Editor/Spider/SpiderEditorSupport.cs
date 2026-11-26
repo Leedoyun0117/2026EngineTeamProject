@@ -71,9 +71,8 @@ namespace LDY.SpiderEditor {
         }
     }
 
-    // 팀원 코드(HES KillHitbox, HTY DragObj)는 어셈블리가 달라 이름으로 찾아 붙인다. 팀원 코드는 건드리지 않는다.
+    // 팀원 코드(HTY DragObj)는 어셈블리가 달라 이름으로 찾아 붙인다. 팀원 코드는 건드리지 않는다.
     internal static class ExternalComponents {
-        public const string DeathPresenter = "LDY.Script.PlayerDeathPresenter";
         public const string DragObj = "DragObj";
 
         public static bool HasComponent(GameObject target, string typeName) {

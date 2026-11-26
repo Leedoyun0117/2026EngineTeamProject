@@ -1,0 +1,255 @@
+{
+ "hud_taskbar": {
+  "size": [
+   16,
+   22
+  ],
+  "border_LBRT": [
+   0,
+   0,
+   0,
+   3
+  ],
+  "imageType": "Sliced"
+ },
+ "hud_field_sunken": {
+  "size": [
+   12,
+   12
+  ],
+  "border_LBRT": [
+   3,
+   3,
+   3,
+   3
+  ],
+  "imageType": "Sliced"
+ },
+ "hud_key": {
+  "size": [
+   12,
+   12
+  ],
+  "border_LBRT": [
+   3,
+   3,
+   3,
+   3
+  ],
+  "imageType": "Sliced"
+ },
+ "hud_key_pressed": {
+  "size": [
+   12,
+   12
+  ],
+  "border_LBRT": [
+   3,
+   3,
+   3,
+   3
+  ],
+  "imageType": "Sliced"
+ },
+ "hud_key_disabled": {
+  "size": [
+   12,
+   12
+  ],
+  "border_LBRT": [
+   3,
+   3,
+   3,
+   3
+  ],
+  "imageType": "Sliced"
+ },
+ "hud_keycap": {
+  "size": [
+   10,
+   10
+  ],
+  "border_LBRT": [
+   2,
+   3,
+   3,
+   2
+  ],
+  "imageType": "Sliced"
+ },
+ "hud_tooltip": {
+  "size": [
+   8,
+   8
+  ],
+  "border_LBRT": [
+   2,
+   2,
+   2,
+   2
+  ],
+  "imageType": "Sliced"
+ },
+ "hud_icon_pause": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "hud_icon_cut": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "hud_icon_drag": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "hud_icon_alpha": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "hud_icon_light": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "hud_icon_tab": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "hud_icon_copy": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "hud_icon_empty": {
+  "size": [
+   16,
+   16
+  ]
+ },
+ "hud_icon_warn": {
+  "size": [
+   12,
+   12
+  ]
+ },
+ "hud_icon_error": {
+  "size": [
+   12,
+   12
+  ]
+ },
+ "hud_icon_info": {
+  "size": [
+   12,
+   12
+  ]
+ },
+ "hud_icon_target_cursor": {
+  "size": [
+   12,
+   14
+  ]
+ },
+ "hud_window_frame": {
+  "size": [
+   12,
+   12
+  ],
+  "border_LBRT": [
+   3,
+   3,
+   3,
+   3
+  ],
+  "imageType": "Sliced"
+ },
+ "hud_window_titlebar": {
+  "size": [
+   16,
+   11
+  ],
+  "border_LBRT": [
+   2,
+   0,
+   8,
+   0
+  ],
+  "imageType": "Sliced",
+  "note": "Sliced; gradient keeps dark left / light right"
+ },
+ "hud_window_paper": {
+  "size": [
+   8,
+   8
+  ],
+  "border_LBRT": [
+   1,
+   0,
+   0,
+   1
+  ],
+  "imageType": "Sliced"
+ },
+ "hud_select_ylw": {
+  "size": [
+   12,
+   12
+  ],
+  "frames": 4,
+  "ms": 120,
+  "tag": "ants",
+  "border_LBRT": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "drawMode": "Tiled (world SpriteRenderer, PPU 40)"
+ },
+ "hud_select_red": {
+  "size": [
+   12,
+   12
+  ],
+  "frames": 4,
+  "ms": 120,
+  "tag": "ants",
+  "border_LBRT": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "drawMode": "Tiled (world SpriteRenderer, PPU 40)"
+ },
+ "hud_marker_down": {
+  "size": [
+   11,
+   9
+  ],
+  "frames": 2,
+  "ms": 250,
+  "tag": "bob"
+ },
+ "hud_hourglass": {
+  "size": [
+   12,
+   16
+  ],
+  "frames": 4,
+  "ms": 200,
+  "tag": "spin"
+ }
+}

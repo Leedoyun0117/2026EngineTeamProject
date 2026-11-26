@@ -1,0 +1,16 @@
+{
+    "name": "LDY.StageSelect.Core",
+    "rootNamespace": "LDY.StageSelect.Core",
+    "references": [
+        "LDY.Flow.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

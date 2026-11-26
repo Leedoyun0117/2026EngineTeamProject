@@ -114,10 +114,10 @@ namespace LDY.Script {
             _dropInput = new KeyboardButtonInput("DropDown", "<Keyboard>/s");
 
             var services = new WindowServices(altStatus, monitorSpace, body,
-                new Rigidbody2DPlayerBody(player.GetComponent<Rigidbody2D>()), player.GetComponent<JJBControlGate>(),
+                new Rigidbody2DPlayerBody(player.GetComponent<Rigidbody2D>()), player.GetComponent<IPlayerControl>(),
                 new PlayerWindowInput(player.GetComponent<PlayerInput>(), inputLock, interact),
                 subScreens.CloseCurrent, new MenuPlatformSwitch(icons),
-                player.GetComponent<JJBControlGate>(), inputLock, _dropInput, player.GetComponent<PlayerPoseRelay>());
+                player.GetComponent<IJumpBlock>(), inputLock, _dropInput, player.GetComponent<PlayerPoseRelay>());
             settingsPanel.Bind(services, volume, screenMode);
             creditPanel.Bind(services);
         }

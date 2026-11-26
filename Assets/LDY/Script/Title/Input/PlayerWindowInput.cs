@@ -1,19 +1,22 @@
+using LDY.TitlePlayer;
+using LDY.TitlePlayer.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace LDY.Script {
     // 창 입력 구현. 플레이어 입력은 기존 JJBInput 액션과 입력 잠금을 그대로 따르고, W/S와 마우스는 장치를 직접 읽는다.
+    // 액션이 없으면 그 입력만 0/false가 되고 에러는 한 번만 남는다.
     public class PlayerWindowInput : IWindowInput {
         private readonly IButtonInput _interact;
+        private readonly OptionalLookup<InputAction> _jump;
         private readonly IInputLock _lock;
-        private readonly PlayerInput _playerInput;
-        private InputAction _jump;
-        private InputAction _move;
+        private readonly OptionalLookup<InputAction> _move;
 
         public PlayerWindowInput(PlayerInput playerInput, IInputLock inputLock, IButtonInput interact) {
-            _playerInput = playerInput;
             _lock = inputLock;
             _interact = interact;
+            _move = PlayerInputActions.Lookup(playerInput, InputActionNames.Move, playerInput);
+            _jump = PlayerInputActions.Lookup(playerInput, InputActionNames.Jump, playerInput);
         }
 
         public float Horizontal {
@@ -21,8 +24,8 @@ namespace LDY.Script {
                 if (_lock.IsLocked)
                     return 0f;
 
-                _move ??= _playerInput.actions.FindAction("Move", true);
-                return _move.ReadValue<Vector2>().x;
+                var move = _move.Get();
+                return move != null ? move.ReadValue<Vector2>().x : 0f;
             }
         }
 
@@ -33,8 +36,8 @@ namespace LDY.Script {
                 if (_lock.IsLocked)
                     return false;
 
-                _jump ??= _playerInput.actions.FindAction("Jump", true);
-                return _jump.WasPressedThisFrame();
+                var jump = _jump.Get();
+                return jump != null && jump.WasPressedThisFrame();
             }
         }
 

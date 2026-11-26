@@ -34,13 +34,15 @@ namespace LDY.Script {
 
     // 플레이어에 붙어 SuspendRequestHub를 보관하는 컴포넌트. 줄과 Alt가 같은 허브를 공유해 정지 요청이 합산된다.
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(JJBControlGate))]
     public class PlayerSuspendHub : MonoBehaviour {
         private SuspendRequestHub _hub;
 
-        // 처음 접근할 때 JJBControlGate에 연결된 허브를 만든다.
-        public SuspendRequestHub Hub =>
-            _hub ??= new SuspendRequestHub(new PlayerControlSuspendSink(GetComponent<JJBControlGate>()));
+        // 처음 접근할 때 플레이어의 IPlayerControl(타이틀: TitlePlayerControl, 스테이지: JJBControlGate)에 연결한다.
+        // 스테이지 플레이어처럼 아직 없으면 예전 RequireComponent와 같게 JJBControlGate를 붙인다.
+        public SuspendRequestHub Hub => _hub ??= new SuspendRequestHub(new PlayerControlSuspendSink(Control()));
+
+        private IPlayerControl Control() =>
+            TryGetComponent<IPlayerControl>(out var control) ? control : gameObject.AddComponent<JJBControlGate>();
 
         // 플레이어에 허브가 없으면 붙여서 돌려준다.
         public static PlayerSuspendHub GetOrAdd(GameObject player) {

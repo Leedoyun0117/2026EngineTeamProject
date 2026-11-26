@@ -13,16 +13,15 @@ GameObject:
   - component: {fileID: 3135162579502915106}
   - component: {fileID: 3984342965919087576}
   - component: {fileID: 8357417680570838026}
-  - component: {fileID: 3966923975488980308}
-  - component: {fileID: 2687800455479188185}
-  - component: {fileID: 5974724849451968884}
-  - component: {fileID: 1775756048880599016}
   - component: {fileID: 6109369720297019264}
   - component: {fileID: 8451857052507934283}
-  - component: {fileID: 683449536097138627}
   - component: {fileID: 5307042212544960111}
-  - component: {fileID: 2734564449907927835}
   - component: {fileID: 2734590950313097097}
+  - component: {fileID: 349617167283290981}
+  - component: {fileID: 7563651316935801497}
+  - component: {fileID: 3055268016636991376}
+  - component: {fileID: 756747023373892051}
+  - component: {fileID: 1155050222958967689}
   m_Layer: 3
   m_Name: AltPlayer
   m_TagString: Untagged
@@ -208,64 +207,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &3966923975488980308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6285373521417979638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d9a0bb4370b48cab039ef72003d5a81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayerInput
---- !u!114 &2687800455479188185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6285373521417979638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8be639fdd2345fa9da09df999dd96f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayerMovement
-  moveSpeed: 5
---- !u!114 &5974724849451968884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6285373521417979638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a657b57b708441ec96905b6192c54449, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayerJump
-  jumpSpeed: 14
-  maxJumpHoldTime: 0.3
-  groundCheck: {fileID: 315984262830958926}
-  groundCheckSize: {x: 0.9, y: 0.12}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  extraGravity: 30
-  gravityDelay: 0.15
---- !u!114 &1775756048880599016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6285373521417979638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9af67dcf5e69764db667d022088e0bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.JJBPlayer
 --- !u!114 &6109369720297019264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,18 +232,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.PlayerAbilityGate
   abilitiesEnabled: 1
---- !u!114 &683449536097138627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6285373521417979638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6b56f159ce778340b3fbf11b2befedf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.JJBControlGate
 --- !u!114 &5307042212544960111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,19 +256,6 @@ MonoBehaviour:
     afterimageFadeTime: 0.1
   afterimageTint: {r: 0.78, g: 0.62, b: 0.38, a: 0.75}
   maxDeltaTime: 0.05
---- !u!114 &2734564449907927835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6285373521417979638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14bcabcf84c45634dad50e46bd834f2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.JJBPlayerMotionSource
-  facingDeadZone: 0.05
 --- !u!114 &2734590950313097097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,6 +283,70 @@ MonoBehaviour:
     standUpEntryBySitFrame: ffffffff0100000000000000
   resolveSourcesOnAwake: 1
   flipSprite: 1
+--- !u!114 &349617167283290981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285373521417979638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59bdac52eacffad4daa27d18be98dab7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LDY.TitlePlayer::LDY.TitlePlayer.TitlePlayerInput
+--- !u!114 &7563651316935801497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285373521417979638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72bffb10b18ab3346a6ccd5706f98545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LDY.TitlePlayer::LDY.TitlePlayer.TitlePlayerMotor
+  tuning: {fileID: 11400000, guid: 853ef43845aebce409e6b2325c5a6267, type: 2}
+  groundCheck: {fileID: 315984262830958926}
+--- !u!114 &3055268016636991376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285373521417979638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4c4633569cab94b83e653777868a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: LDY.TitlePlayer::LDY.TitlePlayer.TitlePlayerFacing
+  sprite: {fileID: 4941994624092203007}
+  deadZone: 0.05
+--- !u!114 &756747023373892051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285373521417979638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93f96a364b967fa40b786ba62459d754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.TitlePlayerControl
+--- !u!114 &1155050222958967689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285373521417979638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f6c1348e74d9040b1e5f4375150c2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.TitlePlayerAnimator
 --- !u!1 &6297898987790287682
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,21 @@
+{
+    "name": "LDY.StageSelect",
+    "rootNamespace": "LDY.StageSelect",
+    "references": [
+        "LDY.Flow.Core",
+        "LDY.StageSelect.Core",
+        "LDY.Flow",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

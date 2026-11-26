@@ -1,0 +1,16 @@
+{
+    "name": "LDY.Flow.Core",
+    "rootNamespace": "LDY.Flow.Core",
+    "references": [
+        "LDY.Background.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

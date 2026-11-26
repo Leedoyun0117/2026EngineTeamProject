@@ -3,8 +3,6 @@ using UnityEngine;
 namespace LDY.Script {
     [DisallowMultipleComponent]
     public class PlayerRenderer : MonoBehaviour {
-        private const int TrappedTailFrames = 2;
-
         [SerializeField] private PlayerAnimSet animSet;
         [SerializeField] private SpriteRenderer target;
         [SerializeField] private PlayerAnimRules rules = new();
@@ -19,24 +17,8 @@ namespace LDY.Script {
         private bool _landAvailable;
 
         private IPlayerMotionSource _source;
-        private IDeathPose _death;
-        private DeathStage _lastDeathStage;
 
-        public void Attach(IDeathPose death) {
-            _death = death;
-        }
-
-        public DeathTimings DeathTimingsFor(float pullTime, float endHold) {
-            var trapped = animSet != null ? animSet.Resolve(PlayerAnimId.Trapped) : null;
-            var death = animSet != null ? animSet.Resolve(PlayerAnimId.Death) : null;
-            return new DeathTimings {
-                PullTime = pullTime,
-                TrappedTime = trapped?.TotalDuration ?? 0f,
-                TailTime = trapped?.TailDuration(TrappedTailFrames) ?? 0f,
-                DeathTime = death?.TotalDuration ?? 0f,
-                EndHold = endHold
-            };
-        }
+        public SpriteRenderer Target => target;
 
         private void Awake() {
             if (resolveSourcesOnAwake)
@@ -75,10 +57,7 @@ namespace LDY.Script {
             if (!_ready)
                 return;
 
-            var dead = _death != null && _death.IsDead;
-            var trapped = _death != null && _death.IsTrapped;
-            var altActive = _alt != null && _alt.Phase != AltPhase.Normal;
-            if (PosePriority.Resolve(dead, trapped, altActive) == PoseLayer.Alt) {
+            if (_alt != null && _alt.Phase != AltPhase.Normal) {
                 if (animSet.AltSprite != null)
                     target.sprite = animSet.AltSprite;
                 return;
@@ -89,32 +68,15 @@ namespace LDY.Script {
 
             var input = new PlayerAnimInput(velocity, _source.IsGrounded, _source.IsInputLocked, dt,
                 _player.Finished, _player.Frame, _pose.IsGrabbing, _pose.RowMove, _pose.IsRopeHanging,
-                _landAvailable, trapped, dead);
+                _landAvailable);
             var id = _machine.Tick(input);
             if (_machine.Changed)
                 Play(id, _machine.EntryFrame);
-
-            ReplayTrappedTail();
 
             _player.Tick(dt, PlaybackScale(id, velocity.x));
             ApplySprite();
             if (flipSprite)
                 _flip.Apply(_source.FacingSign, id == PlayerAnimId.Grab || RopePose.IsRope(id));
-        }
-
-        // trapped가 끝나면 마지막 두 프레임을 한 번 더 보여 준다.
-        private void ReplayTrappedTail() {
-            var stage = _death != null ? _death.Stage : DeathStage.None;
-            var entered = stage != _lastDeathStage;
-            _lastDeathStage = stage;
-            if (!entered || stage != DeathStage.TrappedTail)
-                return;
-
-            var clip = animSet.Resolve(PlayerAnimId.Trapped);
-            if (clip != null && clip.IsValid) {
-                _player.Play(clip, clip.TailStartFrame(TrappedTailFrames));
-                ApplySprite();
-            }
         }
 
         private float PlaybackScale(PlayerAnimId id, float velocityX) {

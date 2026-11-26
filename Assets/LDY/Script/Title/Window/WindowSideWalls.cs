@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using JJB.Script.Player;
 using UnityEngine;
 
 namespace LDY.Script {
@@ -55,7 +54,7 @@ namespace LDY.Script {
 #if UNITY_EDITOR
         private Collider2D _player;
         private IPlayerBody _body;
-        private JJBPlayerJump _jump;
+        private IPlayerMotionSource _motion;
         private bool _debug;
         private bool _hadState;
         private bool _lastTouching;
@@ -66,7 +65,7 @@ namespace LDY.Script {
             _player = player;
             _body = body;
             _debug = debug;
-            _jump = player != null ? player.GetComponentInParent<JJBPlayerJump>() : null;
+            _motion = player != null ? player.GetComponentInParent<IPlayerMotionSource>() : null;
         }
 
         private void OnDisable() {
@@ -85,7 +84,7 @@ namespace LDY.Script {
                     break;
                 }
 
-            var grounded = _jump != null && _jump.IsGrounded;
+            var grounded = _motion != null && _motion.IsGrounded;
             var vy = _body.Velocity.y;
             var motion = vy > 0.5f ? 1 : vy < -0.5f ? -1 : 0;
             if (_hadState && touching == _lastTouching && grounded == _lastGrounded && motion == _lastMotion)

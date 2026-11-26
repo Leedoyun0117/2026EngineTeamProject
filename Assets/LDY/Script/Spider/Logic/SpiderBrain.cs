@@ -80,6 +80,7 @@ namespace LDY.Spider {
         }
 
         public void Tick(float deltaTime, float playerX, float bodyX, IReadOnlyList<float> legX) {
+            var before = Elapsed;
             Elapsed += deltaTime;
             switch (State) {
                 case SpiderState.Idle when Elapsed >= _idleLength:
@@ -92,7 +93,7 @@ namespace LDY.Spider {
                     TickReposition(playerX, bodyX, legX);
                     break;
                 case SpiderState.Telegraph:
-                    TickTelegraph(playerX);
+                    TickTelegraph(playerX, before);
                     break;
                 case SpiderState.Stuck when Elapsed >= _config.StuckTime:
                     Enter(SpiderState.Retract);
@@ -130,8 +131,10 @@ namespace LDY.Spider {
             return true;
         }
 
-        private void TickTelegraph(float playerX) {
-            if (!IsTargetLocked)
+        // LockTime을 넘기는 틱까지는 플레이어 위치를 한 번 더 받고, 그다음 틱부터 굳는다.
+        // 직전 Elapsed를 그대로 비교한다(뺄셈으로 되돌리면 float 오차로 경계가 흔들린다).
+        private void TickTelegraph(float playerX, float elapsedBefore) {
+            if (elapsedBefore < _config.LockTime)
                 TargetX = playerX + _targetOffset;
 
             if (Elapsed >= _config.TelegraphTime)

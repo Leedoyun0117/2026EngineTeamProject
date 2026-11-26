@@ -1,0 +1,166 @@
+using LDY.Flow;
+using LDY.Flow.Core;
+using UnityEngine;
+
+namespace LDY.StageSelect {
+    // 뷰와 모델을 잇는 진입점. 상태 판정은 모델(=Core)에서 받고 여기서는 이벤트만 연결한다.
+    public sealed class StageSelectScreen : MonoBehaviour {
+        [SerializeField] private TitleBarView titleBar;
+        [SerializeField] private AddressBarView addressBar;
+        [SerializeField] private TreeView tree;
+        [SerializeField] private FilterTabsView tabs;
+        [SerializeField] private FileGridView grid;
+        [SerializeField] private StatusBarView statusBar;
+        [SerializeField] private TaskbarView taskbar;
+        [SerializeField] private DialogView dialog;
+        [SerializeField] private SettingsDialogView settings;
+        [Tooltip("IStageSelectSettings 구현 (StageSelectSettings)")] [SerializeField]
+        private MonoBehaviour settingsSource;
+        [SerializeField] private StageSelectInput input;
+
+        private SceneFlow _flow;
+        private StageSelectModel _model;
+
+        private ProgressModel Progress => _flow.Progress.Model;
+        private bool SettingsOpen => settings != null && settings.IsOpen;
+        private bool ModalOpen => dialog.IsOpen || SettingsOpen;
+        private bool HasSettings => settings != null && settingsSource is IStageSelectSettings;
+
+        private void Start() {
+            _flow = SceneFlow.Instance;
+            if (_flow == null) {
+                Debug.LogError("[StageSelect] 흐름 서비스가 없다. LDY/Flow/Build Flow Assets 실행 필요", this);
+                return;
+            }
+
+            var ui = new UiFactory(_flow.Skin);
+            _model = new StageSelectModel(_flow.Catalog);
+            _model.Focus(_flow.LastClearedId, Progress);
+
+            titleBar.Build(ui, StageSelectText.WindowTitle);
+            addressBar.Build(ui);
+            tree.Build(ui, _model.Worlds());
+            tabs.Build(ui);
+            grid.Build(ui);
+            statusBar.Build(ui);
+            taskbar.Build(ui, StageSelectText.TaskTitle);
+            dialog.Build(ui);
+            if (HasSettings) settings.Build(ui, (IStageSelectSettings)settingsSource);
+            Subscribe();
+            Render();
+            if (_flow.TryTakeLoadFailure(out var failedId)) ShowFileNotFound(failedId);
+        }
+
+        private void OnDestroy() {
+            if (_flow != null) _flow.Progress.Changed -= HandleProgressChanged;
+        }
+
+        private void Subscribe() {
+            titleBar.CloseClicked += GoToTitle;
+            taskbar.StartClicked += GoToTitle;
+            tree.WorldClicked += OpenWorld;
+            tree.SettingsClicked += OpenSettings;
+            tabs.Changed += SetFilter;
+            grid.Selected += id => {
+                _model.Select(id);
+                Render();
+            };
+            grid.Executed += Execute;
+            input.Moved += step => {
+                if (ModalOpen) return;
+                _model.MoveSelection(step);
+                Render();
+            };
+            input.Executed += () => {
+                if (SettingsOpen) settings.Close();
+                else if (dialog.IsOpen) dialog.Close();
+                else if (_model.SelectedId != null) Execute(_model.SelectedId);
+            };
+            input.FilterCycled += step => {
+                if (!ModalOpen) SetFilter(_model.NextFilter(step));
+            };
+            input.WorldStepped += step => {
+                if (ModalOpen || _flow.IsBusy) return;
+                var world = _model.NeighborWorld(step);
+                if (world >= 0) OpenWorld(world);
+            };
+            input.Back += () => {
+                if (SettingsOpen) settings.Close();
+                else if (dialog.IsOpen) dialog.Close();
+                else GoToTitle();
+            };
+            _flow.Progress.Changed += HandleProgressChanged;
+        }
+
+        private void HandleProgressChanged() {
+            _model.Refresh(Progress);
+            Render();
+        }
+
+        private void Render() {
+            addressBar.Show(_model.Address());
+            tree.Show(_model.Worlds());
+            tabs.Show(_model.Filter);
+            grid.Show(_model.Items(Progress), _model.SelectedId);
+            statusBar.Show(_model.Summary());
+        }
+
+        private void OpenWorld(int world) {
+            if (_model.IsWorldLocked(world)) {
+                ShowDenied(_flow.Catalog.World(world).displayName, _model.FirstIdOf(world));
+                return;
+            }
+
+            _model.SetWorld(world, Progress);
+            Render();
+        }
+
+        private void SetFilter(StageFilterMode mode) {
+            _model.SetFilter(mode, Progress);
+            Render();
+        }
+
+        private void Execute(string id) {
+            if (_flow.IsBusy || ModalOpen) return;
+            _model.Select(id);
+            Render();
+            var entry = _flow.Catalog.Find(id);
+            switch (_model.StatusOf(id)) {
+                case StageStatus.Locked:
+                    ShowDenied(entry.fileName, id);
+                    return;
+                case StageStatus.NotReady:
+                    ShowFileNotFound(id);
+                    return;
+                default:
+                    _flow.TryEnterStage(id);
+                    return;
+            }
+        }
+
+        // 준비 안 된 파일을 실행했거나, 들어가려던 스테이지를 열지 못하고 돌아왔을 때.
+        private void ShowFileNotFound(string id) {
+            var entry = _flow.Catalog.Find(id);
+            var fileName = entry != null ? entry.fileName : id;
+            dialog.Show(fileName, StageSelectText.FileNotFound + "\n" + fileName, _flow.Skin.iconError);
+        }
+
+        private void ShowDenied(string title, string lockedId) {
+            var prerequisite = _model.PrerequisiteFileName(lockedId);
+            var message = prerequisite == null
+                ? StageSelectText.AccessDenied
+                : StageSelectText.AccessDenied + "\n" + string.Format(StageSelectText.RunFirstFormat, prerequisite);
+            dialog.Show(title, message, _flow.Skin.iconError);
+        }
+
+        private void OpenSettings() {
+            if (ModalOpen) return;
+            if (HasSettings) settings.Open();
+            else dialog.Show(StageSelectText.SettingsFile, StageSelectText.SettingsMissing, _flow.Skin.iconError);
+        }
+
+        private void GoToTitle() {
+            if (!_flow.IsBusy && !ModalOpen) _flow.ReturnToTitle();
+        }
+    }
+}
