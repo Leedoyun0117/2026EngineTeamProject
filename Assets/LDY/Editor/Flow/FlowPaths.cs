@@ -18,14 +18,7 @@ namespace LDY.FlowEditor {
         public const string AudioMixer = "Assets/JJB/JJBAudioMixer.mixer";
         public const string GoalVisual = "Assets/LDY/Prefabs/Stage1/Stage1_GoalMusicFile.prefab";
 
-        public const string SharedPlayer = "Assets/prefab/Player.prefab";
         public const string AltPlayer = "Assets/LDY/Prefab/AltPlayer.prefab";
-
-        public static readonly string[] KnownPlayers = {
-            SharedPlayer,
-            "Assets/Main/02.Prefabs/Player/Player.prefab",
-            "Assets/JJB/Prefab/Player.prefab"
-        };
 
         public static void EnsureFolder(string path) {
             if (AssetDatabase.IsValidFolder(path)) return;

@@ -3,6 +3,7 @@
     "rootNamespace": "LDY.FlowEditor",
     "references": [
         "LDY.Flow.Core",
+        "LDY.PlayerMerge",
         "LDY.Flow",
         "LDY.Death.Core",
         "LDY.StageSelect",

@@ -3,14 +3,16 @@ namespace LDY.Stage {
         PerCell,
         Fixed,
         StretchHorizontal,
-        StretchVertical
+        StretchVertical,
+        Connected4
     }
 
     public enum TileLayerKind {
         Ground,
         Platform,
         Hazard,
-        Invisible
+        Invisible,
+        Decoration
     }
 
     public enum EntryKind {

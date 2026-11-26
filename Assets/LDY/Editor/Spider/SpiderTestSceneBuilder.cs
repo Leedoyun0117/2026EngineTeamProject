@@ -1,3 +1,4 @@
+using LDY.PlayerMerge;
 using LDY.Spider;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -26,11 +27,11 @@ namespace LDY.SpiderEditor {
                 foreach (var spawn in TrapSpawns)
                     Instantiate(trapPrefab, scene, spawn);
 
-                var player = AssetDatabase.LoadAssetAtPath<GameObject>(SpiderPaths.PlayerPrefab);
+                var player = AssetDatabase.LoadAssetAtPath<GameObject>(PlayerPrefabPaths.Final);
                 if (player != null)
                     Instantiate(player, scene, PlayerSpawn);
                 else
-                    Debug.LogWarning("[Stage2] Player 프리팹을 찾지 못해 씬에 놓지 못했다: " + SpiderPaths.PlayerPrefab);
+                    Debug.LogWarning("[Stage2] Player 프리팹을 찾지 못해 씬에 놓지 못했다: " + PlayerPrefabPaths.Final);
 
                 EditorSceneManager.SaveScene(scene, ScenePath);
             }

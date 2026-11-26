@@ -8,7 +8,7 @@ namespace LDY.Script {
     internal static class PlayerCompareReport {
         public static void Run() {
             var baseRoot = PrefabUtility.LoadPrefabContents(PlayerPrefabPaths.Jibin);
-            var oursRoot = PrefabUtility.LoadPrefabContents(PlayerPrefabPaths.Shared);
+            var oursRoot = PrefabUtility.LoadPrefabContents(PlayerPrefabPaths.Final);
             try {
                 var rows = PropertyDiff.Compare(PlayerPrefabFlattener.Flatten(baseRoot),
                     PlayerPrefabFlattener.Flatten(oursRoot));
@@ -29,7 +29,7 @@ namespace LDY.Script {
             text.AppendLine("# Player 프리팹 비교");
             text.AppendLine();
             text.AppendLine($"- 지빈이: {PlayerPrefabPaths.Jibin}");
-            text.AppendLine($"- 내 것: {PlayerPrefabPaths.Shared}");
+            text.AppendLine($"- 내 것: {PlayerPrefabPaths.Final}");
             text.AppendLine($"- 차이 {rows.Count}개 (OnlyBase = 지빈이에만, OnlyOurs = 내 것에만)");
             text.AppendLine();
             text.Append(DiffMarkdown.Render(rows, "지빈이", "내 것"));
