@@ -10,7 +10,7 @@ namespace HES.Script.Object {
 
         protected override void Awake() {
             base.Awake();
-            foreach (Block block in blocks) {
+            foreach (var block in blocks) {
                 block.OnPressFake += OnFakeRun;
                 block.OnPressReal += OnRealRun;
             }
@@ -18,22 +18,18 @@ namespace HES.Script.Object {
 
         protected override void OnDestroy() {
             base.OnDestroy();
-            foreach (Block block in blocks) {
+            foreach (var block in blocks) {
                 block.OnPressFake -= OnFakeRun;
                 block.OnPressReal -= OnRealRun;
             }
         }
 
         private void OnRealRun(bool isPressed) {
-            foreach (var item in realReceiver) {
-                item.SetActive(isPressed);
-            }
+            foreach (var item in realReceiver) item.SetActive(isPressed);
         }
 
         private void OnFakeRun(bool isPressed) {
-            foreach (var item in fakeReceiver) {
-                item.SetActive(isPressed);
-            }
+            foreach (var item in fakeReceiver) item.SetActive(isPressed);
         }
     }
 }
