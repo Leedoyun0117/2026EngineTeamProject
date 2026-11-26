@@ -6,9 +6,9 @@ namespace HES.Script.Object {
         [SerializeField] private Ease ease;
         [SerializeField] private float time;
         private readonly Color _blindColor = Color.black;
+        private readonly Color _unblind = new(0, 0, 0, 0);
 
         private SpriteRenderer _renderer;
-        private readonly Color _unblind = new(0, 0, 0, 0);
 
         private void Awake() {
             _renderer = GetComponent<SpriteRenderer>();

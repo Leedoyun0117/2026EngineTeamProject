@@ -59,7 +59,7 @@ public class SkillManager_HTY : MonoBehaviour
 
         if (_currentSkill == null) return;
 
-        if (Keyboard.current.qKey.wasPressedThisFrame&& Keyboard.current.shiftKey.wasPressedThisFrame)
+        if (Keyboard.current.qKey.wasPressedThisFrame)
             SkillDrop();
     }
 
