@@ -67,6 +67,10 @@ public class TargetSelector_HTY : MonoBehaviour
 
             return distanceA.CompareTo(distanceB);
         });
+        if( _targets.Count == 0)
+        {
+            return;
+        }
 
         if(_currentTarget == null)
         {
