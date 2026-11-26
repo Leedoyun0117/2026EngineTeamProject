@@ -11,12 +11,9 @@ namespace HES.Script.Object {
                 _isPressed = !_isPressed;
                 if (isReal)
                     OnPressReal?.Invoke(!_isPressed);
-                else
-                    OnPressFake?.Invoke(!_isPressed);
             }
         }
 
         public event Action<bool> OnPressReal;
-        public event Action<bool> OnPressFake;
     }
 }
