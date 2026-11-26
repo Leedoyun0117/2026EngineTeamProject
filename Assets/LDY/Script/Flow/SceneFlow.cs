@@ -1,3 +1,4 @@
+using System.Collections;
 using LDY.Death;
 using LDY.Flow.Core;
 using UnityEngine;
@@ -10,7 +11,9 @@ namespace LDY.Flow {
         private readonly StageSession _session = new StageSession();
         private FlowSettings _settings;
         private SceneLoadRunner _loader;
+        private ConflictingManagers _managers;
         private string _pendingStageId;
+        private string _loadFailureId;
 
         public static SceneFlow Instance { get; private set; }
 
@@ -29,6 +32,7 @@ namespace LDY.Flow {
             _settings = settings;
             Progress = progress;
             _loader = loader;
+            _managers = new ConflictingManagers(settings.conflictingManagerTypes, settings.similarManagerHint);
             SceneManager.sceneLoaded += HandleSceneLoaded;
             StageSignals.Cleared += HandleCleared;
             StageSignals.PlayerLost += HandlePlayerLost;
@@ -73,13 +77,24 @@ namespace LDY.Flow {
 
         public void ReloadProgress() => Progress.Reload();
 
+        // 들어가려던 스테이지를 열지 못하고 선택 화면으로 돌아왔으면 그 id를 한 번 돌려준다(선택 화면이 안내 창을 띄운다).
+        public bool TryTakeLoadFailure(out string stageId) {
+            stageId = _loadFailureId;
+            _loadFailureId = null;
+            return stageId != null;
+        }
+
         private void HandleSceneLoaded(Scene scene, LoadSceneMode mode) {
             if (mode != LoadSceneMode.Single) return;
             var requested = _pendingStageId != null;
             var entry = requested ? Catalog.Find(_pendingStageId) : StandaloneEntry(scene);
             var id = entry != null ? entry.id : RootId(scene);
             _pendingStageId = null;
-            if (entry != null && entry.UsesSubRoot) SubStageLoader.Prepare(scene, entry, Catalog, requested);
+            if (entry != null && entry.UsesSubRoot && !SubStageLoader.Prepare(scene, entry, Catalog, requested, _managers) &&
+                requested) {
+                FailBackToSelect(entry.id);
+                return;
+            }
 
             if (string.IsNullOrEmpty(id)) {
                 _session.End();
@@ -87,6 +102,19 @@ namespace LDY.Flow {
             }
 
             _session.Begin(id);
+        }
+
+        // 다중 스테이지 루트를 못 찾은 경우. 멈추지 않고 선택 화면으로 돌아간다.
+        private void FailBackToSelect(string stageId) {
+            _session.End();
+            _loadFailureId = stageId;
+            StartCoroutine(ReturnToSelectWhenIdle());
+        }
+
+        // sceneLoaded 시점에는 로더가 아직 바빠서(Load가 거절됨) 끝난 뒤에 연다.
+        private IEnumerator ReturnToSelectWhenIdle() {
+            while (IsBusy) yield return null;
+            if (!ReturnToSelect()) Debug.LogWarning("[Flow] 선택 화면을 열 수 없어 이 씬에 머문다.");
         }
 
         // 바로 실행한 씬: StageRoot id → 씬 하나짜리 항목 → 켜져 있는 다중 스테이지 루트 순으로 찾는다.

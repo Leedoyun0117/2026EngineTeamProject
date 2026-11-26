@@ -3,7 +3,8 @@
     "rootNamespace": "LDY.Spider",
     "references": [
         "LDY.SpiderLogic",
-        "LDY.Death.Core"
+        "LDY.Death.Core",
+        "LDY.PlayerLocate"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

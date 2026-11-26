@@ -7,7 +7,9 @@ namespace LDY.StageSelect {
     // 시작 버튼, 열린 창 버튼, 시계. 시계는 실제 시각이라 timeScale과 무관하다.
     public sealed class TaskbarView : MonoBehaviour {
         private TextMeshProUGUI _clock;
-        private string _shown;
+
+        // 마지막으로 표시한 하루 중 분(0~1439). 분이 바뀔 때만 문자열을 만들어 매 프레임 할당을 없앤다.
+        private int _shownMinute = -1;
 
         public event Action StartClicked;
 
@@ -39,11 +41,15 @@ namespace LDY.StageSelect {
         private void Tick() {
             if (_clock == null) return;
             var now = DateTime.Now;
+            var minute = now.Hour * 60 + now.Minute;
+            if (minute == _shownMinute) return;
+            _shownMinute = minute;
+            _clock.text = Format(now);
+        }
+
+        private static string Format(DateTime now) {
             var hour = now.Hour % 12 == 0 ? 12 : now.Hour % 12;
-            var text = $"{(now.Hour < 12 ? "오전" : "오후")} {hour}:{now.Minute:00}";
-            if (text == _shown) return;
-            _shown = text;
-            _clock.text = text;
+            return $"{(now.Hour < 12 ? "오전" : "오후")} {hour}:{now.Minute:00}";
         }
     }
 }

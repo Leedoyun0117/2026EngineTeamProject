@@ -18,3 +18,6 @@ MonoBehaviour:
   selectScenePath: Assets/LDY/Scenes/StageSelect.unity
   loadingMinSeconds: 0.6
   restartDelaySeconds: 0.8
+  conflictingManagerTypes:
+  - JJB.Script.Level.JJBLevelManager
+  similarManagerHint: LevelManager

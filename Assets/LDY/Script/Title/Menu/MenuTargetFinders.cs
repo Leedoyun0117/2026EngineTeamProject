@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace LDY.Script {
-    // 목록은 참조로 들고 있어서, 호출한 쪽이 목록 내용을 바꾸면(발판 재생성) 다음 Find부터 따라간다.
+    // 목록은 참조로 들고 있어서, 호출한 쪽이 목록 내용을 바꾸면 다음 Find부터 따라간다.
     public class StandingMenuFinder : IMenuTargetFinder {
         private readonly Collider2D _body;
         private readonly IMenuGate _gate;

@@ -4,6 +4,7 @@
     "references": [
         "LDY.Flow.Core",
         "LDY.Death.Core",
+        "LDY.PlayerLocate",
         "Unity.TextMeshPro",
         "Unity.Cinemachine",
         "Unity.InputSystem",

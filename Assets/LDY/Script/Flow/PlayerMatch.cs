@@ -1,11 +1,12 @@
 using System;
+using LDY.PlayerLocate;
 using UnityEngine;
 
 namespace LDY.Flow {
     // 자식 콜라이더로 들어와도 Rigidbody 쪽까지 보고, 태그 또는 레이어로 플레이어를 가린다.
     [Serializable]
     public sealed class PlayerMatch {
-        public const string DefaultTag = "Player";
+        public const string DefaultTag = PrimaryPlayerLocator.Tag;
         private const int Unresolved = -2;
 
         [SerializeField] private string playerTag = DefaultTag;

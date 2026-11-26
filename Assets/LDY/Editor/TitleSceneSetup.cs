@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using LDY.TitlePlayer;
+using LDY.TitlePlayer.Core;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -28,7 +29,6 @@ namespace LDY.Script.Editor {
         private const string GroundLayerName = "Ground";
         private const string PlayerLayerName = "Player";
         private const string InputAssetPath = "Assets/JJB/JJBInput.inputactions";
-        private const string PhysicsMaterialPath = "Assets/JJB/JJB.physicsMaterial2D";
         private const string SpriteFolder = "Assets/LDY/Sprites";
         private const string PrefabPath = "Assets/LDY/Prefab/AltPlayer.prefab";
         private const string MaterialPath = "Assets/LDY/Shader/CrtScreen.mat";
@@ -677,7 +677,8 @@ namespace LDY.Script.Editor {
         private GameObject EnsurePlayerPrefab(Sprite sprite) {
             var existing = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
             if (existing != null) {
-                ConvertLegacyPlayer();
+                WarnIfLegacyPlayer();
+                TitlePlayerPhysics.ApplyToPrefab(PrefabPath);
                 ApplyJumpTuning();
                 ApplyPlayerAnimation();
                 return existing;
@@ -693,13 +694,13 @@ namespace LDY.Script.Editor {
             rb.gravityScale = 1f;
             rb.freezeRotation = true;
             rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-            rb.sharedMaterial = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>(PhysicsMaterialPath);
+            TitlePlayerPhysics.Apply(rb);
 
             var playerInput = go.AddComponent<PlayerInput>();
             var inputSo = new SerializedObject(playerInput);
             inputSo.FindProperty("m_Actions").objectReferenceValue =
                 AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputAssetPath);
-            inputSo.FindProperty("m_DefaultActionMap").stringValue = "Player";
+            inputSo.FindProperty("m_DefaultActionMap").stringValue = InputActionNames.Map;
             inputSo.ApplyModifiedPropertiesWithoutUndo();
 
             go.AddComponent<PlayerInputLock>();
@@ -727,17 +728,11 @@ namespace LDY.Script.Editor {
             return tuning;
         }
 
-        // 예전(JJB 컴포넌트) AltPlayer가 남아 있으면 타이틀 전용 플레이어로 바꾼다.
-        private static void ConvertLegacyPlayer() {
-            var root = PrefabUtility.LoadPrefabContents(PrefabPath);
-            try {
-                if (root.GetComponent<TitlePlayerMotor>() != null) return;
-                TitlePlayerConverter.Convert(root, PrefabPath);
-                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
-            }
-            finally {
-                PrefabUtility.UnloadPrefabContents(root);
-            }
+        // 예전(JJB 컴포넌트) AltPlayer 변환기는 변환이 끝나 삭제했다(2026-11-25). 혹시 남아 있으면 알리기만 한다.
+        private static void WarnIfLegacyPlayer() {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
+            if (prefab != null && prefab.GetComponent<TitlePlayerMotor>() == null)
+                Debug.LogWarning($"[Title] {PrefabPath}에 TitlePlayerMotor가 없다. 타이틀 전용 플레이어 구성을 확인한다", prefab);
         }
 
         // 플레이어 애니메이션 컴포넌트를 붙이고 PlayerAnimSet을 연결한다. 이미 만들어진 프리팹에도 적용된다.

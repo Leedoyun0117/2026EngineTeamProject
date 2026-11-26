@@ -72,11 +72,11 @@ namespace LDY.StageSelect {
 
         public void Select(string id) => SelectedId = id;
 
-        // 방금 클리어한 스테이지가 있으면 그것, 없으면 가장 앞의 미완료 칸에 포커스(SpawnRule). 플레이어도 이 칸 위에 선다.
+        // 방금 클리어한 스테이지가 있으면 그것, 없으면 가장 앞의 미완료 칸에 포커스(StartSelectionRule).
         public void Focus(string justClearedId, ProgressModel progress) {
             Refresh(progress);
             if (_slots.Length == 0) return;
-            var index = SpawnRule.Pick(_slots.Select(s => s.Id).ToArray(), _statuses, justClearedId);
+            var index = StartSelectionRule.Pick(_slots.Select(s => s.Id).ToArray(), _statuses, justClearedId);
             World = _slots[index].World;
             SelectedId = _slots[index].Id;
             Refresh(progress);
@@ -88,6 +88,25 @@ namespace LDY.StageSelect {
             var next = Mathf.Clamp(position < 0 ? 0 : position + step, 0, Visible.Count - 1);
             SelectedId = _slots[Visible[next]].Id;
             return SelectedId;
+        }
+
+        // 보기 탭 순환(Tab = 다음, Shift+Tab = 이전). 끝에서 처음으로 돈다.
+        public StageFilterMode NextFilter(int step) {
+            var count = System.Enum.GetValues(typeof(StageFilterMode)).Length;
+            var next = ((int)Filter + step) % count;
+            return (StageFilterMode)(next < 0 ? next + count : next);
+        }
+
+        // 트리 순서에서 현재 월드의 앞(-1)·뒤(+1) 월드 번호. 끝이면 -1(돌지 않는다).
+        public int NeighborWorld(int step) {
+            var worlds = _catalog.Worlds;
+            for (var i = 0; i < worlds.Count; i++) {
+                if (worlds[i].world != World) continue;
+                var next = i + step;
+                return next >= 0 && next < worlds.Count ? worlds[next].world : -1;
+            }
+
+            return -1;
         }
 
         public StageStatus StatusOf(string id) {

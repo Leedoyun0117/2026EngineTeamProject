@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using LDY.Flow;
 using LDY.Flow.Core;
+using LDY.TitlePlayer.Core;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace LDY.FlowEditor {
@@ -52,13 +54,48 @@ namespace LDY.FlowEditor {
                 checks.Add(CheckRoot(all, catalog));
                 checks.Add(CheckGoal(all));
             }
+            else {
+                checks.Add(CheckConflictingManagers(all));
+            }
 
             checks.Add(CheckPlayer(all));
             checks.Add(CheckCamera(all));
             checks.Add(CheckMissingScripts(all));
             checks.Add(CheckMissingPrefabs(all));
             checks.Add(CheckBuildSettings(scene));
+            checks.Add(CheckTitleInput());
             return checks;
+        }
+
+        // 런타임 ConflictingManagers와 같은 규칙(ManagerScan)으로, FlowSettings의 팀원 매니저 타입이 이 씬에 있는지 본다.
+        private static StageCheck CheckConflictingManagers(List<GameObject> all) {
+            const string label = "끌 팀원 매니저 타입 (FlowSettings)";
+            var settings = AssetDatabase.LoadAssetAtPath<FlowSettings>(FlowPaths.Settings);
+            if (settings == null) return new StageCheck(false, label, "FlowSettings 없음 " + FlowPaths.Settings);
+            var targets = (settings.conflictingManagerTypes ?? new string[0]).Where(n => !string.IsNullOrEmpty(n)).ToList();
+            if (targets.Count == 0) return new StageCheck(true, label, "설정이 비어 있어 끌 매니저 없음");
+
+            var typeNames = all.SelectMany(go => go.GetComponents<MonoBehaviour>())
+                .Where(b => b != null).Select(b => b.GetType().FullName);
+            var scan = ManagerScan.Evaluate(typeNames, targets, settings.similarManagerHint);
+            if (scan.FoundAny) return new StageCheck(true, label, string.Join(", ", scan.Matched));
+            var similar = scan.Similar.Count > 0 ? " / 비슷한 컴포넌트: " + string.Join(", ", scan.Similar) : "";
+            return new StageCheck(false, label, "씬에 없음: " + string.Join(", ", targets) + similar);
+        }
+
+        // 타이틀 플레이어(AltPlayer)의 입력 에셋에 LDY가 이름으로 찾는 맵·액션이 모두 있는지 본다.
+        private static StageCheck CheckTitleInput() {
+            const string label = "타이틀 입력 액션 (AltPlayer)";
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(FlowPaths.AltPlayer);
+            var input = prefab != null ? prefab.GetComponent<PlayerInput>() : null;
+            var actions = input != null ? input.actions : null;
+            if (actions == null) return new StageCheck(false, label, FlowPaths.AltPlayer + "의 PlayerInput 입력 에셋 없음");
+
+            var missing = InputActionNames.Missing(actions.Select(a => a.name), InputActionNames.Required);
+            if (actions.FindActionMap(InputActionNames.Map, false) == null) missing.Insert(0, "맵 " + InputActionNames.Map);
+            return missing.Count == 0
+                ? new StageCheck(true, label, $"{actions.name}: {InputActionNames.Map}/{string.Join(", ", InputActionNames.Required)}")
+                : new StageCheck(false, label, $"{actions.name}에 없음: {string.Join(", ", missing)}");
         }
 
         // 다중 스테이지 모드: 카탈로그에 등록된 루트마다 골·시작 지점·카메라 범위를 본다. 런타임과 같은 규칙을 쓴다.

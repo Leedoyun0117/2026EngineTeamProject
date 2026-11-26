@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
 using LDY.Flow;
 using LDY.Flow.Core;
 using UnityEngine;
 
 namespace LDY.StageSelect {
     // 뷰와 모델을 잇는 진입점. 상태 판정은 모델(=Core)에서 받고 여기서는 이벤트만 연결한다.
-    public sealed class StageSelectScreen : MonoBehaviour, IFileBoardHost {
+    public sealed class StageSelectScreen : MonoBehaviour {
         [SerializeField] private TitleBarView titleBar;
         [SerializeField] private AddressBarView addressBar;
         [SerializeField] private TreeView tree;
@@ -27,28 +25,6 @@ namespace LDY.StageSelect {
         private bool SettingsOpen => settings != null && settings.IsOpen;
         private bool ModalOpen => dialog.IsOpen || SettingsOpen;
         private bool HasSettings => settings != null && settingsSource is IStageSelectSettings;
-
-        public bool IsReady => _model != null;
-        public bool Blocking => IsReady && (ModalOpen || _flow.IsBusy);
-        public string SelectedId => _model?.SelectedId;
-        public IReadOnlyList<string> VisibleIds => grid.VisibleIds;
-        public RectTransform FileArea => grid.Area;
-
-        public event Action LayoutChanged {
-            add => grid.LayoutChanged += value;
-            remove => grid.LayoutChanged -= value;
-        }
-
-        // 걷는 플레이어가 올라선 파일. 클릭 선택과 같은 경로다.
-        public void Select(string id) {
-            if (!IsReady || id == _model.SelectedId) return;
-            _model.Select(id);
-            Render();
-        }
-
-        public void Execute(string id) {
-            if (IsReady) Run(id);
-        }
 
         private void Start() {
             _flow = SceneFlow.Instance;
@@ -72,6 +48,7 @@ namespace LDY.StageSelect {
             if (HasSettings) settings.Build(ui, (IStageSelectSettings)settingsSource);
             Subscribe();
             Render();
+            if (_flow.TryTakeLoadFailure(out var failedId)) ShowFileNotFound(failedId);
         }
 
         private void OnDestroy() {
@@ -83,15 +60,12 @@ namespace LDY.StageSelect {
             taskbar.StartClicked += GoToTitle;
             tree.WorldClicked += OpenWorld;
             tree.SettingsClicked += OpenSettings;
-            tabs.Changed += mode => {
-                _model.SetFilter(mode, Progress);
-                Render();
-            };
+            tabs.Changed += SetFilter;
             grid.Selected += id => {
                 _model.Select(id);
                 Render();
             };
-            grid.Executed += Run;
+            grid.Executed += Execute;
             input.Moved += step => {
                 if (ModalOpen) return;
                 _model.MoveSelection(step);
@@ -100,7 +74,15 @@ namespace LDY.StageSelect {
             input.Executed += () => {
                 if (SettingsOpen) settings.Close();
                 else if (dialog.IsOpen) dialog.Close();
-                else if (_model.SelectedId != null) Run(_model.SelectedId);
+                else if (_model.SelectedId != null) Execute(_model.SelectedId);
+            };
+            input.FilterCycled += step => {
+                if (!ModalOpen) SetFilter(_model.NextFilter(step));
+            };
+            input.WorldStepped += step => {
+                if (ModalOpen || _flow.IsBusy) return;
+                var world = _model.NeighborWorld(step);
+                if (world >= 0) OpenWorld(world);
             };
             input.Back += () => {
                 if (SettingsOpen) settings.Close();
@@ -133,7 +115,12 @@ namespace LDY.StageSelect {
             Render();
         }
 
-        private void Run(string id) {
+        private void SetFilter(StageFilterMode mode) {
+            _model.SetFilter(mode, Progress);
+            Render();
+        }
+
+        private void Execute(string id) {
             if (_flow.IsBusy || ModalOpen) return;
             _model.Select(id);
             Render();
@@ -143,12 +130,19 @@ namespace LDY.StageSelect {
                     ShowDenied(entry.fileName, id);
                     return;
                 case StageStatus.NotReady:
-                    dialog.Show(entry.fileName, StageSelectText.FileNotFound + "\n" + entry.fileName, _flow.Skin.iconError);
+                    ShowFileNotFound(id);
                     return;
                 default:
                     _flow.TryEnterStage(id);
                     return;
             }
+        }
+
+        // 준비 안 된 파일을 실행했거나, 들어가려던 스테이지를 열지 못하고 돌아왔을 때.
+        private void ShowFileNotFound(string id) {
+            var entry = _flow.Catalog.Find(id);
+            var fileName = entry != null ? entry.fileName : id;
+            dialog.Show(fileName, StageSelectText.FileNotFound + "\n" + fileName, _flow.Skin.iconError);
         }
 
         private void ShowDenied(string title, string lockedId) {

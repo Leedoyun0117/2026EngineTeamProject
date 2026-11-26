@@ -1,3 +1,4 @@
+using LDY.PlayerLocate;
 using UnityEngine;
 
 namespace LDY.Flow {
@@ -16,7 +17,7 @@ namespace LDY.Flow {
         }
 
         private void Start() {
-            if (GameObject.FindGameObjectWithTag(PlayerMatch.DefaultTag) == null)
+            if (PrimaryPlayerLocator.Find(this) == null)
                 Debug.LogWarning($"[Flow] {stageId}: '{PlayerMatch.DefaultTag}' 태그 플레이어가 없다", this);
             var catalog = SceneFlow.Instance != null ? SceneFlow.Instance.Catalog : null;
             if (catalog != null && catalog.Find(stageId) == null)

@@ -12,5 +12,12 @@ namespace LDY.Flow {
         public string selectScenePath = "Assets/LDY/Scenes/StageSelect.unity";
         [Min(0f)] public float loadingMinSeconds = 0.6f;
         [Min(0f)] public float restartDelaySeconds = 0.8f;
+
+        [Header("다중 스테이지 씬")]
+        [Tooltip("LDY 흐름과 같은 일(루트 생성·플레이어 배치)을 하는 팀원 매니저 타입의 전체 이름. 런타임에서만 끈다")]
+        public string[] conflictingManagerTypes = { "JJB.Script.Level.JJBLevelManager" };
+
+        [Tooltip("위 타입을 못 찾았을 때 경고에 함께 보여 줄 비슷한 컴포넌트의 이름 조각")]
+        public string similarManagerHint = "LevelManager";
     }
 }

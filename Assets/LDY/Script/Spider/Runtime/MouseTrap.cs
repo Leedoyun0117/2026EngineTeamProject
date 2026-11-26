@@ -1,10 +1,11 @@
 using LDY.Death;
+using LDY.PlayerLocate;
 using UnityEngine;
 
 namespace LDY.Spider {
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class MouseTrap : MonoBehaviour {
-        private const string PlayerTag = "Player";
+        private const string PlayerTag = PrimaryPlayerLocator.Tag;
 
         [SerializeField] private TrapSettings settings;
         [SerializeField] private MouseTrapView view;

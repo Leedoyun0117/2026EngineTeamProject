@@ -1,3 +1,4 @@
+using LDY.TitlePlayer.Core;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -62,7 +63,7 @@ namespace LDY.Script.Editor {
             var inputSo = new SerializedObject(playerInput);
             inputSo.FindProperty("m_Actions").objectReferenceValue =
                 AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputAssetPath);
-            inputSo.FindProperty("m_DefaultActionMap").stringValue = "Player";
+            inputSo.FindProperty("m_DefaultActionMap").stringValue = InputActionNames.Map;
             inputSo.ApplyModifiedPropertiesWithoutUndo();
 
             go.AddComponent<PlayerInputLock>();

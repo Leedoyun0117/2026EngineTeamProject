@@ -30,7 +30,7 @@ namespace LDY.Script {
         void SetHighlighted(bool highlighted);
     }
 
-    // 메뉴 선택기(MenuSelector)가 고르고 실행하는 대상. 타이틀 아이콘(MenuIcon)과 선택 화면 파일 발판이 구현한다.
+    // 메뉴 선택기(MenuSelector)가 고르고 실행하는 대상. 타이틀 아이콘(MenuIcon)이 구현한다.
     public interface IMenuTarget : IHighlightable {
         bool IsUsable(IMenuGate gate);
         void Execute();
