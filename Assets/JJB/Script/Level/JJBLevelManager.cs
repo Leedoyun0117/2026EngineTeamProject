@@ -1,117 +1,178 @@
-﻿using System;
+﻿
+using System;
 using UnityEngine;
 
 namespace JJB.Script.Level
 {
     public class JJBLevelManager : MonoSingleton<JJBLevelManager>
     {
-        [SerializeField] private LevelListSO levelList;
-        [SerializeField] private Transform levelRoot;
-        [SerializeField, Min(0)] private int startLevelIndex;
-        
-        private Rigidbody2D _rb;
+        [Header("Player")]
+        [SerializeField] private Rigidbody2D playerRb;
+
+        [Header("Level Groups")]
+        [SerializeField] private Transform[] levelGroups;
+
+        [Header("Start Settings")]
+        [SerializeField, Min(0)] private int startGroupIndex;
+        [SerializeField, Min(0)] private int startStageIndex;
+
         private LevelInstance _currentInstance;
-        
-        private int _currentLevelIndex = -1;
+
+        private int _currentGroupIndex = -1;
+        private int _currentStageIndex = -1;
+
         private bool _isChanging;
         private bool _isCompleted;
 
-        public int CurrentLevelIndex => _currentLevelIndex;
-        public bool IsChanging => _isChanging;
-        public LevelSO CurrentLevel => levelList == null ? null : levelList.GetLevel(_currentLevelIndex);
+        public int CurrentGroupIndex => _currentGroupIndex;
+        public int CurrentStageIndex => _currentStageIndex;
 
-        public event Action<LevelSO> OnLevelLoaded;
-        public event Action OnAllLevelsCompleted;
+        public LevelInstance CurrentStage => _currentInstance;
+
+        public event Action<LevelInstance> OnStageLoaded;
+        public event Action OnAllStagesCompleted;
 
         protected override void Awake()
         {
-            _rb = GetComponent<Rigidbody2D>();
+            base.Awake();
         }
 
         private void Start()
         {
-            LoadLevel(startLevelIndex);
+            LoadStage(startGroupIndex, startStageIndex);
         }
 
-        public void LoadLevel(int index)
+        // 특정 그룹의 스테이지 로드
+        public void LoadStage(int groupIndex, int stageIndex)
         {
             if (_isChanging)
                 return;
 
-            if (levelList == null || levelRoot == null || _rb == null)
+            if (playerRb == null || levelGroups == null)
             {
-                Debug.LogError("LevelManager의 Inspector 연결을 확인하세요.", this);
+                Debug.LogError("Player 또는 LevelGroups가 연결되지 않았습니다.");
                 return;
             }
 
-            LevelSO level = levelList.GetLevel(index);
-
-            if (level == null || level.LevelPrefab == null)
+            if (groupIndex < 0 || groupIndex >= levelGroups.Length)
             {
-                Debug.LogError($"레벨 데이터 또는 프리팹을 확인하세요. Index: {index}", this);
+                Debug.LogError("잘못된 LevelGroup 인덱스입니다.");
+                return;
+            }
+
+            Transform group = levelGroups[groupIndex];
+
+            if (group == null || stageIndex < 0 ||
+                stageIndex >= group.childCount)
+            {
+                Debug.LogError("해당 Stage를 찾을 수 없습니다.");
+                return;
+            }
+
+            Transform stage = group.GetChild(stageIndex);
+
+            LevelInstance instance =
+                stage.GetComponent<LevelInstance>();
+
+            if (instance == null)
+            {
+                Debug.LogError(
+                    $"{stage.name}에 LevelInstance가 없습니다.",
+                    stage
+                );
                 return;
             }
 
             _isChanging = true;
 
-            RemoveCurrentLevel();
-            CreateLevel(level);
-            PlacePlayer();
+            // 모든 Stage 비활성화
+            SetAllStagesInactive();
 
-            _currentLevelIndex = index;
+            // 선택한 Stage 활성화
+            stage.gameObject.SetActive(true);
+
+            _currentInstance = instance;
+            _currentGroupIndex = groupIndex;
+            _currentStageIndex = stageIndex;
+
             _isCompleted = false;
+
+            // 플레이어 위치 이동
+            PlacePlayer(instance.SpawnPosition);
+
             _isChanging = false;
 
-            OnLevelLoaded?.Invoke(level);
+            OnStageLoaded?.Invoke(instance);
+
+            Debug.Log(
+                $"Stage Loaded: {group.name} / {stage.name}"
+            );
         }
 
-        public void RestartLevel()
+        // 다음 Stage
+        public void LoadNextStage()
         {
-            if (_currentLevelIndex < 0)
+            if (_isChanging || _isCompleted)
                 return;
 
-            LoadLevel(_currentLevelIndex);
-        }
-
-        public void LoadNextLevel()
-        {
-            if (_isChanging || _isCompleted || CurrentLevel == null)
+            if (_currentGroupIndex < 0)
                 return;
 
-            int nextIndex = _currentLevelIndex + 1;
+            Transform currentGroup =
+                levelGroups[_currentGroupIndex];
 
-            if (nextIndex >= levelList.Count)
+            int nextStageIndex = _currentStageIndex + 1;
+            
+            if (nextStageIndex < currentGroup.childCount)
             {
-                _isCompleted = true;
-                OnAllLevelsCompleted?.Invoke();
+                LoadStage(_currentGroupIndex, nextStageIndex);
+                return;
+            }
+            
+            int nextGroupIndex = _currentGroupIndex + 1;
+
+            if (nextGroupIndex < levelGroups.Length &&
+                levelGroups[nextGroupIndex] != null &&
+                levelGroups[nextGroupIndex].childCount > 0)
+            {
+                LoadStage(nextGroupIndex, 0);
                 return;
             }
 
-            LoadLevel(nextIndex);
+            _isCompleted = true;
+            OnAllStagesCompleted?.Invoke();
         }
-
-        private void RemoveCurrentLevel()
+        
+        public void RestartStage()
         {
-            if (_currentInstance == null)
+            if (_currentGroupIndex < 0)
                 return;
 
-            _currentInstance.gameObject.SetActive(false);
-            Destroy(_currentInstance.gameObject);
-            _currentInstance = null;
+            LoadStage(_currentGroupIndex, _currentStageIndex);
+        }
+        
+        private void SetAllStagesInactive()
+        {
+            foreach (Transform group in levelGroups)
+            {
+                if (group == null)
+                    continue;
+
+                for (int i = 0; i < group.childCount; i++)
+                {
+                    group.GetChild(i).gameObject.SetActive(false);
+                }
+
+                group.gameObject.SetActive(true);
+            }
         }
 
-        private void CreateLevel(LevelSO level)
+        private void PlacePlayer(Vector3 spawnPosition)
         {
-            _currentInstance = Instantiate(level.LevelPrefab, levelRoot);
-            _currentInstance.transform.localPosition = Vector3.zero;
-            _currentInstance.transform.localRotation = Quaternion.identity;
-        }
+            playerRb.linearVelocity = Vector2.zero;
+            playerRb.angularVelocity = 0f;
 
-        private void PlacePlayer()
-        {
-            _rb.linearVelocity = Vector2.zero;
-            _rb.angularVelocity = 0f;
-            _rb.position = _currentInstance.SpawnPosition;
+            playerRb.position = spawnPosition;
 
             Physics2D.SyncTransforms();
         }
