@@ -2,10 +2,15 @@ using System.Collections.Generic;
 
 namespace LDY.StageImport.Core {
     public static class ImportPlanner {
-        public static ImportPlan Plan(ToolStage stage, CursorStageFile file, IKeyRuleSource mapped) {
+        public static ImportPlan Plan(ToolStage stage, CursorStageFile file, IKeyRuleSource mapped) =>
+            Plan(stage, file, mapped, NoCustomBlocks.Instance);
+
+        public static ImportPlan Plan(ToolStage stage, CursorStageFile file, IKeyRuleSource mapped,
+            ICustomBlockSource customs) {
             var plan = new ImportPlan(stage);
+            var sources = new Sources(file, mapped, customs);
             var resolved = new StageGrid<Resolved>(stage.Width, stage.Height,
-                (x, y) => Resolve(stage.Cells[y * stage.Width + x] ?? "", file, mapped, plan));
+                (x, y) => Resolve(stage.Cells[y * stage.Width + x] ?? "", sources, plan));
 
             for (var y = 0; y < resolved.Height; y++)
             for (var x = 0; x < resolved.Width; x++)
@@ -32,22 +37,35 @@ namespace LDY.StageImport.Core {
             public bool Is(Placement placement) => Valid && Rule.Placement == placement;
         }
 
-        private static Resolved Resolve(string raw, CursorStageFile file, IKeyRuleSource mapped, ImportPlan plan) {
+        private sealed class Sources {
+            public Sources(CursorStageFile file, IKeyRuleSource mapped, ICustomBlockSource customs) {
+                File = file;
+                Mapped = mapped;
+                Customs = customs ?? NoCustomBlocks.Instance;
+            }
+
+            public CursorStageFile File { get; }
+            public IKeyRuleSource Mapped { get; }
+            public ICustomBlockSource Customs { get; }
+        }
+
+        private static Resolved Resolve(string raw, Sources sources, ImportPlan plan) {
             if (raw == ToolKeys.Empty) return default;
             Increment(plan.KeyCounts, raw);
-            if (ToolKeys.IsCustom(raw)) return ResolveCustom(raw, file, mapped, plan);
-            if (DefaultKeyRules.TryGet(raw, out var rule) || mapped.TryGet(raw, out rule))
+            if (ToolKeys.IsCustom(raw)) return ResolveCustom(raw, sources, plan);
+            if (DefaultKeyRules.TryGet(raw, out var rule) || sources.Mapped.TryGet(raw, out rule))
                 return new Resolved(raw, rule, true);
             Increment(plan.Unmapped, raw);
             return default;
         }
 
-        private static Resolved ResolveCustom(string raw, CursorStageFile file, IKeyRuleSource mapped, ImportPlan plan) {
-            var custom = file.FindCustom(raw);
+        private static Resolved ResolveCustom(string raw, Sources sources, ImportPlan plan) {
+            var custom = sources.File.FindCustom(raw);
             var use = plan.Customs.Find(c => c.Id == raw);
             if (use == null) {
-                var resolution = CustomBlockResolver.Resolve(custom, mapped);
-                use = new CustomUse(raw, custom?.Name ?? "", custom?.Col ?? "", resolution.Outcome, resolution.Key);
+                var resolution = CustomBlockResolver.Resolve(custom, sources.Customs, sources.Mapped);
+                use = new CustomUse(raw, custom?.Name ?? "", custom?.Col ?? "", resolution.Outcome, resolution.Key,
+                    resolution.Rule);
                 plan.Customs.Add(use);
             }
 
@@ -58,8 +76,15 @@ namespace LDY.StageImport.Core {
                 case CustomOutcome.Unknown:
                     Increment(plan.Unmapped, raw);
                     return default;
+                case CustomOutcome.CustomPrefab:
+                case CustomOutcome.CustomPlaceholder:
+                case CustomOutcome.CustomArea:
+                case CustomOutcome.CustomTile:
+                    return new Resolved(use.Key, use.Rule, true);
                 default:
-                    var rule = DefaultKeyRules.TryGet(use.Key, out var known) ? known : RuleFromSource(mapped, use.Key);
+                    var rule = DefaultKeyRules.TryGet(use.Key, out var known)
+                        ? known
+                        : RuleFromSource(sources.Mapped, use.Key);
                     return new Resolved(use.Key, rule, true);
             }
         }
@@ -107,12 +132,24 @@ namespace LDY.StageImport.Core {
             AddAreas(plan, AreaKind.Dark, grid.Width, grid.Height, (x, y) => dark[x, y]);
             AddAreas(plan, AreaKind.Tab, grid.Width, grid.Height,
                 (x, y) => grid[x, y].Is(Placement.Area) && grid[x, y].Rule.Area == AreaKind.Tab);
+
+            var named = new SortedSet<string>();
+            for (var y = 0; y < grid.Height; y++)
+            for (var x = 0; x < grid.Width; x++)
+                if (IsNamedArea(grid[x, y]))
+                    named.Add(grid[x, y].Key);
+            foreach (var key in named)
+                AddAreas(plan, AreaKind.Named, grid.Width, grid.Height,
+                    (x, y) => IsNamedArea(grid[x, y]) && grid[x, y].Key == key, key);
         }
 
+        private static bool IsNamedArea(Resolved cell) =>
+            cell.Is(Placement.Area) && cell.Rule.Area == AreaKind.Named;
+
         private static void AddAreas(ImportPlan plan, AreaKind kind, int width, int height,
-            System.Func<int, int, bool> match) {
+            System.Func<int, int, bool> match, string key = null) {
             foreach (var region in RegionFinder.Connected4(width, height, match))
-                plan.Areas.Add(new AreaRegion(kind, region, RectCover.Cover(region)));
+                plan.Areas.Add(new AreaRegion(kind, region, RectCover.Cover(region), key));
         }
 
         private static void PlaceNotes(ImportPlan plan, ToolStage stage) {

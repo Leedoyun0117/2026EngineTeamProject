@@ -9,7 +9,8 @@
         "LDY.StageLogic",
         "LDY.Flow",
         "LDY.Flow.Core",
-        "LDY.Flow.Editor"
+        "LDY.Flow.Editor",
+        "Unity.Cinemachine"
     ],
     "includePlatforms": [
         "Editor"

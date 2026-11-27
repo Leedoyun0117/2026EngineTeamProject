@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LDY.FlowEditor;
+using LDY.StageImport.Core;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace LDY.StageImportEditor {
 
         public static void Open() {
             var window = GetWindow<ImportSelectedWindow>(true, "Stage Import");
-            window.minSize = new Vector2(520f, 300f);
+            window.minSize = new Vector2(620f, 300f);
             window.Reload();
         }
 
@@ -27,24 +28,36 @@ namespace LDY.StageImportEditor {
                 return;
             }
 
-            EditorGUILayout.LabelField(_source.Settings.jsonPath, EditorStyles.miniLabel);
+            EditorGUILayout.LabelField(_source.JsonPath, EditorStyles.miniLabel);
             _scroll = EditorGUILayout.BeginScrollView(_scroll);
             foreach (var job in _source.Jobs) DrawRow(job);
             EditorGUILayout.EndScrollView();
             if (_source.Assignments.Unslotted.Count > 0)
                 EditorGUILayout.HelpBox("슬롯에 없는 맵: " + string.Join(", ", _source.Assignments.Unslotted), MessageType.None);
+            foreach (var conflict in _source.Assignments.IdConflicts)
+                EditorGUILayout.HelpBox($"id {conflict.StageId} 겹침, 가져오지 않음: {string.Join(", ", conflict.MapIds)}",
+                    MessageType.Warning);
         }
 
         private void DrawRow(ImportJob job) {
+            ImportJob selected = null;
             using (new EditorGUILayout.HorizontalScope()) {
                 EditorGUILayout.LabelField(job.Assignment.StageId, GUILayout.Width(40f));
+                EditorGUILayout.LabelField(job.Assignment.Source == IdSource.Name ? "이름" : "슬롯 순서",
+                    EditorStyles.miniLabel, GUILayout.Width(56f));
                 EditorGUILayout.LabelField($"{job.Plan.Source.Name}  {job.Plan.Width}x{job.Plan.Height}");
-                using (new EditorGUI.DisabledScope(job.SceneExists)) {
-                    if (!GUILayout.Button(job.SceneExists ? "이미 있음" : "만들기", GUILayout.Width(80f))) return;
+                if (!job.SceneExists) {
+                    if (GUILayout.Button("만들기", GUILayout.Width(140f))) selected = job;
+                }
+                else {
+                    var next = job.AsNewVersion();
+                    if (GUILayout.Button(new GUIContent($"새 이름으로 (v{next.Version})",
+                            $"{job.SceneName}는 그대로 두고 {next.SceneName}를 만든다"), GUILayout.Width(140f)))
+                        selected = next;
                 }
             }
 
-            var selected = job;
+            if (selected == null) return;
             EditorApplication.delayCall += () => {
                 StageImportMenu.Run(new List<ImportJob> { selected });
                 Reload();

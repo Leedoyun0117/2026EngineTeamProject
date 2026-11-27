@@ -13,8 +13,19 @@ namespace LDY.StageImportEditor {
             var root = context.EnsureRoot(RootName);
             var placed = new SortedDictionary<string, int>();
             var missing = new SortedDictionary<string, int>();
+            var customs = new CustomPlacer(context);
+            var lr = LrAlign.Judge(context.Plan, context.Customs);
+            if (lr.Status == LrStatus.Aligned) {
+                customs.Skip.Add(CustomBlockSeed.LName);
+                customs.Skip.Add(CustomBlockSeed.RName);
+            }
 
             foreach (var item in context.Plan.Prefabs) {
+                if (CustomKey.Is(item.Key)) {
+                    customs.PlaceRect(item.Key, item.Rect, CustomParent(root, item.Key));
+                    continue;
+                }
+
                 var go = Spawn(context, item.Key, Parent(root, item.Key), missing);
                 if (go == null) continue;
                 PrefabAligner.Center(go, SceneContext.RectCenter(item.Rect));
@@ -24,6 +35,11 @@ namespace LDY.StageImportEditor {
 
             var groupIndex = 0;
             foreach (var group in context.Plan.Groups) {
+                if (CustomKey.Is(group.Key)) {
+                    customs.PlaceGroup(group.Key, group.Cells, CustomParent(root, group.Key));
+                    continue;
+                }
+
                 var holder = new GameObject($"{group.Key}_group_{groupIndex++}").transform;
                 holder.SetParent(Parent(root, group.Key), false);
                 foreach (var cell in group.Cells) {
@@ -38,7 +54,17 @@ namespace LDY.StageImportEditor {
             foreach (var pair in placed)
                 context.Log.Info($"프리팹 '{pair.Key}' {pair.Value}개{StateSuffix(context, pair.Key)}");
             foreach (var pair in missing) context.Log.Warn($"프리팹 없음 '{pair.Key}' {pair.Value}칸 건너뜀");
+
+            foreach (var pair in customs.Placed) context.Log.Info($"custom '{pair.Key}' 프리팹 {pair.Value}개");
+            foreach (var pair in customs.Temp)
+                context.Log.Warn($"custom '{pair.Key}' {pair.Value}칸: 대응표에 프리팹이 없어 분홍 임시 블록");
+            foreach (var pair in customs.Missing)
+                context.Log.Warn($"custom 대응표 항목 없음 '{pair.Key}' {pair.Value}칸 건너뜀");
+            LrAlign.Apply(lr, customs, context.Log);
         }
+
+        private static Transform CustomParent(Transform root, string key) =>
+            Parent(Parent(root, "Custom"), CustomBlockAssets.DisplayName(key));
 
         private static GameObject Spawn(SceneContext context, string key, Transform parent,
             IDictionary<string, int> missing) {

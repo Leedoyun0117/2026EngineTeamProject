@@ -14,7 +14,10 @@ namespace LDY.StageImport.Core {
 
     public enum AreaKind {
         Dark,
-        Tab
+        Tab,
+
+        // custom 대응표에서 영역으로 지정한 이름. AreaRegion.Key에 어떤 이름인지 들어 있다.
+        Named
     }
 
     public readonly struct KeyRule {

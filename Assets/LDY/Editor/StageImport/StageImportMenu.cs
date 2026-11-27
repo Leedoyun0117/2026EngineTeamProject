@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using LDY.FlowEditor;
 using UnityEditor;
 using UnityEngine;
@@ -24,18 +25,39 @@ namespace LDY.StageImportEditor {
             var source = ImportSource.Load(log);
             log.Print();
             if (source == null) return;
-            if (!EditorUtility.DisplayDialog("Import All From Slots",
-                    $"슬롯의 맵 {source.Jobs.Count}개로 새 씬을 만든다. 이미 있는 씬은 건너뛴다.", "만들기", "취소"))
-                return;
-            Run(source.Jobs);
+
+            var existing = source.Jobs.Count(j => j.SceneExists);
+            var jobs = source.Jobs.ToList();
+            if (existing == 0) {
+                if (!EditorUtility.DisplayDialog("Import All From Slots",
+                        $"슬롯의 맵 {jobs.Count}개로 새 씬을 만든다.", "만들기", "취소"))
+                    return;
+            }
+            else {
+                // 0: 건너뛰기, 1: 취소, 2: 새 이름으로
+                var choice = EditorUtility.DisplayDialogComplex("Import All From Slots",
+                    $"슬롯의 맵 {jobs.Count}개 중 {existing}개는 같은 이름 씬이 이미 있다. 기존 씬은 어느 쪽이든 그대로 둔다.\n" +
+                    "· 건너뛰기: 없는 것만 만든다\n· 새 이름으로: 있는 것은 Stage{id}_{이름}_v2, _v3 … 로 따로 만든다",
+                    "건너뛰기", "취소", "새 이름으로");
+                if (choice == 1) return;
+                if (choice == 2) jobs = jobs.Select(j => j.SceneExists ? j.AsNewVersion() : j).ToList();
+            }
+
+            Run(jobs);
         }
 
-        public static void Run(IEnumerable<ImportJob> jobs) {
-            foreach (var job in jobs) {
-                var log = new FlowLog("[Stage Import] " + job.Label);
-                var made = StageImporter.Import(job, log);
-                log.Print();
-                if (made) StageImporter.ValidateOpenScene();
+        public static void Run(IReadOnlyList<ImportJob> jobs) {
+            try {
+                for (var i = 0; i < jobs.Count; i++) {
+                    var job = jobs[i];
+                    var log = new FlowLog("[Stage Import] " + job.Label);
+                    var made = StageImporter.Import(job, log, (float)i / jobs.Count, (i + 1f) / jobs.Count);
+                    log.Print();
+                    if (made) StageImporter.ValidateOpenScene();
+                }
+            }
+            finally {
+                EditorUtility.ClearProgressBar();
             }
 
             AssetDatabase.SaveAssets();

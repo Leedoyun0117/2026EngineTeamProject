@@ -8,6 +8,11 @@ namespace LDY.StageImportEditor {
         public const string DefaultSceneFolder = "Assets/LDY/Scenes/Imported";
         public const string Data = "Assets/LDY/Data/StageImport";
         public const string Settings = Data + "/StageImportSettings.asset";
+        public const string CustomMap = Data + "/CustomBlockMap.asset";
+        public const string LabelFont = "Assets/LDY/DungGeunMo TTF/DungGeunMo.ttf";
+
+        // 설정 경로에 파일이 없을 때 차례로 찾아보는 곳. 실제 내보내기 파일이 Data/stages1.json에 있다.
+        public static readonly string[] JsonCandidates = { DefaultJson, "Assets/LDY/Data/stages1.json" };
         public const string LegacyTileMap = "Assets/LDY/Data/Stage/StageTileMap.asset";
         public const string TempPrefabs = "Assets/LDY/Prefabs/StageImport";
         public const string TempSprite = "Assets/LDY/Sprites/Square.png";
@@ -20,9 +25,17 @@ namespace LDY.StageImportEditor {
             if (settings != null) return settings;
             FlowPaths.EnsureFolder(Data);
             settings = ScriptableObject.CreateInstance<StageImportSettings>();
+            settings.jsonPath = FirstExistingJson() ?? DefaultJson;
             AssetDatabase.CreateAsset(settings, Settings);
             AssetDatabase.SaveAssets();
             return settings;
+        }
+
+        public static string FirstExistingJson() {
+            foreach (var path in JsonCandidates)
+                if (System.IO.File.Exists(path))
+                    return path;
+            return null;
         }
     }
 }

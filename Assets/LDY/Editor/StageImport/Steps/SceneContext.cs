@@ -21,6 +21,7 @@ namespace LDY.StageImportEditor {
         public ImportJob Job { get; }
         public ImportPlan Plan => Job.Plan;
         public MapAssets Assets { get; }
+        public CustomBlockAssets Customs => Job.Customs;
         public FlowLog Log { get; }
 
         public GameObject FindRoot(string name) {

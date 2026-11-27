@@ -32,13 +32,18 @@ namespace LDY.StageImport.Core {
     }
 
     public sealed class AreaRegion {
-        public AreaRegion(AreaKind kind, IReadOnlyList<GridPoint> cells, IReadOnlyList<GridRect> rects) {
+        public AreaRegion(AreaKind kind, IReadOnlyList<GridPoint> cells, IReadOnlyList<GridRect> rects,
+            string key = null) {
             Kind = kind;
             Cells = cells;
             Rects = rects;
+            Key = key;
         }
 
         public AreaKind Kind { get; }
+
+        // Named 영역의 계획 키(CustomKey). 어둠·탭 영역은 null.
+        public string Key { get; }
         public IReadOnlyList<GridPoint> Cells { get; }
         public IReadOnlyList<GridRect> Rects { get; }
     }
@@ -54,13 +59,17 @@ namespace LDY.StageImport.Core {
     }
 
     public sealed class CustomUse {
-        public CustomUse(string id, string name, string col, CustomOutcome outcome, string key) {
+        public CustomUse(string id, string name, string col, CustomOutcome outcome, string key,
+            KeyRule rule = default) {
             Id = id;
             Name = name;
             Col = col;
             Outcome = outcome;
             Key = key;
+            Rule = rule;
         }
+
+        public KeyRule Rule { get; }
 
         public string Id { get; }
         public string Name { get; }
