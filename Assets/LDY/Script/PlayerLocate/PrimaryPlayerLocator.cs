@@ -12,15 +12,23 @@ namespace LDY.PlayerLocate {
             var tagged = GameObject.FindGameObjectsWithTag(Tag);
             if (tagged.Length == 0) return null;
 
-            var candidates = new PlayerCandidate[tagged.Length];
-            for (var i = 0; i < tagged.Length; i++)
-                candidates[i] = new PlayerCandidate(tagged[i].name, HasActiveInput(tagged[i]));
-
-            var pick = PrimaryPlayerRule.Pick(candidates);
+            var pick = PrimaryPlayerRule.Pick(Candidates(tagged));
             if (pick.IsAmbiguous)
                 Debug.LogWarning($"[Player] '{Tag}' 태그 {tagged.Length}개 중 본체를 가리지 못해 첫 번째({tagged[pick.Index].name})를 쓴다: " +
                                  string.Join(", ", tagged.Select(go => go.name)), context);
             return tagged[pick.Index];
+        }
+
+        public static bool IsPrimary(GameObject player) {
+            var tagged = GameObject.FindGameObjectsWithTag(Tag);
+            return PrimaryPlayerRule.IsPrimary(Candidates(tagged), System.Array.IndexOf(tagged, player));
+        }
+
+        private static PlayerCandidate[] Candidates(GameObject[] tagged) {
+            var candidates = new PlayerCandidate[tagged.Length];
+            for (var i = 0; i < tagged.Length; i++)
+                candidates[i] = new PlayerCandidate(tagged[i].name, HasActiveInput(tagged[i]));
+            return candidates;
         }
 
         private static bool HasActiveInput(GameObject go) =>

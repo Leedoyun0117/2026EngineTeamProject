@@ -1,0 +1,183 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ee300c101dc3a84a95a564424190578, type: 3}
+  m_Name: StageTileMap_World3
+  m_EditorClassIdentifier: LDY.Stage::LDY.Stage.StageTileMap
+  entries:
+  - key: ground
+    kind: 0
+    tile: {fileID: 11400000, guid: a5d02b0f706a8714cafccdc612d73dcc, type: 2}
+    tileLayer: 0
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 0, y: 0}
+  - key: platform
+    kind: 0
+    tile: {fileID: 11400000, guid: 949bba5facbeeba46826745dce73e3a5, type: 2}
+    tileLayer: 1
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 0, y: 0}
+  - key: spike
+    kind: 0
+    tile: {fileID: 11400000, guid: b0c970e6ed1d779429dab12d532c4662, type: 2}
+    tileLayer: 2
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 0, y: 0}
+  - key: invisible
+    kind: 0
+    tile: {fileID: 11400000, guid: e89230e2b76ba4c4197070f58cf87490, type: 2}
+    tileLayer: 3
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 0, y: 0}
+  - key: deco_back
+    kind: 0
+    tile: {fileID: 0}
+    tileLayer: 4
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 0, y: 0}
+  - key: deco_cloud
+    kind: 0
+    tile: {fileID: 0}
+    tileLayer: 4
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 0, y: 0}
+  - key: deco_bush
+    kind: 0
+    tile: {fileID: 0}
+    tileLayer: 4
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 0, y: 0}
+  - key: deco_star
+    kind: 0
+    tile: {fileID: 0}
+    tileLayer: 4
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 0, y: 0}
+  - key: box
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 1285813850388870371, guid: ef3c2068f297e20438aa2667122b6dd4, type: 3}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: cut
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 8080108190663208780, guid: e0bf36cf465b4264cb5c7579b2c51dad, type: 3}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: ghost
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 3506580219644479941, guid: 35f3ef6c898578f47bb363190b488ea9, type: 3}
+    cluster: 4
+    fixedSize: {x: 1, y: 1}
+  - key: ghost_on
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 3506580219644479941, guid: 35f3ef6c898578f47bb363190b488ea9, type: 3}
+    cluster: 4
+    fixedSize: {x: 1, y: 1}
+  - key: mov_h
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 3079629876012397091, guid: 92f23313a03030749a061c8316c14c5d, type: 3}
+    cluster: 2
+    fixedSize: {x: 1, y: 1}
+  - key: mov_v
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 6113718214419631603, guid: 940bc2e1694463f48bfb1b0e13a14dc4, type: 3}
+    cluster: 2
+    fixedSize: {x: 1, y: 1}
+  - key: goal
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 8947606461642742902, guid: 6877409d867d6264cb99e6448cc1cbb6, type: 3}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: abs_resize
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: abs_copy
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: abs_tab
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: abs_drag
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 938297847385247349, guid: edc727a9cc2449c4fb2d11aab31cb6f8, type: 3}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: abs_pause
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 7577770505021860882, guid: b7be1422aee5ff94b9c04651f445ef86, type: 3}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: abs_alpha
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 4704325038760653566, guid: 6ce70a88de8dbd34694990773ed46047, type: 3}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: abs_zoom
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 3901818847368616791, guid: 3b2b733288e51374c80d6d2542babfab, type: 3}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: abs_light
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 0}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}
+  - key: abs_cut
+    kind: 1
+    tile: {fileID: 0}
+    tileLayer: 0
+    prefab: {fileID: 3954851874714637466, guid: b22e75498dcf2ea47b76615d6594161b, type: 3}
+    cluster: 0
+    fixedSize: {x: 1, y: 1}

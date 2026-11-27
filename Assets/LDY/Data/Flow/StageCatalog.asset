@@ -122,77 +122,77 @@ MonoBehaviour:
     world: 2
     number: 1
     fileName: 2-1.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage2-1_2-1.unity
+    sceneAsset: {fileID: 102900000, guid: 0d92f135a9f8d91489d6b385013482ca, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - drag
     - copy
-    state: 0
+    state: 1
   - id: 2-2
     world: 2
     number: 2
     fileName: 2-2.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage2-2_2-2.unity
+    sceneAsset: {fileID: 102900000, guid: 08fb29724d7e2ec49bf6ee10922307a5, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - zoom
     - alpha
     - drag
-    state: 0
+    state: 1
   - id: 2-3
     world: 2
     number: 3
     fileName: 2-3.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage2-3_2-3.unity
+    sceneAsset: {fileID: 102900000, guid: 7de5bc34a32d56a469ff7d1949e8b204, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - drag
     - alpha
     - zoom
-    state: 0
+    state: 1
   - id: 2-4
     world: 2
     number: 4
     fileName: 2-4.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage2-4_2-4.unity
+    sceneAsset: {fileID: 102900000, guid: cc9bc3a5a7c5d21418eb86f3ab2e27ca, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - drag
     - zoom
-    state: 0
+    state: 1
   - id: 2-5
     world: 2
     number: 5
     fileName: 2-5.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage2-5_2-5.unity
+    sceneAsset: {fileID: 102900000, guid: e98f1152cf0154e43a31eec1c69c7cea, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - drag
     - alpha
-    state: 0
+    state: 1
   - id: 2-6
     world: 2
     number: 6
     fileName: 2-6.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage2-6_2-6.unity
+    sceneAsset: {fileID: 102900000, guid: 125f18c5373990841a7757ef46c8b948, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - drag
     - alpha
     - cut
-    state: 0
+    state: 1
   - id: 3-T
     world: 3
     number: 0
@@ -209,69 +209,69 @@ MonoBehaviour:
     world: 3
     number: 1
     fileName: 3-1.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage3-1_3-1.unity
+    sceneAsset: {fileID: 102900000, guid: 63d9267f00c0cda4ea89ca069954502d, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - light
     - cut
     - drag
-    state: 0
+    state: 1
   - id: 3-2
     world: 3
     number: 2
     fileName: 3-2.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage3-2_3-2.unity
+    sceneAsset: {fileID: 102900000, guid: fafcdf3bf37c4444e9b8b30a13d67d11, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - light
     - drag
-    state: 0
+    state: 1
   - id: 3-3
     world: 3
     number: 3
     fileName: 3-3.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage3-3_3-3.unity
+    sceneAsset: {fileID: 102900000, guid: 0e2a9447c3eec034c8173cd124a4be25, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - drag
     - light
     - tab
-    state: 0
+    state: 1
   - id: 3-4
     world: 3
     number: 4
     fileName: 3-4.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage3-4_3-4.unity
+    sceneAsset: {fileID: 102900000, guid: f40f24336570b7c479c0cb1239fa0fd7, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities:
     - light
     - copy
-    state: 0
+    state: 1
   - id: 3-5
     world: 3
     number: 5
     fileName: 3-5.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage3-5_3-5.unity
+    sceneAsset: {fileID: 102900000, guid: 89d57ecdbe6c6cc479cc36defb30c532, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities: []
-    state: 0
+    state: 1
   - id: 3-6
     world: 3
     number: 6
     fileName: 3-6.exe
-    scenePath: 
-    sceneAsset: {fileID: 0}
+    scenePath: Assets/LDY/Scenes/Imported/Stage3-6_3-6.unity
+    sceneAsset: {fileID: 102900000, guid: d54926d1fd8c9e94a87211072c33f328, type: 3}
     subRootName: 
     thumbnail: {fileID: 0}
     abilities: []
-    state: 0
+    state: 1

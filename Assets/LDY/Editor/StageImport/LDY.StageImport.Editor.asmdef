@@ -1,0 +1,26 @@
+{
+    "name": "LDY.StageImport.Editor",
+    "rootNamespace": "LDY.StageImportEditor",
+    "references": [
+        "LDY.StageImport.Core",
+        "LDY.PlayerMerge",
+        "LDY.StageImport",
+        "LDY.Stage",
+        "LDY.StageLogic",
+        "LDY.Flow",
+        "LDY.Flow.Core",
+        "LDY.Flow.Editor",
+        "Unity.Cinemachine"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

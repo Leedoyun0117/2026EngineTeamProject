@@ -1,3 +1,4 @@
+using LDY.PlayerMerge;
 using UnityEditor;
 using UnityEngine;
 using static LDY.Script.PlayerVisualContext;
@@ -18,7 +19,7 @@ namespace LDY.Script {
                 return;
             }
 
-            var root = PrefabUtility.LoadPrefabContents(PrefabPath);
+            var root = PrefabUtility.LoadPrefabContents(PlayerPrefabPaths.Final);
             try {
                 var visual = root.transform.Find(PinkName);
                 if (visual == null) {
@@ -31,7 +32,7 @@ namespace LDY.Script {
                     return;
 
                 Wire(visual, sprite, profile, settings);
-                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
+                PrefabUtility.SaveAsPrefabAsset(root, PlayerPrefabPaths.Final);
                 Log("Rope Grip 구성 완료. 프리팹 저장됨");
             }
             finally {

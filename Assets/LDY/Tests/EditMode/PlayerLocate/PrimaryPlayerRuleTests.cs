@@ -78,5 +78,27 @@ namespace LDY.Tests {
         public void LooksLikeCopy(string name, bool expected) {
             Assert.That(PrimaryPlayerRule.LooksLikeCopy(name), Is.EqualTo(expected));
         }
+
+        [Test]
+        public void Goal_CopyTouching_IsNotPrimary() {
+            var candidates = new[] { C("Player", true), C("PlayerCopy(Clone)", true) };
+            Assert.That(PrimaryPlayerRule.IsPrimary(candidates, 1), Is.False);
+            Assert.That(PrimaryPlayerRule.IsPrimary(candidates, 0), Is.True);
+        }
+
+        [Test]
+        public void Goal_SinglePlayer_IsPrimary() {
+            Assert.That(PrimaryPlayerRule.IsPrimary(new[] { C("Player (1)", true) }, 0), Is.True);
+        }
+
+        [Test]
+        public void Goal_UntaggedToucherWhileTaggedExist_IsNotPrimary() {
+            Assert.That(PrimaryPlayerRule.IsPrimary(new[] { C("Player", true) }, -1), Is.False);
+        }
+
+        [Test]
+        public void Goal_NoTaggedPlayers_PassesThrough() {
+            Assert.That(PrimaryPlayerRule.IsPrimary(new PlayerCandidate[0], -1), Is.True);
+        }
     }
 }

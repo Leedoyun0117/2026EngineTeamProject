@@ -12,7 +12,6 @@ namespace LDY.SpiderEditor {
         public const string Data = "Assets/LDY/Data/Spider";
         public const string Scenes = "Assets/LDY/Scenes";
         public const string CircleSprite = "Assets/LDY/Sprites/Circle.png";
-        public const string PlayerPrefab = PlayerPrefabPaths.Shared;
 
         public static void EnsureFolder(string path) {
             if (AssetDatabase.IsValidFolder(path))

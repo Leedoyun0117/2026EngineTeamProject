@@ -11,7 +11,6 @@ using UnityEngine.Tilemaps;
 namespace LDY.StageEditor {
     internal sealed class Stage1ArtTestSceneBuilder {
         private const string ScenePath = StagePaths.Scenes + "/Stage1_ArtTest.unity";
-        private const string PlayerPath = PlayerPrefabPaths.Shared;
         private const float GimmickSpacing = 3f;
         private const int GimmickFloorY = 10;
 
@@ -108,9 +107,9 @@ namespace LDY.StageEditor {
         }
 
         private static void PlacePlayer(Scene scene, SetupReport report) {
-            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PlayerPath);
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PlayerPrefabPaths.Final);
             if (prefab == null) {
-                report.Warn("Player 프리팹을 찾지 못해 씬에 놓지 못했다: " + PlayerPath);
+                report.Warn("Player 프리팹을 찾지 못해 씬에 놓지 못했다: " + PlayerPrefabPaths.Final);
                 return;
             }
 

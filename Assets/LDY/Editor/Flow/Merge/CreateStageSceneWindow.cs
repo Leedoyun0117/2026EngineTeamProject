@@ -1,3 +1,4 @@
+using LDY.PlayerMerge;
 using System.Linq;
 using LDY.Flow;
 using LDY.Flow.Core;
@@ -21,7 +22,7 @@ namespace LDY.FlowEditor {
         private void OnEnable() {
             _ids = StagePlan.Entries.Select(e => e.Id).ToArray();
             _sceneName = "Stage_" + _ids[_idIndex];
-            _player = AssetDatabase.LoadAssetAtPath<GameObject>(FlowPaths.SharedPlayer);
+            _player = AssetDatabase.LoadAssetAtPath<GameObject>(PlayerPrefabPaths.Final);
         }
 
         private void OnGUI() {

@@ -61,6 +61,12 @@ namespace LDY.PlayerLocate {
             return new PrimaryPick(pool[0], PrimaryReason.Fallback);
         }
 
+        // 골처럼 본체만 반응해야 하는 곳에서 쓴다. 태그 후보가 없으면 가릴 수 없으므로 통과시킨다.
+        public static bool IsPrimary(IReadOnlyList<PlayerCandidate> candidates, int index) {
+            if (candidates == null || candidates.Count == 0) return true;
+            return index >= 0 && Pick(candidates).Index == index;
+        }
+
         public static bool LooksLikeCopy(string name) {
             if (string.IsNullOrEmpty(name)) return false;
             foreach (var marker in CopyMarkers)

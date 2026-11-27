@@ -536,6 +536,8 @@ GameObject:
   - component: {fileID: 181284469651236864}
   - component: {fileID: 8709105108449649906}
   - component: {fileID: 1650177763703774341}
+  - component: {fileID: 7941581028396531255}
+  - component: {fileID: 7950298437402265012}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -799,6 +801,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Utility_HTY
   _player: {fileID: 1860720910273899493}
   _pointerPrefab: {fileID: 4129502749804074742, guid: 101b301206655974f876af8fbf0e8159, type: 3}
+--- !u!114 &7941581028396531255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8113779949451774986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fddfa9d0614f59877307870536c76c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.Player.JJBPlayerAbsorb
+  absorbPoint: {fileID: 1440646519561798520}
+  absorbLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  absorbSize: 1
+--- !u!114 &7950298437402265012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8113779949451774986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72497c042c6740eab58f0b4a5834e7e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.Player.JJBPlayerGimmick
 --- !u!1 &8765737122343148159
 GameObject:
   m_ObjectHideFlags: 0

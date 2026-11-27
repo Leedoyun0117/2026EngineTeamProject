@@ -1,0 +1,404 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65a488002c1914043b410cf2b2bc20b1, type: 3}
+  m_Name: CustomBlockMap
+  m_EditorClassIdentifier: LDY.StageImport.Editor::LDY.StageImportEditor.CustomBlockMap
+  entries:
+  - name: "\uAC70\uBBF8?"
+    aliases: []
+    prefab: {fileID: 6973843270037025934, guid: ff81d59f14d2d304aae2d38c04e61622, type: 3}
+    binding: 1
+    sizing: 2
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] \uC9C0\uC815\uAC12: LDY Spider(SpiderController), \uBB36\uC74C\uB2F9
+      \uD558\uB098\xB7\uBB36\uC74C \uAC00\uC6B4\uB370. 2-3\uC5D0 42\uCE78(7x11) \uD55C
+      \uB369\uC5B4\uB9AC. \uD6C4\uBCF4: Assets/LDY/Prefabs/Stage2/Spider.prefab"
+  - name: "\uBCBD"
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 1
+    sizing: 0
+    tile: 1
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] \uC9C0\uC815\uAC12: Ground \uD0C0\uC77C\uB85C \uB300\uCCB4.
+      1\uC6D4\uB4DC(1-3, 1-4)\xB72\uC6D4\uB4DC(2-2, 2-4)\uC758 id 2\uAC1C \uBAA8\uB450."
+  - name: "\uC5B4\uB450\uC6B8\uB54C\uB9CC \uBCF4\uC774\uB294 \uBE14\uB85D"
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uC5C6\uC74C] dark_only_block \uADF8\uB9BC\uC774 \uD504\uB85C\uC81D\uD2B8\uC5D0
+      \uC5C6\uC5B4 \uBD84\uD64D \uC720\uC9C0. \uADF8\uB9BC\uC774 \uC0DD\uAE30\uBA74
+      DarkOnlyBlock \uD504\uB9AC\uD339(BoxCollider2D, \uC2A4\uD06C\uB9BD\uD2B8 \uC5C6\uC74C)\uC744
+      \uB9CC\uB4E4\uC5B4 \uC5F0\uACB0."
+  - name: "\uC720\uB9AC"
+    aliases: []
+    prefab: {fileID: 3422039772168067383, guid: af269296f827c464784ba391d8366308, type: 3}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] \uC774\uB984\xB7\uD0DC\uADF8 Glass \uC77C\uCE58 (Main Glass
+      = HES Glass \uC0AC\uBCF8). \uC5EC\uB7EC \uCE78 \uB369\uC5B4\uB9AC\uB294 \uCE78\uB9C8\uB2E4
+      \uD558\uB098\uC529. \uD6C4\uBCF4: Assets/Main/02.Prefabs/Obj/Glass.prefab,
+      Assets/HES/prefab/Glass.prefab"
+  - name: "\uB300\uD3EC"
+    aliases: []
+    prefab: {fileID: 2418249049641788093, guid: ed0c3f235b09ced42b911c9bca846f88, type: 3}
+    binding: 1
+    sizing: 3
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] Cannon \uC2A4\uD06C\uB9BD\uD2B8. \uC9C0\uC815\uAC12: \uBB36\uC74C\uB2F9
+      \uD558\uB098, \uBB36\uC74C\uC758 \uAC00\uC7A5 \uC67C\uCABD \uCE78(1-4\uC758
+      24\uCE78 \uAC00\uB85C\uC904\uB3C4 \uD558\uB098). \uD6C4\uBCF4: Assets/Main/02.Prefabs/Obj/Cannon.prefab,
+      Assets/HES/prefab/cannon.prefab"
+  - name: "\uC2E0\uD638\uAC00 \uAC00\uBA74 \uC0AC\uB77C\uC9C0\uB294 \uBE14\uB85D"
+    aliases: []
+    prefab: {fileID: 1103507426519293029, guid: 35f8ea409b1587e4b904ae787520a7f6, type: 3}
+    binding: 1
+    sizing: 1
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] \uD0DC\uADF8 Invisible: HES Receiver.response\uAC00 \uCF1C\uC9C0\uBA74
+      \uAEBC\uC9C4\uB2E4. \uB3D9\uC791\uD558\uB824\uBA74 \uC52C Receiver\uC758 \uBAA9\uB85D\uC5D0
+      \uC190\uC73C\uB85C \uB123\uC5B4\uC57C \uD568. \uD6C4\uBCF4: Assets/HES/prefab/SwitchToInvisibleDoor.prefab"
+  - name: "\uAE68\uC9C0\uB294 \uBE14\uB85D"
+    aliases: []
+    prefab: {fileID: 4113921665928474258, guid: 9ed6459fcbb8d164c93763c68e0b051e, type: 3}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] LDY Stage1_Glass = HES Glass \uBCC0\uD615\uC5D0 breakable_block
+      \uC544\uD2B8\uB97C \uC785\uD78C \uAC83. 1-4\uC5D0\uC11C\uB9CC \uC4F0\uC784.
+      \uD6C4\uBCF4: Assets/LDY/Prefabs/Stage1/Stage1_Glass.prefab"
+  - name: "\uC5D8\uB808\uBCA0\uC774\uD130"
+    aliases: []
+    prefab: {fileID: 9198194567162678771, guid: 13689d2f9cac72044860605bb22bf32d, type: 3}
+    binding: 1
+    sizing: 2
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] Elevator + SwitchElevator. 3x4 \uB369\uC5B4\uB9AC\uB9C8\uB2E4
+      \uD558\uB098(\uC6D0\uB798 \uD06C\uAE30, \uB369\uC5B4\uB9AC \uAC00\uC6B4\uB370).
+      \uD6C4\uBCF4: Assets/HES/prefab/Elevator.prefab"
+  - name: "\uC62C\uB77C\uAC00\uBA74 \uBCF4\uC774\uB294 \uC601\uC5ED"
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 3
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uC560\uB9E4] \uC601\uC5ED \uD45C\uC2DC\uB85C \uB460(\uD2B8\uB9AC\uAC70
+      \uC0AC\uAC01\uD615). HES Blind(\uB2FF\uC73C\uBA74 \uAC00\uB9BC\uB9C9\uC774
+      \uAC77\uD798)\uAC00 \uBE44\uC2B7\uD55C \uB3D9\uC791. \uD6C4\uBCF4: Assets/HES/prefab/Blind.prefab"
+  - name: "\uBC84\uD2BC\uBB38 \uD14C\uC2A4\uD2B8 \uC5F4\uB9BC"
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 3
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uC5C6\uC74C] col none, \uBB38\uC774 \uC5F4\uB9B0 \uC0C1\uD0DC\uB97C
+      \uD45C\uC2DC\uD55C \uCE78\uC73C\uB85C \uBCF4\uC5EC \uC601\uC5ED\uC73C\uB85C
+      \uB460."
+  - name: "\uBC84\uD2BC \uBB38"
+    aliases: []
+    prefab: {fileID: 3351876859714161388, guid: 3c225a599d43f524caa880c2ba5be304, type: 3}
+    binding: 1
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] HES NormalButton.door\uC5D0 \uC5F0\uACB0\uD558\uB294 \uBB38(\uC2A4\uD06C\uB9BD\uD2B8
+      \uC5C6\uC74C, 1x1). 9x1 \uB369\uC5B4\uB9AC\uB97C \uD558\uB098\uB85C \uB298\uB9BC.
+      \uBC84\uD2BC \uC5F0\uACB0\uC740 \uC190\uC73C\uB85C. \uD6C4\uBCF4: Assets/HES/prefab/StandardDoor.prefab"
+  - name: "\uC2E0\uD638\uAC00 \uAC00\uBA74 \uB098\uD0C0\uB0A8"
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 3
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uC560\uB9E4] \uC694\uCCAD\uB300\uB85C \uC601\uC5ED \uD45C\uC2DC\uB85C
+      \uB460. \uC2E4\uC81C \uBE14\uB85D\uC774\uBA74 HES SwitchToVisibleDoor(\uD0DC\uADF8
+      Visible)\uB85C \uBC14\uAFB8\uACE0 \uBB36\uB294 \uBC29\uC2DD\uC744 4\uBC29\uD5A5
+      \uBB36\uC74C\uC73C\uB85C. \uD6C4\uBCF4: Assets/HES/prefab/SwitchToVisibleDoor.prefab"
+  - name: "\uBC27\uC904"
+    aliases: []
+    prefab: {fileID: 8826016331274368571, guid: a68216e4325f30d4e80a1a7a234d2b89, type: 3}
+    binding: 1
+    sizing: 4
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] \uC9C0\uC815\uAC12: LDY Rope \uD504\uB9AC\uD339(RopeTest
+      \uC52C \uAD6C\uC131). \uBB36\uC74C \uB9E8 \uC704 \uCE78\uC774 \uACE0\uC815\uC810,
+      \uC544\uB798 \uCE78 \uC218\uAC00 \uC904 \uAE38\uC774(RopeSettings \uC0AC\uBCF8).
+      \uD6C4\uBCF4: Assets/LDY/Prefab/Rope/Rope.prefab"
+  - name: "\uAE30\uC694\uD2F4"
+    aliases: []
+    prefab: {fileID: 7139204842546657976, guid: a4c22b95562086b46ad2369df6970af2, type: 3}
+    binding: 1
+    sizing: 2
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] Guillotine + KillHitbox. 1-2\uC758 5x3 \uB369\uC5B4\uB9AC
+      \uD558\uB098\uC5D0 \uD558\uB098. \uD6C4\uBCF4: Assets/Main/02.Prefabs/Obj/Guillotine.prefab,
+      Assets/HES/prefab/Guillotine.prefab, Assets/LDY/Prefabs/Stage1/Stage1_Guillotine.prefab"
+  - name: "360\uB3C4 \uD68C\uC804 \uBE14\uB85D"
+    aliases:
+    - "360\uB3C4 \uD68C\uC804\uD558\uB294 \uBE14\uB85D"
+    prefab: {fileID: 7009495108906705493, guid: 9aa8b76d5b5cdb44cb68e69677c7dbeb, type: 3}
+    binding: 2
+    sizing: 2
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] RotateBlock \uC2A4\uD06C\uB9BD\uD2B8. \uCF5C\uB77C\uC774\uB354\uAC00
+      \uC774\uBBF8 \uAC00\uB85C 3\uCE78\uC774\uB77C \uB298\uB9AC\uC9C0 \uC54A\uACE0
+      \uAC00\uB85C \uB7F0\uB9C8\uB2E4 \uD558\uB098. \uD6C4\uBCF4: Assets/Main/02.Prefabs/Obj/RotateBlock.prefab,
+      Assets/JJB/Prefab/RotateBlock.prefab"
+  - name: "\uD1B1 \uC5B4\uB450\uC6B8\uB54C\uB9CC \uBCF4\uC774\uB294 \uD1B1\uB2C8\uBC14\uD034"
+    aliases: []
+    prefab: {fileID: 7512981137130647134, guid: 8e3642f3a0597bb42a57833bdf81fae5, type: 3}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] \uC9C0\uC815\uAC12: JJB\uC5D0 Gear \uC2A4\uD06C\uB9BD\uD2B8\uAC00
+      \uBD99\uC740 \uD504\uB9AC\uD339\uC774 \uC5C6\uC5B4 LDY Stage1_Gear(\uD1B1\uB2C8
+      \uC544\uD2B8). '\uC5B4\uB450\uC6B8 \uB54C\uB9CC \uBCF4\uC784' \uB3D9\uC791
+      \uC5C6\uC74C. \uD6C4\uBCF4: Assets/LDY/Prefabs/Stage1/Stage1_Gear.prefab"
+  - name: "\uBCBD L\uC774\uB791 R\uC744 \uB458\uB2E4 \uBA39\uC5B4\uC57C\uC9C0 \uC5F4\uB9AC\uB294
+      \uBCBD"
+    aliases: []
+    prefab: {fileID: 9213685168508995484, guid: 935a590cffb5d8f419bbfe5b97533eca, type: 3}
+    binding: 1
+    sizing: 2
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] LRDoor + LButton + RButton. \uAC19\uC740 \uB9F5\uC5D0 L\xB7R
+      \uCE78\uC774 \uD558\uB098\uC529 \uC788\uC73C\uBA74 \uC778\uC2A4\uD134\uC2A4\uC758
+      L/R \uBC84\uD2BC\uC744 \uADF8 \uCE78\uC73C\uB85C \uC62E\uAE40(\uC6D0\uBCF8
+      \uADF8\uB300\uB85C). \uD6C4\uBCF4: Assets/Main/02.Prefabs/Obj/Stage1_LRDoor.prefab,
+      Assets/HES/prefab/LRDoor.prefab"
+  - name: "\uBB38"
+    aliases: []
+    prefab: {fileID: 3351876859714161388, guid: 3c225a599d43f524caa880c2ba5be304, type: 3}
+    binding: 1
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] \uBC84\uD2BC\xB7\uC2A4\uC704\uCE58\uC758 door \uB300\uC0C1\uC73C\uB85C
+      \uC4F0\uB294 \uBB38(\uC2A4\uD06C\uB9BD\uD2B8 \uC5C6\uC74C). \uC5F0\uACB0\uC740
+      \uC190\uC73C\uB85C. \uD6C4\uBCF4: Assets/HES/prefab/StandardDoor.prefab"
+  - name: "\uBC84\uD2BC"
+    aliases: []
+    prefab: {fileID: 543358752255725054, guid: 68e9f470b7c4da740b227251fa4de291, type: 3}
+    binding: 1
+    sizing: 2
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] NormalButton \uC2A4\uD06C\uB9BD\uD2B8. col\uC774 none/solid
+      \uB450 \uC885\uB958 \u2192 \uAC19\uC740 \uD504\uB9AC\uD339. 2\uC6D4\uB4DC\uC6A9
+      NormalButtonStage2\uB3C4 \uC788\uC74C. door \uC5F0\uACB0\uC740 \uC190\uC73C\uB85C.
+      \uD6C4\uBCF4: Assets/Main/02.Prefabs/Obj/NormalButton.prefab, Assets/HES/prefab/NormalButton.prefab"
+  - name: "\uC0C1\uC790\uB85C\uB9CC \uB204\uB97C \uC218 \uC788\uB294 \uBC84\uD2BC"
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uC5C6\uC74C] HES ButtonBox.cs(Box \uD0DC\uADF8\uC5D0\uB9CC \uBC18\uC751)\uB294
+      \uC788\uC9C0\uB9CC \uD504\uB9AC\uD339 \uC5C6\uC74C."
+  - name: "\uAE38\uAC8C \uB204\uB974\uAE30 \uBC84\uD2BC"
+    aliases:
+    - "\uAE38\uAC8C \uB204\uB974\uB294 \uBC84\uD2BC"
+    prefab: {fileID: 7579932944574373311, guid: 8240c818878f51f4e85a7217cf3686a3, type: 3}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] LongPressButton \uC2A4\uD06C\uB9BD\uD2B8. \uD6C4\uBCF4:
+      Assets/Main/02.Prefabs/Obj/LongPressButton.prefab, Assets/HES/prefab/LongPressButton.prefab"
+  - name: "\uB808\uBC84"
+    aliases: []
+    prefab: {fileID: 547680712560823230, guid: 731a4f3fbad4caa49b64769ddc9be252, type: 3}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] \uC9C0\uC815\uAC12: HES Switch(\uB2FF\uC744 \uB54C\uB9C8\uB2E4
+      door \uD1A0\uAE00). door \uC5F0\uACB0\uC740 \uC190\uC73C\uB85C. \uD6C4\uBCF4:
+      Assets/HES/prefab/Switch.prefab"
+  - name: "\uC0AC\uC2AC"
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 1
+    sizing: 0
+    tile: 0
+    decoration: {fileID: -8227876202980802945, guid: f9789bcfa1d02ff45946bb1ee10b5be9, type: 3}
+    skipIfEmpty: 1
+    locked: 0
+    note: "[\uD655\uC2E4] \uC9C0\uC815\uAC12: \uCDA9\uB3CC \uC5C6\uB294 \uC7A5\uC2DD,
+      axe_guillotine_chain \uADF8\uB9BC\uC744 \uBB36\uC74C \uD06C\uAE30\uB85C \uB298\uB9BC.
+      \uADF8\uB9BC\uC774 \uC5C6\uC73C\uBA74 \uAC74\uB108\uB700."
+  - name: "\uACF0\uB36B"
+    aliases: []
+    prefab: {fileID: 23022486557546144, guid: 1d7a25b4a5770814b87d5cdeb8f63521, type: 3}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] \uC9C0\uC815\uAC12: LDY 2\uC2A4\uD14C\uC774\uC9C0 MouseTrap(MouseTrap
+      + DragObj), \uCE78\uB9C8\uB2E4. \uD6C4\uBCF4: Assets/LDY/Prefabs/Stage2/MouseTrap.prefab"
+  - name: "\uB5A8\uC5B4\uC9C0\uB294 \uC624\uBE0C\uC81D\uD2B8 (\uD53C\uD574\uC57C\uD568)"
+    aliases: []
+    prefab: {fileID: 8308025827254236120, guid: 94af62091af1332419f2eee4d4ea1417, type: 3}
+    binding: 1
+    sizing: 2
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] FallingBlock \uC2A4\uD06C\uB9BD\uD2B8. 2-4\uC758 1x4 \uC138\uB85C
+      \uB369\uC5B4\uB9AC\uC5D0 \uD558\uB098\uB9CC \uB193\uC74C(\uB099\uD558 \uACBD\uB85C\uB97C
+      \uCE60\uD55C \uAC83\uC774\uBA74 \uC704\uCE58 \uC870\uC815). \uD6C4\uBCF4: Assets/Main/02.Prefabs/Obj/FallingBlock.prefab,
+      Assets/HES/prefab/FallingBlock.prefab"
+  - name: "\uAC00\uC9DC \uBE14\uB85D"
+    aliases: []
+    prefab: {fileID: 7911035240383736442, guid: 147f53eca7c779547aa4b89871b63018, type: 3}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] Block(isReal=false). \uD6C4\uBCF4: Assets/HES/prefab/FakeBlock.prefab"
+  - name: "\uC9C4\uC9DC \uBE14\uB85D"
+    aliases: []
+    prefab: {fileID: 9034911142854198745, guid: 2036f4a53a640c346b43651949c7892a, type: 3}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] Block(isReal=true). \uD6C4\uBCF4: Assets/HES/prefab/RealBlock.prefab"
+  - name: R
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uC560\uB9E4] LRDoor \uD504\uB9AC\uD339 \uC548\uC758 RButton \uC790\uC2DD.
+      LRDoor\uC640 \uC9DD\uC774 \uB9DE\uC73C\uBA74 \uBC84\uD2BC\uC744 \uC774 \uCE78\uC73C\uB85C
+      \uC62E\uAE30\uACE0 \uBD84\uD64D \uBE14\uB85D\uC744 \uB193\uC9C0 \uC54A\uC74C.
+      \uD6C4\uBCF4: Assets/Main/02.Prefabs/Obj/Stage1_LRDoor.prefab"
+  - name: L
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uC560\uB9E4] LRDoor \uD504\uB9AC\uD339 \uC548\uC758 LButton \uC790\uC2DD.
+      LRDoor\uC640 \uC9DD\uC774 \uB9DE\uC73C\uBA74 \uBC84\uD2BC\uC744 \uC774 \uCE78\uC73C\uB85C
+      \uC62E\uAE30\uACE0 \uBD84\uD64D \uBE14\uB85D\uC744 \uB193\uC9C0 \uC54A\uC74C.
+      \uD6C4\uBCF4: Assets/Main/02.Prefabs/Obj/Stage1_LRDoor.prefab"
+  - name: "\uACF5\uACA9\uD558\uB294 \uBB34\uC5B8\uAC00?"
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 1
+    sizing: 2
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uC5C6\uC74C] \uC9C0\uC815\uAC12: \uBE44\uC6CC \uB460. \uC774\uB984\uC5D0
+      '?'. 2-3(\uAC70\uBBF8 \uB9F5)\uC5D0 1x2."
+  - name: "\uC88C\uC6B0 \uC801"
+    aliases: []
+    prefab: {fileID: 0}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uC5C6\uC74C] \uC88C\uC6B0\uB85C \uC6C0\uC9C1\uC774\uB294 \uC801 \uD504\uB9AC\uD339
+      \uC5C6\uC74C (Main MovingBlock\uC740 \uBC1C\uD310)."
+  - name: "\uC2A4\uC704\uCE58"
+    aliases: []
+    prefab: {fileID: 547680712560823230, guid: 731a4f3fbad4caa49b64769ddc9be252, type: 3}
+    binding: 0
+    sizing: 0
+    tile: 0
+    decoration: {fileID: 0}
+    skipIfEmpty: 0
+    locked: 0
+    note: "[\uD655\uC2E4] HES Switch(\uB2FF\uC744 \uB54C\uB9C8\uB2E4 door \uD1A0\uAE00).
+      \uD6C4\uBCF4: Assets/HES/prefab/Switch.prefab"
