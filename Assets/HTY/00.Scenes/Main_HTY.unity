@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 84311823}
   - component: {fileID: 84311827}
   - component: {fileID: 84311828}
+  - component: {fileID: 84311829}
   m_Layer: 0
   m_Name: MoveBox
   m_TagString: Untagged
@@ -149,7 +150,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 84311822}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 10
@@ -313,7 +314,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScalableObject_HTY
   _smallScale: 0.5
-  _largeScale: 1.5
+  _largeScale: 2
+--- !u!114 &84311829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84311822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bff5de5b5db5c94bb98a65568281d9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Object_HTY
+  _myCan: 1
 --- !u!1 &472597710
 GameObject:
   m_ObjectHideFlags: 0
@@ -1480,7 +1494,7 @@ GameObject:
   - component: {fileID: 1818125692}
   - component: {fileID: 1818125691}
   - component: {fileID: 1818125694}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: skillBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1619,7 +1633,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e0452eee6b83c45ad86856c97196d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillBox_HTY
-  _myskill: {fileID: 11400000, guid: a2252a2025ecb3f438df136888ac4f4c, type: 2}
+  _myskill: {fileID: 11400000, guid: d94abec47d862174ca6a8a07f2de143f, type: 2}
 --- !u!1 &1896364085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1770,9 +1784,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5399897158383543319, guid: 094dd1f1fae102a499bf2c1dea40bd1c, type: 3}
+      propertyPath: _targetLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941108714655601622, guid: 094dd1f1fae102a499bf2c1dea40bd1c, type: 3}
+      propertyPath: _targetLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8113779949451774986, guid: 094dd1f1fae102a499bf2c1dea40bd1c, type: 3}
       propertyPath: m_Name
       value: Player (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291500074099982344, guid: 094dd1f1fae102a499bf2c1dea40bd1c, type: 3}
+      propertyPath: _targetLayer.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8442685253944822233, guid: 094dd1f1fae102a499bf2c1dea40bd1c, type: 3}
+      propertyPath: _targetLayer.m_Bits
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7642081104254461444, guid: 094dd1f1fae102a499bf2c1dea40bd1c, type: 3}

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LDY.Flow;
 using LDY.Flow.Core;
+using LDY.PlayerMerge;
 using LDY.TitlePlayer.Core;
 using UnityEditor;
 using UnityEngine;
@@ -136,7 +137,7 @@ namespace LDY.FlowEditor {
         }
 
         private static StageCheck CheckPlayer(List<GameObject> all) {
-            const string label = "Player 1개 + 프리팹 인스턴스";
+            const string label = "Player 1개 + 최종 플레이어 프리팹";
             var players = all.Where(go => go.CompareTag(PlayerMatch.DefaultTag)).ToList();
             if (players.Count != 1)
                 return new StageCheck(false, label, $"Player 태그 {players.Count}개: {Names(players)}");
@@ -144,9 +145,9 @@ namespace LDY.FlowEditor {
             if (!PrefabUtility.IsAnyPrefabInstanceRoot(player))
                 return new StageCheck(false, label, player.name + "은 프리팹 인스턴스 루트가 아니다");
             var source = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(player);
-            return FlowPaths.KnownPlayers.Contains(source)
+            return source == PlayerPrefabPaths.Final
                 ? new StageCheck(true, label, source)
-                : new StageCheck(false, label, "알려진 Player 프리팹이 아니다: " + source);
+                : new StageCheck(false, label, $"{PlayerPrefabPaths.Final}가 아니다: {source} (LDY/Player/Merge/2. Swap Scenes로 교체)");
         }
 
         private static StageCheck CheckGoal(List<GameObject> all) {

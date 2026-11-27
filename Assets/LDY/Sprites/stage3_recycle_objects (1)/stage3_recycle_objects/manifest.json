@@ -1,0 +1,81 @@
+{
+ "real_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 7,
+  "ms": 100,
+  "tags": {
+   "dark": [
+    0,
+    0
+   ],
+   "reveal": [
+    1,
+    3
+   ],
+   "lit": [
+    4,
+    4
+   ],
+   "pressed": [
+    5,
+    6
+   ]
+  },
+  "pivot": "center",
+  "ppu": 40,
+  "note": "real file (clean document). dark frame identical for both. reveal forward when lit, reverse when hidden. pressed 5 flash, 6 hold-down"
+ },
+ "fake_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 7,
+  "ms": 100,
+  "tags": {
+   "dark": [
+    0,
+    0
+   ],
+   "reveal": [
+    1,
+    3
+   ],
+   "lit": [
+    4,
+    4
+   ],
+   "pressed": [
+    5,
+    6
+   ]
+  },
+  "pivot": "center",
+  "ppu": 40,
+  "note": "deleted file (crumpled paper). dark frame identical for both. reveal forward when lit, reverse when hidden. pressed 5 flash, 6 hold-down"
+ },
+ "dark_only_block": {
+  "size": [
+   40,
+   40
+  ],
+  "frames": 8,
+  "ms": 120,
+  "tags": {
+   "idle": [
+    0,
+    3
+   ],
+   "vanish": [
+    4,
+    7
+   ]
+  },
+  "pivot": "center",
+  "ppu": 40,
+  "note": "ghost of a deleted file, solid platform. Unlit material so it glows in the dark. vanish when lit (reverse = appear). collider off from frame 5"
+ }
+}

@@ -6,7 +6,6 @@ public class TargetSelector_HTY : MonoBehaviour
 {
     [Header("Detection")]
     [SerializeField] private float _detectRange = 5f;
-    public LayerMask _targetLayer;
 
     private readonly List<Transform> _targets = new();
 
@@ -16,24 +15,30 @@ public class TargetSelector_HTY : MonoBehaviour
     public Material _originMat;
     public Material _outLineMat;
 
-    public void TargetDetectAndSelect()
+    public void TargetDetectAndSelect(CanIf want)
     {
-        DetectTargets();
-        SelectNextTarget();
+        DetectTargets(want);
     }
 
-    private void DetectTargets()
+    private void DetectTargets(CanIf want)
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position,_detectRange,_targetLayer);
+        Debug.Log($"받은 요청{want}");
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position,_detectRange);
 
         foreach (Collider2D col in colliders)//탐색
         {
-            Transform target = col.transform;
+            if (col.TryGetComponent(out Object_HTY obj)) 
+            {
+                if(obj._myCan == want)
+                {
+                    Transform target = col.transform;
 
-            if (target == transform) continue;
+                    if (target == transform) continue;
 
-            if (!_targets.Contains(target))//타겟이 리스트미리 있는지 확인
-                _targets.Add(target);
+                    if (!_targets.Contains(target))//타겟이 리스트미리 있는지 확인
+                        _targets.Add(target);
+                }
+            } 
         }
 
 
@@ -67,12 +72,20 @@ public class TargetSelector_HTY : MonoBehaviour
 
             return distanceA.CompareTo(distanceB);
         });
+        if( _targets.Count == 0)
+        {
+            Debug.Log($"사용가능한 오브젝트 없음");
+            return;
+        }
 
         if(_currentTarget == null)
         {
             _currentTarget = _targets[0];
         }
-        
+        Debug.Log(_currentTarget);
+
+        SelectNextTarget();
+
     }
 
     private void SelectNextTarget()
@@ -92,11 +105,6 @@ public class TargetSelector_HTY : MonoBehaviour
         _currentTarget.GetComponent<SpriteRenderer>().material = _outLineMat;
 
         Debug.Log($"{_currentTarget.name}");
-    }
-
-    public void ChangeLayer(LayerMask needLayer)
-    {
-        _targetLayer = needLayer;
     }
 
     private void OnDrawGizmos()

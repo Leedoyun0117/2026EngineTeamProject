@@ -13,7 +13,7 @@ namespace HES.Script.Object {
         private IEnumerator Shoot() {
             var wait = new WaitForSeconds(coolTime);
             while (true) {
-                Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+                Instantiate(bulletPrefab, transform.position, transform.rotation);
                 yield return wait;
             }
         }

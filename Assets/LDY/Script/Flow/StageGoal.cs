@@ -1,3 +1,4 @@
+using LDY.PlayerLocate;
 using UnityEngine;
 
 namespace LDY.Flow {
@@ -10,7 +11,7 @@ namespace LDY.Flow {
         private void Reset() => GetComponent<Collider2D>().isTrigger = true;
 
         private void OnTriggerEnter2D(Collider2D other) {
-            if (_reached || !player.Matches(other)) return;
+            if (_reached || !player.Matches(other) || !PrimaryPlayerLocator.IsPrimary(PlayerMatch.Body(other))) return;
             _reached = true;
             StageSignals.RaiseCleared();
         }

@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7885d000859574684d2060d6f6b415, type: 3}
+  m_Name: RopeSettings_L5
+  m_EditorClassIdentifier: Assembly-CSharp::LDY.Script.RopeSettings
+  tuning:
+    minLength: 1
+    maxLength: 6
+    gravity: 25
+    damping: 0.15
+    quadraticDamping: 0.25
+    swingForce: 12
+    climbSpeed: 2.5
+    softLimitStartDegrees: 40
+    softLimitStrength: 4
+    maxAngleDegrees: 90
+  climbSway:
+    strength: 0.3
+    frequency: 1.2
+    rampTime: 0.25
+  totalLength: 5
+  curve:
+    segmentCount: 20
+    totalLength: 6
+    gravity: 100
+    iterations: 100
+    holdBlendTime: 0.15
+    sleepSpeed: 0.002
+    tailStiffness: 0.5
+  ropeDamping:
+    heldDamping: 1.5
+    heldTailDamping: 8
+    releaseDamping: 0.3
+    settleTime: 3
+    releaseBlendTime: 0.25
+  grip:
+    angleStepDegrees: 7.5
+    maxAngleDegrees: 60
+    blendTime: 0.1
+    footSmoothTime: 0.04
+  jumpReleaseBonus: 6
+  regrabCooldown: 0.2
+  releaseInputDelay: 0.05

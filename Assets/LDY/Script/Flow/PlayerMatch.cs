@@ -21,6 +21,9 @@ namespace LDY.Flow {
             return body != null && (HasTag(body.gameObject) || body.gameObject.layer == Layer());
         }
 
+        public static GameObject Body(Collider2D other) =>
+            other.attachedRigidbody != null ? other.attachedRigidbody.gameObject : other.gameObject;
+
         private bool HasTag(GameObject go) => !string.IsNullOrEmpty(playerTag) && go.CompareTag(playerTag);
 
         // LayerMask.NameToLayer는 필드 초기화(생성자)에서 부를 수 없어서 처음 쓸 때 찾는다.

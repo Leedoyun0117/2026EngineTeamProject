@@ -1,35 +1,73 @@
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using LDY.PlayerMerge;
+using Object = UnityEngine.Object;
 
 namespace LDY.Script {
+    // 컴포넌트의 직렬화 값을 그대로 옮긴다. 원본 계층 안을 가리키는 참조는 대상 계층의 같은 자리로 바꾼다.
     internal static class SerializedValueCopier {
         private const string ScriptField = "m_Script";
 
-        public static void CopyValues(Component source, Component target, string label, MergeLog log) {
+        public static void Copy(Component source, Component target, HierarchyMap map, string label, MergeLog log,
+            Action<SerializedObject> adjust = null) {
+            var before = Leaves(target);
             var from = new SerializedObject(source);
             var to = new SerializedObject(target);
             var iterator = from.GetIterator();
             for (var enter = true; iterator.NextVisible(enter); enter = false) {
-                if (iterator.name == ScriptField || iterator.propertyType == SerializedPropertyType.ObjectReference)
+                if (iterator.name == ScriptField)
                     continue;
 
                 var destination = to.FindProperty(iterator.propertyPath);
-                if (destination == null || SerializedProperty.DataEquals(iterator, destination))
+                if (destination == null)
                     continue;
 
-                Record(iterator, destination, label, log);
-                destination.boxedValue = iterator.boxedValue;
+                try {
+                    destination.boxedValue = iterator.boxedValue;
+                }
+                catch (Exception e) when (e is NotSupportedException or InvalidOperationException) {
+                    log.Notes.Add($"{label}.{iterator.propertyPath}: 값을 옮기지 못함 ({e.Message})");
+                }
             }
 
+            Remap(to, map, label, log);
+            adjust?.Invoke(to);
             to.ApplyModifiedPropertiesWithoutUndo();
+            Record(before, Leaves(target), label, log);
         }
 
-        private static void Record(SerializedProperty from, SerializedProperty to, string label, MergeLog log) {
-            var line = $"{label}.{from.propertyPath}: {Describe(to)} -> {Describe(from)}";
-            var broken = from.propertyType == SerializedPropertyType.LayerMask
-                         && MergePolicy.IsBrokenMask(to.intValue, from.intValue);
-            (broken ? log.Fixed : log.Changed).Add(line);
+        public static Dictionary<string, string> Leaves(Object target) {
+            var map = new Dictionary<string, string>();
+            var iterator = new SerializedObject(target).GetIterator();
+            while (iterator.NextVisible(true))
+                if (iterator.propertyType != SerializedPropertyType.Generic && iterator.name != ScriptField)
+                    map[iterator.propertyPath] = Describe(iterator);
+
+            return map;
+        }
+
+        public static void Record(Dictionary<string, string> before, Dictionary<string, string> after, string label, MergeLog log) {
+            foreach (var pair in after)
+                if (!before.TryGetValue(pair.Key, out var old) || old != pair.Value)
+                    log.Changed.Add($"{label}.{pair.Key}: {old ?? "(없음)"} -> {pair.Value}");
+        }
+
+        private static void Remap(SerializedObject target, HierarchyMap map, string label, MergeLog log) {
+            var iterator = target.GetIterator();
+            while (iterator.NextVisible(true)) {
+                if (iterator.propertyType != SerializedPropertyType.ObjectReference || iterator.name == ScriptField)
+                    continue;
+
+                var value = iterator.objectReferenceValue;
+                if (value == null || !map.Owns(value))
+                    continue;
+
+                var mapped = map.Resolve(value);
+                if (mapped == null)
+                    log.Notes.Add($"{label}.{iterator.propertyPath}: 대상 계층에 '{value.name}' 짝이 없어 비움");
+                iterator.objectReferenceValue = mapped;
+            }
         }
 
         public static string Describe(SerializedProperty property) {

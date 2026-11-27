@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 namespace LDY.Script {
     internal static class PlayerVisualContext {
-        public const string PrefabPath = PlayerPrefabPaths.Shared;
 
         // 공용 Player 프리팹에서 PlayerRenderer가 붙는 비주얼 자식 이름(이름만 Pink, 지금은 Cursor 세트를 쓴다)
         public const string PinkName = "PinkVisual";

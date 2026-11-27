@@ -1,0 +1,68 @@
+{
+  "format": "cursor-stage",
+  "version": 3,
+  "stages": [
+    {
+      "id": "m_tut", "name": "Tutorial", "w": 8, "h": 5,
+      "cells": [
+        "", "", "", "", "", "", "", "",
+        "", "", "abs_drag", "", "", "", "goal", "",
+        "", "start", "", "mov_h", "mov_h", "mov_h", "", "",
+        "ground", "ground", "ground", "", "", "", "ground", "ground",
+        "ground", "ground", "ground", "spike", "spike", "spike", "ground", "ground"
+      ],
+      "darkMask": [
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0
+      ],
+      "notes": [],
+      "memo": "첫 점프 연습", "dark": false, "status": "done"
+    },
+    {
+      "id": "m_ghost", "name": "Ghost Room", "w": 6, "h": 4,
+      "cells": [
+        "deco_cloud", "", "", "", "", "c_lava",
+        "", "ghost", "ghost", "", "ghost_on", "tabzone",
+        "start", "ghost", "", "", "abs_resize", "tabzone",
+        "c_wall", "c_wall", "c_oneway", "c_deco", "laser", "goal"
+      ],
+      "darkMask": [
+        0, 0, 0, 0, 1, 1,
+        0, 0, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 0,
+        1, 0, 0, 0, 0, 0
+      ],
+      "notes": [{ "x": 1, "y": 1, "text": "고스트 묶음" }],
+      "memo": "투명화 소개", "dark": false, "status": "draft"
+    },
+    {
+      "id": "m_exp", "name": "Explorer: 1/2", "w": 4, "h": 3,
+      "cells": [
+        "", "", "", "",
+        "start", "box", "", "goal",
+        "ground", "ground", "ground", "ground"
+      ],
+      "notes": [], "memo": "", "dark": true, "status": "draft"
+    },
+    {
+      "id": "m_scratch", "name": "Scratch", "w": 2, "h": 2,
+      "cells": ["", "", "ground", "ground"],
+      "darkMask": [0, 0, 0, 0],
+      "notes": [], "memo": "", "dark": false, "status": "idea"
+    }
+  ],
+  "custom": [
+    { "id": "c_wall", "name": "Wall", "color": "#556677", "col": "solid" },
+    { "id": "c_oneway", "name": "Plank", "color": "#aa8844", "col": "oneway" },
+    { "id": "c_lava", "name": "Lava", "color": "#ff3300", "col": "hazard" },
+    { "id": "c_deco", "name": "Flower", "color": "#ff88cc", "col": "none" }
+  ],
+  "slots": [
+    { "ids": ["m_tut", "m_ghost"], "theme": "music" },
+    { "ids": ["m_exp", "m_missing"], "theme": "explorer" },
+    { "ids": [], "theme": "bin" }
+  ]
+}

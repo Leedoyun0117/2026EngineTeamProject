@@ -1,3 +1,4 @@
+using LDY.PlayerMerge;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace LDY.Script {
                 return false;
             }
 
-            AssignToPrefab(PrefabPath, set, report);
+            AssignToPrefab(PlayerPrefabPaths.Final, set, report);
             AssignToPrefab(TitlePrefabPath, set, report);
             AssetDatabase.SaveAssets();
             return true;
