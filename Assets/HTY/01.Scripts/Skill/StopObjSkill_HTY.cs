@@ -5,7 +5,6 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 {
     private TargetSelector_HTY _targetSelector;
     private Camera _mainCam;
-    public LayerMask _targetLayer;
 
     private Rigidbody2D _otherRb;
     private bool _isStop = false;

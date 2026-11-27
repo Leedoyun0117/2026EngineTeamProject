@@ -5,7 +5,6 @@ public class OpacitySkill_HTY : MonoBehaviour, ISkill_HTY
 {
     private TargetSelector_HTY _targetSelector;
     private bool _isOpacity;
-    public LayerMask _targetLayer;
 
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
