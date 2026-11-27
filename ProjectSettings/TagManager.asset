@@ -10,6 +10,7 @@ TagManager:
   - Reverse
   - MovingBlock
   - Box
+  - PushBlock
   layers:
   - Default
   - TransparentFX
