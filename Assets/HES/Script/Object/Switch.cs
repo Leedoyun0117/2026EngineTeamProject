@@ -6,8 +6,9 @@ namespace HES.Script.Object {
         [SerializeField] private GameObject door;
         private bool _isActive;
         private float _pressedTime;
-
+        
         private void Update() {
+            if(door == null) return;
             Debug.Assert(door == null, "Door is not or empty");
             door.SetActive(!_isActive);
         }

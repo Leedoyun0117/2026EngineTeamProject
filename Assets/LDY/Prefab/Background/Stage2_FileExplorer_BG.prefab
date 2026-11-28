@@ -1980,6 +1980,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5986e68e43197dc428b4d939700b2fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LDY.Background::LDY.Background.BackgroundMapFit
+  mode: 0
+  fixedScale: 3
+  anchor: 0
   fittedBounds:
     serializedVersion: 2
     x: 0
