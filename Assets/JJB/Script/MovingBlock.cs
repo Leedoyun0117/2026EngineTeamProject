@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class MovingBlock : MonoBehaviour
+public class MovingBlock : MonoBehaviour,ICanMove
 {
     [Header("Move Settings")]
     [SerializeField] private Vector2 moveDirection = Vector2.up;
@@ -10,7 +10,9 @@ public class MovingBlock : MonoBehaviour
     
     private Vector2 _currentDirection;
     private Tween _moveTween;
-    
+
+    public bool IsStop { get ; set ; }
+
     private void OnEnable()
     {
         _currentDirection = moveDirection.normalized;

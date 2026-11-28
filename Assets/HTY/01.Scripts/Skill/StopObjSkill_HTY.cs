@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,13 +7,8 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
     private TargetSelector_HTY _targetSelector;
     private Camera _mainCam;
 
-    private Rigidbody2D _otherRb;
     private bool _isStop = false;
     private GameObject _stopObj;
-
-    private RigidbodyType2D _saveType;
-    private Vector2 _saveDir;
-    private float _saveAng;
 
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
@@ -34,24 +30,17 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 
         if (currentTarget == null)
             return false;
-        if (_stopObj == null)//다거치고 멈춰진 개체가 없다면
+        if (_stopObj == null)
             return true;
 
-        if(_stopObj != null)
-        {
-            return _stopObj == currentTarget.gameObject;
-        }
-
-
-        return true;
-        //멈췄던 개체라면
+        return _stopObj == currentTarget.gameObject;
     }
 
     public void UseSkill()
     {
         if (!CanUse()) return;
 
-        GameObject target =_targetSelector._currentTarget.gameObject;
+        GameObject target = _targetSelector._currentTarget.gameObject;
 
         if (_isStop)
         {
@@ -62,39 +51,36 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
         StopObject(target);
     }
 
-    private void StopObject(GameObject target)//멈추기 용
+    private void StopObject(GameObject target)
     {
-        Rigidbody2D rb = target.GetComponent<Rigidbody2D>();
-
-        if (rb == null) return;
-
-        _otherRb = rb;
         _stopObj = target;
-        _saveDir = rb.linearVelocity;
-        _saveAng = rb.angularVelocity;
-        _saveType = rb.bodyType;
-        rb.linearVelocity = Vector2.zero;
-        rb.angularVelocity = 0f;
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        target.transform.DOPause();
+        ICanMove canMove = target.GetComponent<ICanMove>();
+        if (canMove != null)
+        {
+            canMove.IsStop = true;
+        }
 
         _isStop = true;
     }
 
-    private void ReSetObject()//돌아오기용
+    private void ReSetObject()
     {
-        if (_otherRb != null)
+        if (_stopObj != null)
         {
-            _otherRb.bodyType = _saveType;
-            _otherRb.linearVelocity = _saveDir;
-            _otherRb.angularVelocity = _saveAng;
+            _stopObj.transform.DOPlay();
+            ICanMove canMove = _stopObj.GetComponent<ICanMove>();
+            if (canMove != null)
+            {
+                canMove.IsStop = false;
+            }
         }
 
         _isStop = false;
         _stopObj = null;
-        _otherRb = null;
     }
 
-    private bool IsVisible(GameObject target)//화면 처리
+    private bool IsVisible(GameObject target)
     {
         if (target == null) return false;
 
@@ -107,14 +93,11 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
     {
         _isStop = false;
         _stopObj = null;
-        _saveType = RigidbodyType2D.Dynamic;
-        _saveDir = Vector2.zero;
-        _saveAng = 0;
     }
 
     public void Exit()
     {
-        
+
     }
 
     public void UpdateState()
@@ -133,6 +116,8 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
         }
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
             _targetSelector.TargetDetectAndSelect(CanIf.CanStop);
+        }
     }
 }
