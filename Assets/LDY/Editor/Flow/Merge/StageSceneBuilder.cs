@@ -48,7 +48,8 @@ namespace LDY.FlowEditor {
             parts.DeathZone(BoundsHalf);
             parts.Camera(player != null ? player.transform : null, bounds);
             parts.Light();
-            log.Info("HUD 프리팹 없음, 건너뜀");
+            if (existed) log.Info("기존 씬이라 HUD는 건드리지 않음");
+            else parts.Hud();
 
             EditorSceneManager.SaveScene(scene, path);
             var asset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
@@ -195,6 +196,17 @@ namespace LDY.FlowEditor {
                 if (!created) return;
                 var light = go.AddComponent<Light2D>();
                 light.lightType = Light2D.LightType.Global;
+            }
+
+            public void Hud() {
+                var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(FlowPaths.HudPrefab);
+                if (prefab == null) {
+                    _log.Warn("HUD 프리팹 없음, 건너뜀. LDY/HUD/Run 1-3 먼저 실행");
+                    return;
+                }
+
+                PrefabUtility.InstantiatePrefab(prefab, _scene);
+                _log.Info("HUD 배치 " + FlowPaths.HudPrefab);
             }
 
             private GameObject Layer(Transform grid, string name, string layerName, int order, bool platform,
