@@ -18,17 +18,17 @@ namespace LDY.Hud.Adapters {
 
             Unsubscribe();
             _manager = manager;
-            if (_manager != null)
-                _manager.SkillChanged += OnSkillChanged;
-            Apply(_manager != null ? _manager.CurrentSkill : null);
+            // if (_manager != null)
+            //     _manager.SkillChanged += OnSkillChanged;
+            // Apply(_manager != null ? _manager.CurrentSkill : null);
         }
 
         public void Dispose() => Unsubscribe();
 
         private void Unsubscribe() {
-            if (!ReferenceEquals(_manager, null))
-                _manager.SkillChanged -= OnSkillChanged;
-            _manager = null;
+            // if (!ReferenceEquals(_manager, null))
+            //     _manager.SkillChanged -= OnSkillChanged;
+            // _manager = null;
         }
 
         private void OnSkillChanged(SkillSo_HTY previous, SkillSo_HTY current) => Apply(current);
