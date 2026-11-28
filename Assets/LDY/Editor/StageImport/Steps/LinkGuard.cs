@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using LDY.StageImport;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace LDY.StageImportEditor {
-    // 대응표 "연결 필요" 프리팹 인스턴스를 검사한다. 비어 있는 필드의 스크립트는 끄고(enabled=false) Scene 뷰 이름표를 단다.
+    // 대응표 "연결 필요" 프리팹 인스턴스를 검사한다. 비어 있는 필드의 스크립트(필요하면 감지용 트리거도)를 끄고 이름표에 기록한다.
+    // 다시 돌렸을 때 연결돼 있으면 기록해 둔 것만 다시 켜고 이름표를 지운다.
     // 프리팹 안에 없는 스크립트(예: Receiver.receivers)는 씬의 그 스크립트가 이 오브젝트를 가리키는지만 보고, 끌 것이 없어 이름표만 단다.
     internal static class LinkGuard {
         private const string LabelName = "LinkLabel";
@@ -108,11 +110,14 @@ namespace LDY.StageImportEditor {
             return go != null && (go == target || go.transform.IsChildOf(target.transform));
         }
 
-        private static void UpdateLabel(GameObject instance, IReadOnlyList<string> missing) {
+        private static LinkHold UpdateLabel(GameObject instance, IReadOnlyList<string> missing) {
             var existing = instance.transform.Find(LabelName);
             if (missing.Count == 0) {
-                if (existing != null) Undo.DestroyObjectImmediate(existing.gameObject);
-                return;
+                if (existing == null) return null;
+                var held = existing.GetComponent<LinkHold>();
+                if (held != null) Release(held, held.Scripts, held.Triggers);
+                Undo.DestroyObjectImmediate(existing.gameObject);
+                return null;
             }
 
             var text = "연결 필요: " + string.Join(", ", missing);
@@ -124,9 +129,11 @@ namespace LDY.StageImportEditor {
                 Undo.RegisterCreatedObjectUndo(label, "Disable Unlinked");
             }
 
-            var stageLabel = label.GetComponent<LDY.StageImport.StageLabel>();
+            var stageLabel = label.GetComponent<StageLabel>();
             Undo.RecordObject(stageLabel, "Disable Unlinked");
             stageLabel.SetText(text);
+            var hold = label.GetComponent<LinkHold>();
+            return hold != null ? hold : Undo.AddComponent<LinkHold>(label);
         }
     }
 }
