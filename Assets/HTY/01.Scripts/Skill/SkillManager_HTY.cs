@@ -16,6 +16,8 @@ namespace HTY._01.Scripts.Skill
         public Dictionary<SkillSo_HTY, ISkill_HTY> _skillDict = new();
         public Dictionary<SkillState, SkillSo_HTY> _stateToSoDict = new();
         private SkillSo_HTY _currentSkill;
+        public SkillSo_HTY CurrentSkill => _currentSkill;
+        public event Action<SkillSo_HTY, SkillSo_HTY> SkillChanged;
         public SkillListSo_HTY _skillSoList;
         public Utility_HTY _utilityCompo;
 
@@ -97,7 +99,10 @@ namespace HTY._01.Scripts.Skill
             if(_currentSkill != null)
                 _skillDict[_currentSkill].Exit();
         
+            var previousSkill = _currentSkill;
             _currentSkill = changeSkill;
+            if (previousSkill != _currentSkill)
+                SkillChanged?.Invoke(previousSkill, _currentSkill);
 
             if (_currentSkill != null)
                 _skillDict[_currentSkill].Enter();
@@ -119,6 +124,7 @@ namespace HTY._01.Scripts.Skill
             }
 
             _currentSkill = null;
+            SkillChanged?.Invoke(droppedSkill, null);
 
             OnSkillDropped?.Invoke();
         }
