@@ -12,7 +12,7 @@ public class TpPlayer_HTY : MonoBehaviour, ISkill_HTY
     public void Init()
     {
         _skillState = SkillState.Tp;
-        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._stateToSoDict[_skillState];
     }
 
     public void UseSkill()

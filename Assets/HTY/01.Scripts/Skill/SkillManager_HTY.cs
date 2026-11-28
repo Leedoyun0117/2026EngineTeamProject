@@ -6,10 +6,11 @@ using UnityEngine.InputSystem;
 
 public class SkillManager_HTY : MonoBehaviour
 {
-    public static SkillManager_HTY Instance {  get; private set; }
+    public static SkillManager_HTY Instance { get; private set; }
 
     public List<ISkill_HTY> _skillList = new();
     public Dictionary<SkillSo_HTY, ISkill_HTY> _skillDict = new();
+    public Dictionary<SkillState, SkillSo_HTY> _stateToSoDict = new();
     private SkillSo_HTY _currentSkill;
     public SkillListSo_HTY _skillSoList;
     public Utility_HTY _utilityCompo;
@@ -28,7 +29,26 @@ public class SkillManager_HTY : MonoBehaviour
 
     private void Start()
     {
+        SetStateDict();
         StartCoroutine(Init());
+    }
+
+    public void SetStateDict()
+    {
+        _stateToSoDict.Clear();
+        if (_skillSoList != null && _skillSoList._stateList != null && _skillSoList._skillSoList != null)
+        {
+            int count = Mathf.Min(_skillSoList._stateList.Count, _skillSoList._skillSoList.Count);
+            for (int i = 0; i < count; i++)
+            {
+                var state = _skillSoList._stateList[i];
+                var so = _skillSoList._skillSoList[i];
+                if (!_stateToSoDict.ContainsKey(state))
+                {
+                    _stateToSoDict.Add(state, so);
+                }
+            }
+        }
     }
 
     private IEnumerator Init()
@@ -38,15 +58,20 @@ public class SkillManager_HTY : MonoBehaviour
         _skillList.Clear();
         _skillList = GetComponentsInChildren<ISkill_HTY>().ToList();
 
+        foreach (var s in _skillList)
+        {
+            s.Init();
+        }
+
+        _skillDict.Clear();
         foreach (var v in _skillSoList._skillSoList)
         {
             foreach (var s in _skillList)
             {
-                s.Init();
-
                 if (v == s._skillSO)
                 {
                     _skillDict[v] = s;
+                    break;
                 }
             }
         }
