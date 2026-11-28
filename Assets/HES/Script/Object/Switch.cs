@@ -8,6 +8,7 @@ namespace HES.Script.Object {
         private float _pressedTime;
 
         private void Update() {
+            Debug.Assert(door == null, "Door is not or empty");
             door.SetActive(!_isActive);
         }
 
