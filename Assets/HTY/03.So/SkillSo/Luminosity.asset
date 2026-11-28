@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb675b60ab8837c479abad7348964d73, type: 3}
   m_Name: Luminosity
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo_HTY
-  skillName: "\uBC1D\uAE30"
+  skillName: "\uBC1D\uAE30 \uC870\uC808"
   des: "\uC8FC\uBCC0 \uBC1D\uAE30\uB97C \uC870\uC808\uD569\uB2C8\uB2E4"
-  prefab: {fileID: 4704325038760653566, guid: 6ce70a88de8dbd34694990773ed46047, type: 3}
+  prefab: {fileID: 7320580840891182469, guid: 0a0c950714a426f47905dc202591096a, type: 3}

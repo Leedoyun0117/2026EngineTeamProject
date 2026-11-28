@@ -1,10 +1,14 @@
+using LDY.Hud.Core;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace LDY.Hud.HudEditor {
     // 하단 작업표시줄: 능력 슬롯, 실행/해제 키, 조작 대상.
     internal static class HudTaskbarSection {
+        private const int KeyGap = 4;
+
         public static void Build(HudKit kit, RectTransform canvas, UiWorldAnchor switchMarker) {
             if (kit.Ui(canvas, "Taskbar", out var bar)) {
                 bar.anchorMin = Vector2.zero;
@@ -16,9 +20,10 @@ namespace LDY.Hud.HudEditor {
             }
 
             var slot = Slot(kit, bar);
-            var use = Key(kit, bar, "UseKey", new Vector2(136f, 3f), HudKey.UseSkill, "실행");
-            var drop = Key(kit, bar, "DropKey", new Vector2(184f, 3f), HudKey.DropSkill, "해제");
+            var use = Key(kit, bar, "UseKey", HudKey.UseSkill, "실행");
+            var drop = Key(kit, bar, "DropKey", HudKey.DropSkill, "해제");
             var target = ControlTarget(kit, bar);
+            KeyRow(kit, bar, slot, target, use, drop);
 
             var abilities = HudKit.Component<AbilitySlotPresenter>(bar.gameObject);
             HudKit.Wire(abilities, "skin", kit.Skin);
@@ -54,28 +59,55 @@ namespace LDY.Hud.HudEditor {
             return view;
         }
 
-        private static KeyButtonView Key(HudKit kit, RectTransform bar, string name, Vector2 position, HudKey key, string caption) {
+        // 버튼 크기는 KeyCapFitter, 위치는 KeyRowFitter가 정한다(슬롯 오른쪽 4px, 버튼 사이 4px).
+        private static KeyButtonView Key(HudKit kit, RectTransform bar, string name, HudKey key, string caption) {
             if (kit.Ui(bar, name, out var button))
-                HudKit.Place(button, Vector2.zero, Vector2.zero, position, new Vector2(44f, 16f));
+                HudKit.Place(button, Vector2.zero, Vector2.zero, Vector2.zero, Vector2.zero);
 
-            var on = Face(kit, button, "Face", "hud_key", key, caption, HudKeyHint.Ink);
-            var off = Face(kit, button, "FaceDisabled", "hud_key_disabled", key, caption, HudKeyHint.DisabledInk);
+            var on = Face(kit, button, "Face", "hud_key", key, caption, HudKeyHint.Ink, out var onParts);
+            var off = Face(kit, button, "FaceDisabled", "hud_key_disabled", key, caption, HudKeyHint.DisabledInk, out var offParts);
             var view = HudKit.Component<KeyButtonView>(button.gameObject);
             HudKit.Wire(view, "enabledFace", on);
             HudKit.Wire(view, "disabledFace", off);
+            HudKeyHint.Fit(kit, button, KeyCapSpec.Button, onParts, offParts);
             return view;
         }
 
         private static GameObject Face(HudKit kit, RectTransform button, string name, string sprite, HudKey key,
-            string caption, Color ink) {
+            string caption, Color ink, out KeyCapParts parts) {
             if (kit.Ui(button, name, out var face)) {
                 HudKit.Stretch(face, 0f, 0f, 0f, 0f);
                 kit.Image(face, sprite);
-                HudKit.Row(face, new RectOffset(3, 4, 3, 3), 3f, TextAnchor.MiddleCenter);
             }
 
-            HudKeyHint.Build(kit, face, key, caption, ink);
+            parts = HudKeyHint.Build(kit, face, key, caption, ink);
             return face.gameObject;
+        }
+
+        private static void KeyRow(HudKit kit, RectTransform bar, AbilitySlotView slot, TMP_Text target, params KeyButtonView[] keys) {
+            var row = HudKit.Component<KeyRowFitter>(bar.gameObject, out var added);
+            HudKit.Wire(row, "after", slot.transform);
+            HudKit.Wire(row, "limit", target.transform.parent);
+
+            var so = new SerializedObject(row);
+            var array = so.FindProperty("keys");
+            if (array.arraySize == 0) {
+                array.arraySize = keys.Length;
+                for (var i = 0; i < keys.Length; i++)
+                    array.GetArrayElementAtIndex(i).objectReferenceValue = keys[i].GetComponent<KeyCapFitter>();
+            }
+            if (added)
+                so.FindProperty("gap").intValue = KeyGap;
+            so.ApplyModifiedPropertiesWithoutUndo();
+
+            if (!added)
+                return;
+
+            row.Fit();
+            foreach (var key in keys) {
+                var rect = (RectTransform)key.transform;
+                kit.Log.Info($"키 버튼 배치 {key.name}: x={rect.anchoredPosition.x} y={rect.anchoredPosition.y} {rect.rect.width}x{rect.rect.height}");
+            }
         }
 
         private static TMP_Text ControlTarget(HudKit kit, RectTransform bar) {
