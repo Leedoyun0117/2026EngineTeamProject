@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb675b60ab8837c479abad7348964d73, type: 3}
   m_Name: Copy
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo_HTY
-  skillName: 
+  skillName: "\uBCF5\uC0AC/\uBD99\uC5EC\uB123\uAE30"
   des: 
-  coolTime: 0
+  prefab: {fileID: 5136787852635594930, guid: 8ecbb7ee79c4ca141b25edb7e4c388b2, type: 3}

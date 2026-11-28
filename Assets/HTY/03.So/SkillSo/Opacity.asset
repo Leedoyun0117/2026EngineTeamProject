@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb675b60ab8837c479abad7348964d73, type: 3}
   m_Name: Opacity
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo_HTY
-  skillName: 
-  des: 
-  coolTime: 0
+  skillName: "\uD22C\uBA85\uD654"
+  des: "\uBB3C\uCCB4\uC758 \uD22C\uBA85\uB3C4\uB97C \uC870\uC808\uD569\uB2C8\uB2E4"
+  prefab: {fileID: 4704325038760653566, guid: 6ce70a88de8dbd34694990773ed46047, type: 3}
