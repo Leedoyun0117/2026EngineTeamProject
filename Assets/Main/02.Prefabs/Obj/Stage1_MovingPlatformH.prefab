@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4748482255716529025}
   - component: {fileID: 4597888896526201859}
   - component: {fileID: 5120638441260097264}
+  - component: {fileID: 6411965524741227506}
   m_Layer: 6
   m_Name: Stage1_MovingPlatformH
   m_TagString: MovingBlock
@@ -196,9 +197,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 3079629876012397091}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c6208ad3b4368a4f9bcbd2af58bb9a9, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b6cd26aee1a4787a0fad5398908f50d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovingBlock
-  moveDir: {x: 1, y: 0}
+--- !u!114 &6411965524741227506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3079629876012397091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09800d4d0897477ca000b84ded270b40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.MovingBlock.MovingBlockMotor
+  moveDirection: {x: 1, y: 0}
   moveDistance: 3
   moveDuration: 2
+  blockLayer:
+    serializedVersion: 2
+    m_Bits: 2112
+  skinWidth: 0.01

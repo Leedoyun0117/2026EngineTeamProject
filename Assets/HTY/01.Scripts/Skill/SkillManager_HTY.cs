@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,16 @@ using UnityEngine.InputSystem;
 public class SkillManager_HTY : MonoBehaviour
 {
     public static SkillManager_HTY Instance {  get; private set; }
-
+    public event Action OnSkillDropped;
+    
     public List<ISkill_HTY> _skillList = new();
     public Dictionary<SkillSo_HTY, ISkill_HTY> _skillDict = new();
     private SkillSo_HTY _currentSkill;
     public SkillListSo_HTY _skillSoList;
     public Utility_HTY _utilityCompo;
-
+    
+    public SkillSo_HTY CurrentSkill => _currentSkill;
+    
     private void Awake()
     {
         if(Instance == null)
@@ -69,7 +73,6 @@ public class SkillManager_HTY : MonoBehaviour
             _skillDict[_currentSkill].Exit();
         
         _currentSkill = changeSkill;
-        Debug.Log(changeSkill.ToString());
 
         if (_currentSkill != null)
             _skillDict[_currentSkill].Enter();
@@ -77,12 +80,17 @@ public class SkillManager_HTY : MonoBehaviour
 
     public void SkillDrop()
     {
-        if (_currentSkill != null)
-            _skillDict[_currentSkill].Exit();
+        if (_currentSkill == null)
+            return;
 
-        Instantiate(_currentSkill.prefab,transform.position,Quaternion.identity);
+        SkillSo_HTY droppedSkill = _currentSkill;
+        _skillDict[droppedSkill].Exit();
+        
+        if(droppedSkill.prefab != null)
+            Instantiate(_currentSkill.prefab,transform.position,Quaternion.identity);
 
         _currentSkill = null;
+        OnSkillDropped?.Invoke();
     }
 
     public Vector2 GetPointerPos() => _utilityCompo.Pointer_HTY.transform.position;

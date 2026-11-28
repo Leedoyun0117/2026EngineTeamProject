@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7241062726722715909}
   - component: {fileID: 367508037992062894}
   - component: {fileID: 2543926354822911000}
+  - component: {fileID: -3550883449701351662}
   m_Layer: 10
   m_Name: Stage1_UiZoom
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 3901818847368616791}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.10615, y: 0.24997, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -175,3 +176,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillBox_HTY
   _myskill: {fileID: 11400000, guid: e7e4cf24b22144542ad6addd39fb5c93, type: 2}
+--- !u!114 &-3550883449701351662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3901818847368616791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4b49fdcb555433395262512c3a8b74b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JJB.Script.Player.GimmickSkillProvider
+  skillData: {fileID: 11400000, guid: e7e4cf24b22144542ad6addd39fb5c93, type: 2}
