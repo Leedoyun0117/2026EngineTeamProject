@@ -1,6 +1,7 @@
 using JJB.Script.Player;
 using JJB.Script.Player.Interface;
 using System;
+using HTY._01.Scripts.Skill;
 using UnityEngine;
 
 public class SkillBox_HTY : JJBAbsorbable
