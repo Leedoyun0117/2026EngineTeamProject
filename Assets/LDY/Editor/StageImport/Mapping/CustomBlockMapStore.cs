@@ -40,7 +40,8 @@ namespace LDY.StageImportEditor {
                 map.Entries.Add(new CustomBlockMap.Entry {
                     name = seed.Name, aliases = ToArray(seed.Aliases), prefab = SurePrefab(seed),
                     binding = seed.Binding, sizing = seed.Sizing, note = Note(seed),
-                    tile = seed.Tile, decoration = SeedSprite(seed), skipIfEmpty = seed.SkipIfEmpty
+                    tile = seed.Tile, decoration = SeedSprite(seed), skipIfEmpty = seed.SkipIfEmpty,
+                    needsLink = seed.LinkFields.Length > 0, linkFields = seed.LinkFields
                 });
                 return 1;
             }
@@ -65,6 +66,12 @@ namespace LDY.StageImportEditor {
 
             if ((entry.aliases == null || entry.aliases.Length == 0) && seed.Aliases.Count > 0) {
                 entry.aliases = ToArray(seed.Aliases);
+                changes++;
+            }
+
+            if (!entry.needsLink && (entry.linkFields == null || entry.linkFields.Length == 0) && seed.LinkFields.Length > 0) {
+                entry.needsLink = true;
+                entry.linkFields = seed.LinkFields;
                 changes++;
             }
 

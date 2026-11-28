@@ -8,6 +8,7 @@
         "LDY.Death.Core",
         "LDY.StageSelect",
         "LDY.Background.Core",
+        "LDY.Background.Editor",
         "LDY.TitlePlayer.Core",
         "Unity.Cinemachine",
         "Unity.RenderPipelines.Universal.Runtime",

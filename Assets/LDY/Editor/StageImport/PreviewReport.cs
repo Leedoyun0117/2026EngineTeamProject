@@ -73,8 +73,22 @@ namespace LDY.StageImportEditor {
                       (plan.Source.Dark ? ", 맵 전체 dark" : ""));
             foreach (var pair in plan.KeyCounts)
                 sb.Append($"\n  {pair.Key,-12} {pair.Value,4}  {KeyStatus.Describe(pair.Key, plan, assets, job.Customs)}");
+            var links = LinkNeeds(job);
+            if (links.Count > 0) sb.Append("\n  연결 필요 (스크립트 꺼 둠): " + string.Join(", ", links));
             if (plan.Unmapped.Count > 0)
                 sb.Append("\n  매핑 못 함: " + string.Join(", ", plan.Unmapped.Select(p => $"{p.Key}×{p.Value}")));
+        }
+
+        private static List<string> LinkNeeds(ImportJob job) {
+            var cells = new SortedDictionary<string, (int count, string fields)>();
+            foreach (var pair in job.Plan.KeyCounts) {
+                if (!CustomKey.Is(pair.Key) || !job.Customs.TryEntry(pair.Key, out var entry, out _)) continue;
+                if (!entry.needsLink || entry.prefab == null || entry.linkFields == null) continue;
+                cells.TryGetValue(entry.name, out var row);
+                cells[entry.name] = (row.count + pair.Value, string.Join("/", entry.linkFields));
+            }
+
+            return cells.Select(p => $"{p.Key} {p.Value.count}칸 [{p.Value.fields}]").ToList();
         }
 
         private static void AppendList(StringBuilder sb, string title, List<string> items) {

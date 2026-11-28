@@ -1,0 +1,338 @@
+{
+ "canvas": [
+  640,
+  360
+ ],
+ "ppu_suggest": 32,
+ "frames": 8,
+ "frame_ms": 120,
+ "to_unity": "unityX=(px-320)/PPU, unityY=(180-py)/PPU (background centered at origin; rect=[x,y,w,h] from top-left)",
+ "texts": [
+  {
+   "id": "window_title",
+   "rect": [
+    24,
+    6,
+    300,
+    12
+   ],
+   "align": "left",
+   "default": "파일 탐색기",
+   "color": "#FFFFFF"
+  },
+  {
+   "id": "menu",
+   "rect": [
+    8,
+    26,
+    300,
+    9
+   ],
+   "align": "left",
+   "default": "파일(F)   편집(E)   보기(V)   도움말(H)",
+   "color": "#000000"
+  },
+  {
+   "id": "address_label",
+   "rect": [
+    96,
+    45,
+    48,
+    9
+   ],
+   "align": "left",
+   "default": "주소",
+   "color": "#000000"
+  },
+  {
+   "id": "address_path",
+   "rect": [
+    153,
+    45,
+    420,
+    10
+   ],
+   "align": "left",
+   "default": "C:\\GAME\\STAGE_1",
+   "color": "#000000"
+  },
+  {
+   "id": "tree_0",
+   "rect": [
+    43,
+    69,
+    128,
+    10
+   ],
+   "align": "left",
+   "default": "MY COMPUTER",
+   "color": "#243046"
+  },
+  {
+   "id": "tree_1",
+   "rect": [
+    49,
+    86,
+    128,
+    10
+   ],
+   "align": "left",
+   "default": "3.5 FLOPPY (A:)",
+   "color": "#243046"
+  },
+  {
+   "id": "tree_2",
+   "rect": [
+    57,
+    103,
+    128,
+    10
+   ],
+   "align": "left",
+   "default": "LOCAL DISK (C:)",
+   "color": "#243046"
+  },
+  {
+   "id": "tree_3",
+   "rect": [
+    71,
+    120,
+    128,
+    10
+   ],
+   "align": "left",
+   "default": "GAME",
+   "color": "#243046"
+  },
+  {
+   "id": "tree_4",
+   "rect": [
+    77,
+    137,
+    128,
+    10
+   ],
+   "align": "left",
+   "default": "STAGE_1",
+   "color": "#243046"
+  },
+  {
+   "id": "tree_5",
+   "rect": [
+    77,
+    154,
+    128,
+    10
+   ],
+   "align": "left",
+   "default": "STAGE_2",
+   "color": "#243046"
+  },
+  {
+   "id": "tree_6",
+   "rect": [
+    77,
+    171,
+    128,
+    10
+   ],
+   "align": "left",
+   "default": "STAGE_3",
+   "color": "#243046"
+  },
+  {
+   "id": "tree_7",
+   "rect": [
+    71,
+    188,
+    128,
+    10
+   ],
+   "align": "left",
+   "default": "DOCS",
+   "color": "#243046"
+  },
+  {
+   "id": "tree_8",
+   "rect": [
+    49,
+    205,
+    128,
+    10
+   ],
+   "align": "left",
+   "default": "RECYCLE BIN",
+   "color": "#243046"
+  },
+  {
+   "id": "file_0",
+   "rect": [
+    185,
+    132,
+    90,
+    10
+   ],
+   "align": "center",
+   "default": "NEW FOLDER",
+   "color": "#8A9BB8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "file_1",
+   "rect": [
+    305,
+    132,
+    90,
+    10
+   ],
+   "align": "center",
+   "default": "README.TXT",
+   "color": "#8A9BB8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "file_2",
+   "rect": [
+    425,
+    132,
+    90,
+    10
+   ],
+   "align": "center",
+   "default": "START.EXE",
+   "color": "#8A9BB8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "file_3",
+   "rect": [
+    545,
+    132,
+    90,
+    10
+   ],
+   "align": "center",
+   "default": "MUSIC",
+   "color": "#8A9BB8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "file_4",
+   "rect": [
+    245,
+    212,
+    90,
+    10
+   ],
+   "align": "center",
+   "default": "SKY.BMP",
+   "color": "#8A9BB8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "file_5",
+   "rect": [
+    365,
+    212,
+    90,
+    10
+   ],
+   "align": "center",
+   "default": "BACKUP",
+   "color": "#8A9BB8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "file_6",
+   "rect": [
+    485,
+    212,
+    90,
+    10
+   ],
+   "align": "center",
+   "default": "NOTES.TXT",
+   "color": "#8A9BB8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "status_left",
+   "rect": [
+    10,
+    341,
+    400,
+    10
+   ],
+   "align": "left",
+   "default": "7개 개체",
+   "color": "#000000"
+  }
+ ],
+ "widgets": {
+  "tree_selection_bar": {
+   "row_h": 17,
+   "x": [
+    16,
+    150
+   ],
+   "color": "#000080",
+   "text_color": "#FFFFFF",
+   "note": "move behind the selected tree row (default row 4 = STAGE_1)"
+  },
+  "address_caret": {
+   "sheet": "caret_sheet.png",
+   "x_note": "x = text end + 4; baked at x=214 for the default text"
+  },
+  "progress": {
+   "sheet": "progress_sheet.png",
+   "rect": [
+    442,
+    341,
+    152,
+    9
+   ],
+   "segments": 8,
+   "seg_w": 16,
+   "seg_step": 19,
+   "color": "#000080"
+  },
+  "hdd_led": {
+   "sheet": "led_sheet.png",
+   "rect": [
+    604,
+    342,
+    6,
+    6
+   ]
+  }
+ },
+ "play_area_hint": "main pane x160-633, y62-330 is calm on purpose; icons there are faint (42%)",
+ "sheets": {
+  "progress": {
+   "x": 442,
+   "y": 341,
+   "w": 149,
+   "h": 9,
+   "frames": 8
+  },
+  "caret": {
+   "x": 214,
+   "y": 46,
+   "w": 1,
+   "h": 9,
+   "frames": 8
+  },
+  "led": {
+   "x": 604,
+   "y": 342,
+   "w": 6,
+   "h": 6,
+   "frames": 8
+  }
+ },
+ "static": {
+  "file": "background_static.png",
+  "x": 0,
+  "y": 0
+ }
+}

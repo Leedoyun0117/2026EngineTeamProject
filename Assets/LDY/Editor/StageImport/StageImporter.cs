@@ -1,3 +1,4 @@
+using LDY.BackgroundEditor;
 using LDY.PlayerMerge;
 using LDY.FlowEditor;
 using UnityEditor;
@@ -49,6 +50,7 @@ namespace LDY.StageImportEditor {
                 Steps[i].step.Apply(context);
             }
 
+            BackgroundMapFitter.FitAll(scene);
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             log.Info(job.IsVersioned

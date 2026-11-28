@@ -1,5 +1,6 @@
 using System.Linq;
 using LDY.Background;
+using LDY.Background.Core;
 using UnityEngine;
 
 namespace LDY.BackgroundEditor {
@@ -9,7 +10,7 @@ namespace LDY.BackgroundEditor {
         }
 
         private static void BuildVisualizer(BackgroundBuildContext context, VisualizerSpec spec) {
-            var root = BackgroundObjects.Child(context.Widgets, spec.Id);
+            if (!context.TryCreate(context.Widgets, spec.Id, out var root)) return;
             var sprite = context.LoadSprite(spec.SegmentFile);
             var spriteSize = sprite != null ? sprite.rect.size : new Vector2(spec.BarWidth, spec.SegmentHeight);
             var scale = new Vector3(spec.BarWidth / spriteSize.x, spec.SegmentHeight / spriteSize.y, 1f);
@@ -22,7 +23,7 @@ namespace LDY.BackgroundEditor {
             var grid = new SpriteRenderer[spec.Bars * spec.Segments];
             for (var bar = 0; bar < spec.Bars; bar++)
             for (var s = 0; s < spec.Segments; s++) {
-                var segment = BackgroundObjects.SpriteChild(root, $"bar{bar:00}_seg{s:00}", sprite, BackgroundSorting.Widget);
+                var segment = context.NewSprite(root.transform, $"bar{bar:00}_seg{s:00}", sprite, BackgroundSorting.Widget);
                 var x = left + bar * (spec.BarWidth + spec.BarGap) + spec.BarWidth * 0.5f;
                 var y = bottom - s * spec.SegmentStep - spec.SegmentHeight * 0.5f;
                 segment.transform.localPosition = context.Local(x, y);
@@ -30,7 +31,7 @@ namespace LDY.BackgroundEditor {
                 grid[bar * spec.Segments + s] = segment;
             }
 
-            BackgroundObjects.Ensure<VisualizerBars>(root.gameObject).Configure(grid, spec.Bars, spec.Segments,
+            root.AddComponent<VisualizerBars>().Configure(grid, spec.Bars, spec.Segments,
                 spec.Ramp.Select(c => c.ToColor()).ToArray(), spec.Off.ToColor(), spec.FrameMs);
         }
     }

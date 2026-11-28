@@ -10,6 +10,7 @@
         "LDY.Flow",
         "LDY.Flow.Core",
         "LDY.Flow.Editor",
+        "LDY.Background.Editor",
         "Unity.Cinemachine"
     ],
     "includePlatforms": [

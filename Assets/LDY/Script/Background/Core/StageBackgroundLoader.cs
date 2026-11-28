@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
-using LDY.Background.Core;
 
-namespace LDY.Background {
+namespace LDY.Background.Core {
     public static class StageBackgroundLoader {
         private const string DefaultStaticFile = "window_base_notext.png";
         private static readonly string[] ReferenceCandidates = {
@@ -14,17 +13,32 @@ namespace LDY.Background {
             Func<string, bool> fileExists) {
             var root = JsonNode.Root(json, sourceName);
             var canvas = root.Numbers("canvas", 2);
+            ReadStatic(root, out var staticFile, out var staticX, out var staticY);
             var layout = new StageBackgroundLayout(
                 new PixelSpace(canvas[0], canvas[1], pixelsPerUnit),
-                Combine(folder, root.String("static", DefaultStaticFile)),
+                Combine(folder, staticFile), staticX, staticY,
                 ReferenceCandidates.Select(f => Combine(folder, f)).FirstOrDefault(fileExists));
 
             foreach (var text in root.Child("texts").Items()) layout.Texts.Add(ReadText(text));
-            if (root.Has("widgets")) new WidgetNormalizer(folder, layout).Read(root.Child("widgets"));
+            if (root.Has("widgets")) new WidgetNormalizer(folder, layout, root).Read(root.Child("widgets"));
             return layout;
         }
 
         internal static string Combine(string folder, string file) => folder.TrimEnd('/') + "/" + file;
+
+        private static void ReadStatic(JsonNode root, out string file, out float x, out float y) {
+            x = 0f;
+            y = 0f;
+            if (!root.HasObject("static")) {
+                file = root.String("static", DefaultStaticFile);
+                return;
+            }
+
+            var node = root.Child("static");
+            file = node.String("file");
+            x = node.Number("x", 0f);
+            y = node.Number("y", 0f);
+        }
 
         private static TextSlotSpec ReadText(JsonNode node) {
             return new TextSlotSpec {
@@ -33,7 +47,8 @@ namespace LDY.Background {
                 Align = ReadAlign(node),
                 Color = node.Color("color", new Rgba(0f, 0f, 0f, 1f)),
                 SelectedColor = node.Has("selected_color") ? node.Color("selected_color") : (Rgba?)null,
-                DefaultText = node.String("default", "")
+                DefaultText = node.String("default", ""),
+                Mask = node.Bool("mask", false)
             };
         }
 

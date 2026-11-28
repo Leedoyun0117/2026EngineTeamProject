@@ -35,6 +35,12 @@ namespace LDY.StageImportEditor {
             [Tooltip("켜면 프리팹·장식 그림이 모두 없을 때 분홍 블록 대신 건너뛴다")]
             public bool skipIfEmpty;
 
+            [Tooltip("켜면 다른 오브젝트를 가리켜야 동작한다. 배치 때 비어 있는 필드의 스크립트를 끄고(enabled=false) 이름표를 단다")]
+            public bool needsLink;
+
+            [Tooltip("'스크립트.필드' 목록. 프리팹 안에 없는 스크립트(예: Receiver.receivers)는 씬의 그 스크립트가 이 오브젝트를 가리키는지 본다")]
+            public string[] linkFields = new string[0];
+
             [Tooltip("켜면 다시 실행해도 자동 채우기가 이 항목을 건드리지 않는다")]
             public bool locked = false;
 

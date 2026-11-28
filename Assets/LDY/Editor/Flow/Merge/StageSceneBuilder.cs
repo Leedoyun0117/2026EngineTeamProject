@@ -1,4 +1,5 @@
 using System.IO;
+using LDY.BackgroundEditor;
 using LDY.Death;
 using LDY.Flow;
 using Unity.Cinemachine;
@@ -48,8 +49,13 @@ namespace LDY.FlowEditor {
             parts.DeathZone(BoundsHalf);
             parts.Camera(player != null ? player.transform : null, bounds);
             parts.Light();
-            if (existed) log.Info("기존 씬이라 HUD는 건드리지 않음");
-            else parts.Hud();
+            if (existed) {
+                log.Info("기존 씬이라 HUD·배경은 건드리지 않음");
+            }
+            else {
+                parts.Hud();
+                parts.Background(request.StageId);
+            }
 
             EditorSceneManager.SaveScene(scene, path);
             var asset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
@@ -207,6 +213,14 @@ namespace LDY.FlowEditor {
 
                 PrefabUtility.InstantiatePrefab(prefab, _scene);
                 _log.Info("HUD 배치 " + FlowPaths.HudPrefab);
+            }
+
+            public void Background(string stageId) {
+                var prefab = StageBackgroundPlacement.PrefabForStage(stageId);
+                if (StageBackgroundPlacement.AddTo(_scene, prefab) == PlacementResult.Added)
+                    _log.Info("배경 배치 " + AssetDatabase.GetAssetPath(prefab));
+                else
+                    _log.Warn($"{stageId}: 월드 배경 프리팹 없음, 건너뜀. LDY/Background/Build Stage Backgrounds 먼저 실행");
             }
 
             private GameObject Layer(Transform grid, string name, string layerName, int order, bool platform,

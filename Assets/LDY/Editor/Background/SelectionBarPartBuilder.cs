@@ -1,5 +1,6 @@
 using System.Linq;
 using LDY.Background;
+using LDY.Background.Core;
 
 namespace LDY.BackgroundEditor {
     internal sealed class SelectionBarPartBuilder : IBackgroundPartBuilder {
@@ -8,16 +9,17 @@ namespace LDY.BackgroundEditor {
         }
 
         private static void BuildBar(BackgroundBuildContext context, SelectionBarSpec spec) {
-            var bar = BackgroundObjects.SpriteChild(context.Widgets, spec.Id, context.WhitePixel(), BackgroundSorting.Widget);
+            if (!context.TryCreate(context.Widgets, spec.Id, out var go)) return;
+            var bar = context.AddSprite(go, context.WhitePixel(), BackgroundSorting.Widget);
             bar.color = spec.Color.ToColor();
-            bar.transform.localScale = context.Size(spec.Rect);
+            go.transform.localScale = context.Size(spec.Rect);
 
             var rows = spec.RowTextIds
                 .Select(id => context.Texts.Find(id))
                 .Where(t => t != null)
                 .Select(t => t.GetComponent<StageBackgroundText>())
                 .ToArray();
-            BackgroundObjects.Ensure<SelectionBar>(bar.gameObject)
+            go.AddComponent<SelectionBar>()
                 .Configure(rows, context.Center(spec.Rect), context.Space.ToUnits(spec.RowStep), spec.DefaultRow);
         }
     }

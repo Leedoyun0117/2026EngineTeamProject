@@ -7,6 +7,7 @@ using UnityEngine;
 namespace LDY.StageImportEditor {
     internal static class StageImportMenu {
         private const string Root = "LDY/Stage Import/";
+        private const string OwnSceneRoot = "Assets/LDY/";
 
         [MenuItem(Root + "Preview", priority = 0)]
         private static void Preview() {
@@ -20,6 +21,20 @@ namespace LDY.StageImportEditor {
         private static void RefreshTempAbsorbPrefabs() {
             var log = new FlowLog("[Stage Import] Refresh Temp Absorb Prefabs");
             TempPrefabFactory.RefreshAll(log);
+            log.Print();
+        }
+
+        [MenuItem(Root + "Disable Unlinked (Open Scene)", priority = 11)]
+        private static void DisableUnlinked() {
+            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            if (!scene.path.StartsWith(OwnSceneRoot) && !EditorUtility.DisplayDialog("Disable Unlinked",
+                    $"{scene.path}은(는) {OwnSceneRoot} 밖의 씬이다. 이 씬의 주인이 맞나?", "진행", "취소"))
+                return;
+            var log = new FlowLog("[Stage Import] Disable Unlinked " + scene.path);
+            var map = CustomBlockMapStore.Ensure(null, log);
+            var count = LinkSweep.Run(scene, map, LinkSweep.FindInScene(scene, map).ToList(), log);
+            if (count > 0) UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(scene);
+            log.Info("저장은 직접 (Ctrl+S)");
             log.Print();
         }
 

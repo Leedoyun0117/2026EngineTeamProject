@@ -37,6 +37,9 @@ namespace LDY.StageImportEditor {
         public string Decoration { get; set; }
         public bool SkipIfEmpty { get; set; }
 
+        // 씬의 다른 오브젝트를 가리켜야 동작하는 필드('스크립트.필드'). 있으면 대응표의 "연결 필요"를 켠다.
+        public string[] LinkFields { get; set; } = new string[0];
+
         public string CertaintyLabel =>
             Certainty == SeedCertainty.Sure ? "확실" : Certainty == SeedCertainty.Unsure ? "애매" : "없음";
     }
@@ -83,7 +86,7 @@ namespace LDY.StageImportEditor {
             new CustomSeed("대포", Group4, CustomSizing.OneAtLeft, Sure, P(MainObj + "Cannon.prefab", Hes + "cannon.prefab"),
                 "Cannon 스크립트. 지정값: 묶음당 하나, 묶음의 가장 왼쪽 칸(1-4의 24칸 가로줄도 하나)"),
             new CustomSeed("신호가 가면 사라지는 블록", Group4, Repeat, Sure, P(Hes + "SwitchToInvisibleDoor.prefab"),
-                "태그 Invisible: HES Receiver.response가 켜지면 꺼진다. 동작하려면 씬 Receiver의 목록에 손으로 넣어야 함"),
+                "태그 Invisible: HES Receiver.response가 켜지면 꺼진다. 동작하려면 씬 Receiver의 목록에 손으로 넣어야 함") { LinkFields = L("Receiver.receivers") },
             new CustomSeed("깨지는 블록", PerCell, Stretch, Sure, P(Ldy1 + "Stage1_Glass.prefab"),
                 "LDY Stage1_Glass = HES Glass 변형에 breakable_block 아트를 입힌 것. 1-4에서만 쓰임"),
             new CustomSeed("엘레베이터", Group4, One, Sure, P(Hes + "Elevator.prefab"),
@@ -95,7 +98,7 @@ namespace LDY.StageImportEditor {
             new CustomSeed("버튼 문", Group4, Stretch, Sure, P(Hes + "StandardDoor.prefab"),
                 "HES NormalButton.door에 연결하는 문(스크립트 없음, 1x1). 9x1 덩어리를 하나로 늘림. 버튼 연결은 손으로"),
             new CustomSeed("신호가 가면 나타남", Area, Stretch, Unsure, P(Hes + "SwitchToVisibleDoor.prefab"),
-                "요청대로 영역 표시로 둠. 실제 블록이면 HES SwitchToVisibleDoor(태그 Visible)로 바꾸고 묶는 방식을 4방향 묶음으로"),
+                "요청대로 영역 표시로 둠. 실제 블록이면 HES SwitchToVisibleDoor(태그 Visible)로 바꾸고 묶는 방식을 4방향 묶음으로") { LinkFields = L("Receiver.receivers") },
             new CustomSeed("밧줄", Group4, CustomSizing.HangFromTop, Sure, P(RopePrefab),
                 "지정값: LDY Rope 프리팹(RopeTest 씬 구성). 맨 위 칸 윗변(천장 면) 가운데가 고정점, 그 열의 칸 수가 줄 길이(RopeSettings 사본)"),
             new CustomSeed("기요틴", Group4, One, Sure,
@@ -111,14 +114,14 @@ namespace LDY.StageImportEditor {
             new CustomSeed("문", Group4, Stretch, Sure, P(Hes + "StandardDoor.prefab"),
                 "버튼·스위치의 door 대상으로 쓰는 문(스크립트 없음). 연결은 손으로"),
             new CustomSeed("버튼", Group4, One, Sure, P(MainObj + "NormalButton.prefab", Hes + "NormalButton.prefab"),
-                "NormalButton 스크립트. col이 none/solid 두 종류 → 같은 프리팹. 2월드용 NormalButtonStage2도 있음. door 연결은 손으로"),
+                "NormalButton 스크립트. col이 none/solid 두 종류 → 같은 프리팹. 2월드용 NormalButtonStage2도 있음. door 연결은 손으로") { LinkFields = L("NormalButton.door") },
             new CustomSeed("상자로만 누를 수 있는 버튼", PerCell, Stretch, None, NoCandidates,
                 "HES ButtonBox.cs(Box 태그에만 반응)는 있지만 프리팹 없음"),
             new CustomSeed("길게 누르기 버튼", PerCell, Stretch, Sure,
                 P(MainObj + "LongPressButton.prefab", Hes + "LongPressButton.prefab"),
-                "LongPressButton 스크립트", "길게 누르는 버튼"),
+                "LongPressButton 스크립트", "길게 누르는 버튼") { LinkFields = L("LongPressButton.door") },
             new CustomSeed("레버", PerCell, Stretch, Sure, P(Hes + "Switch.prefab"),
-                "지정값: HES Switch(닿을 때마다 door 토글). door 연결은 손으로"),
+                "지정값: HES Switch(닿을 때마다 door 토글). door 연결은 손으로") { LinkFields = L("Switch.door") },
             new CustomSeed("사슬", Group4, Stretch, Sure, NoCandidates,
                     "지정값: 충돌 없는 장식, axe_guillotine_chain 그림을 묶음 크기로 늘림. 그림이 없으면 건너뜀")
                 { Decoration = ChainSprite, SkipIfEmpty = true },
@@ -137,9 +140,11 @@ namespace LDY.StageImportEditor {
                 "지정값: 비워 둠. 이름에 '?'. 2-3(거미 맵)에 1x2"),
             new CustomSeed("좌우 적", PerCell, Stretch, None, NoCandidates,
                 "좌우로 움직이는 적 프리팹 없음 (Main MovingBlock은 발판)"),
-            new CustomSeed("스위치", PerCell, Stretch, Sure, P(Hes + "Switch.prefab"), "HES Switch(닿을 때마다 door 토글)")
+            new CustomSeed("스위치", PerCell, Stretch, Sure, P(Hes + "Switch.prefab"), "HES Switch(닿을 때마다 door 토글)") { LinkFields = L("Switch.door") }
         };
 
         private static string[] P(params string[] paths) => paths;
+
+        private static string[] L(params string[] fields) => fields;
     }
 }

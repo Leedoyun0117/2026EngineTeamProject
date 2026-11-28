@@ -1,0 +1,409 @@
+fileFormatVersion: 2
+guid: 8646bb78e45c3b9498bd21a737f1090c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 3003940645788962744
+    second: progress_sheet_0
+  - first:
+      213: -8590729024405560742
+    second: progress_sheet_1
+  - first:
+      213: 3590799730069541139
+    second: progress_sheet_2
+  - first:
+      213: -3673030585171486065
+    second: progress_sheet_3
+  - first:
+      213: 3836242248618415022
+    second: progress_sheet_4
+  - first:
+      213: -1858487215721583519
+    second: progress_sheet_5
+  - first:
+      213: 3733424712956553335
+    second: progress_sheet_6
+  - first:
+      213: -5084940696312361795
+    second: progress_sheet_7
+  - first:
+      213: -1002424914829716306
+    second: progress_sheet_8
+  - first:
+      213: -6775352833006212448
+    second: progress_sheet_9
+  - first:
+      213: -3460996526367580430
+    second: progress_sheet_10
+  - first:
+      213: -8225868105567750087
+    second: progress_sheet_11
+  - first:
+      213: 7982788729422958263
+    second: progress_sheet_12
+  - first:
+      213: 6513042159450139158
+    second: progress_sheet_13
+  - first:
+      213: -9073563735652457646
+    second: progress_sheet_14
+  - first:
+      213: -2035685525769106934
+    second: progress_sheet_15
+  - first:
+      213: 9062165983492199758
+    second: progress_sheet_16
+  - first:
+      213: -1768281730522538210
+    second: progress_sheet_17
+  - first:
+      213: 7038935158788127400
+    second: progress_sheet_18
+  - first:
+      213: -2706881126826234380
+    second: progress_sheet_19
+  - first:
+      213: 6624859512766865742
+    second: progress_sheet_20
+  - first:
+      213: -7450255721830888341
+    second: progress_sheet_21
+  - first:
+      213: -7260748463882913212
+    second: progress_sheet_22
+  - first:
+      213: -2214978620484291161
+    second: progress_sheet_23
+  - first:
+      213: 4237767496512868710
+    second: progress_sheet_24
+  - first:
+      213: -891880414624881652
+    second: progress_sheet_25
+  - first:
+      213: 4205999704239835833
+    second: progress_sheet_26
+  - first:
+      213: 8070437222798516159
+    second: progress_sheet_27
+  - first:
+      213: -266003821652848936
+    second: progress_sheet_28
+  - first:
+      213: 1160822390246427254
+    second: progress_sheet_29
+  - first:
+      213: 7345599999813753484
+    second: progress_sheet_30
+  - first:
+      213: -3150444406993954178
+    second: progress_sheet_31
+  - first:
+      213: 1540115224276450189
+    second: progress_sheet_32
+  - first:
+      213: -3471818623627659876
+    second: progress_sheet_33
+  - first:
+      213: 4682867099133965087
+    second: progress_sheet_34
+  - first:
+      213: -9073846770803849561
+    second: progress_sheet_35
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 40
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: progress_sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 149
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bfcb9e0a1420b920800000000000000
+      internalID: 3003940645788962744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress_sheet_1
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 0
+        width: 149
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a522baac77997c880800000000000000
+      internalID: -8590729024405560742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress_sheet_2
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 0
+        width: 149
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3111d52645515d130800000000000000
+      internalID: 3590799730069541139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 0
+        width: 149
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f8a55b1b426c60dc0800000000000000
+      internalID: -3673030585171486065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress_sheet_4
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 0
+        width: 149
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea31f35fff11d3530800000000000000
+      internalID: 3836242248618415022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress_sheet_5
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 0
+        width: 149
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16c6f4759b35536e0800000000000000
+      internalID: -1858487215721583519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress_sheet_6
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 0
+        width: 149
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 778a073fef9cfc330800000000000000
+      internalID: 3733424712956553335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: progress_sheet_7
+      rect:
+        serializedVersion: 2
+        x: 1043
+        y: 0
+        width: 149
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbccf5cb069ae69b0800000000000000
+      internalID: -5084940696312361795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 65d7e05484990ed4fb4414b0d6705394
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      progress_sheet_0: 3003940645788962744
+      progress_sheet_1: -8590729024405560742
+      progress_sheet_2: 3590799730069541139
+      progress_sheet_3: -3673030585171486065
+      progress_sheet_4: 3836242248618415022
+      progress_sheet_5: -1858487215721583519
+      progress_sheet_6: 3733424712956553335
+      progress_sheet_7: -5084940696312361795
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

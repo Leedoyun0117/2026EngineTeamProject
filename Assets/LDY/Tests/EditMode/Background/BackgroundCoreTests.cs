@@ -94,48 +94,144 @@ namespace LDY.Tests.Background {
         }
     }
 
-    public class BackgroundFitTests {
-        [Test]
-        public void ortho9_16대9는_정확히_2() {
-            Assert.That(BackgroundFit.CoverScale(9d, 16d / 9d), Is.EqualTo(2d));
+    public class MapFitTests {
+        private const float HalfW = 5f * 16f / 9f;
+        private const float HalfH = 5f;
+
+        [TestCase(40f, 20f)]
+        [TestCase(80f, 20f)]
+        [TestCase(60f, 70f)]
+        [TestCase(122f, 40f)]
+        public void 고정_배율_3은_맵_왼쪽_아래에_48x27_창(float w, float h) {
+            var map = new WorldRect(-3f, 5f, -3f + w, 5f + h);
+            var plan = MapFit.Plan(map, BackgroundFitMode.FixedScale, 3, BackgroundAnchor.BottomLeft, HalfW, HalfH);
+            Assert.That(plan.Scale, Is.EqualTo(3));
+            Assert.That(plan.Window.MinX, Is.EqualTo(-3f));
+            Assert.That(plan.Window.MinY, Is.EqualTo(5f));
+            Assert.That(plan.Window.Width, Is.EqualTo(48f));
+            Assert.That(plan.Window.Height, Is.EqualTo(27f));
+        }
+
+        [TestCase(40f, 20f)]
+        [TestCase(80f, 20f)]
+        [TestCase(60f, 70f)]
+        [TestCase(122f, 40f)]
+        public void 바탕화면은_맵에_반화면_여유를_더해_덮는다(float w, float h) {
+            var map = new WorldRect(0f, 0f, w, h);
+            var plan = MapFit.Plan(map, BackgroundFitMode.FixedScale, 3, BackgroundAnchor.BottomLeft, HalfW, HalfH);
+            Assert.That(plan.Desktop.MinX, Is.EqualTo(-HalfW).Within(1e-4f));
+            Assert.That(plan.Desktop.MinY, Is.EqualTo(-HalfH).Within(1e-4f));
+            Assert.That(plan.Desktop.Width, Is.EqualTo(w + 2f * HalfW).Within(1e-4f));
+            Assert.That(plan.Desktop.Height, Is.EqualTo(h + 2f * HalfH).Within(1e-4f));
+            Assert.That(plan.Desktop.CenterX, Is.EqualTo(w / 2f).Within(1e-4f));
+            Assert.That(plan.Desktop.CenterY, Is.EqualTo(h / 2f).Within(1e-4f));
         }
 
         [Test]
-        public void ortho10_16대9는_약_2_22() {
-            Assert.That(BackgroundFit.CoverScale(10d, 16d / 9d), Is.EqualTo(20d / 9d).Within(1e-9));
+        public void 중앙_정렬_옵션은_맵_중심() {
+            var plan = MapFit.Plan(new WorldRect(0f, 0f, 122f, 40f), BackgroundFitMode.FixedScale, 3,
+                BackgroundAnchor.Center, HalfW, HalfH);
+            Assert.That(plan.Window.CenterX, Is.EqualTo(61f));
+            Assert.That(plan.Window.CenterY, Is.EqualTo(20f));
+        }
+
+        [TestCase(2)]
+        [TestCase(5)]
+        public void 고정_배율은_인스펙터_값(int scale) {
+            var plan = MapFit.Plan(new WorldRect(0f, 0f, 40f, 20f), BackgroundFitMode.FixedScale, scale,
+                BackgroundAnchor.BottomLeft, HalfW, HalfH);
+            Assert.That(plan.Scale, Is.EqualTo(scale));
+            Assert.That(plan.Window.Width, Is.EqualTo(16f * scale));
         }
 
         [Test]
-        public void ortho4_5_16대9는_1() {
-            Assert.That(BackgroundFit.CoverScale(4.5d, 16d / 9d), Is.EqualTo(1d).Within(1e-12));
+        public void 고정_배율_0이하는_1() {
+            Assert.That(MapFit.Plan(new WorldRect(0f, 0f, 40f, 20f), BackgroundFitMode.FixedScale, 0,
+                BackgroundAnchor.BottomLeft, 0f, 0f).Scale, Is.EqualTo(1));
+        }
+
+        [TestCase(40f, 20f, 3)]
+        [TestCase(80f, 20f, 5)]
+        [TestCase(60f, 70f, 8)]
+        [TestCase(122f, 40f, 8)]
+        [TestCase(16f, 9f, 1)]
+        [TestCase(32f, 18f, 2)]
+        public void 맵_덮기_옵션은_정수로_올린_배율(float w, float h, int scale) {
+            var plan = MapFit.Plan(new WorldRect(0f, 0f, w, h), BackgroundFitMode.CoverMap, 3,
+                BackgroundAnchor.Center, HalfW, HalfH);
+            Assert.That(plan.Scale, Is.EqualTo(scale));
+            Assert.That(plan.Window.Width, Is.GreaterThanOrEqualTo(w));
+            Assert.That(plan.Window.Height, Is.GreaterThanOrEqualTo(h));
         }
 
         [Test]
-        public void 가로가_넓으면_가로_기준() {
-            Assert.That(BackgroundFit.CoverScale(9d, 21d / 9d), Is.EqualTo(18d * 21d / 9d / 16d).Within(1e-9));
-        }
-
-        [Test]
-        public void 세로가_긴_화면은_세로_기준() {
-            Assert.That(BackgroundFit.CoverScale(9d, 4d / 3d), Is.EqualTo(2d).Within(1e-12));
+        public void 크기_0은_예외() {
+            Assert.Throws<System.ArgumentException>(() => MapFit.Plan(new WorldRect(0f, 0f, 0f, 5f),
+                BackgroundFitMode.FixedScale, 3, BackgroundAnchor.BottomLeft, 0f, 0f));
         }
     }
 
-    public class PixelFontSizeTests {
-        [TestCase(12f, 12)]
-        [TestCase(14f, 12)]
-        [TestCase(24f, 24)]
-        [TestCase(30f, 24)]
-        [TestCase(7f, 12)]
-        public void 크기는_12의_정수배이고_줄이지_않음(float rectHeight, int expected) {
-            Assert.That(PixelFontSize.PixelSize(rectHeight, 12), Is.EqualTo(expected));
+    public class BackgroundDimTests {
+        [Test]
+        public void 기본_dim은_RGB에_0_65를_곱하고_알파는_유지() {
+            var c = BackgroundDim.Apply(new Rgba(1f, 0.5f, 0.2f, 0.8f), BackgroundDim.Default);
+            Assert.That(c.R, Is.EqualTo(0.65f).Within(1e-5f));
+            Assert.That(c.G, Is.EqualTo(0.325f).Within(1e-5f));
+            Assert.That(c.B, Is.EqualTo(0.13f).Within(1e-5f));
+            Assert.That(c.A, Is.EqualTo(0.8f));
         }
 
-        [TestCase(9f, true)]
-        [TestCase(12f, false)]
-        [TestCase(14f, false)]
-        public void rect보다_크면_넘침(float rectHeight, bool overflows) {
-            Assert.That(PixelFontSize.OverflowsHeight(rectHeight, 12), Is.EqualTo(overflows));
+        [TestCase(0f, 1f)]
+        [TestCase(1f, 0f)]
+        [TestCase(-1f, 1f)]
+        [TestCase(2f, 0f)]
+        public void dim은_0과_1_사이로_자름(float dim, float factor) {
+            Assert.That(BackgroundDim.Factor(dim), Is.EqualTo(factor));
+        }
+    }
+
+    public class BackgroundTextDefaultsTests {
+        [TestCase("window_title", true)]
+        [TestCase("tab_0", true)]
+        [TestCase("tab_3", true)]
+        [TestCase("address_path", true)]
+        [TestCase("side_title", true)]
+        [TestCase("menu", false)]
+        [TestCase("tree_4", false)]
+        [TestCase("address_label", false)]
+        [TestCase("status_marquee", false)]
+        public void 기본_show(string id, bool shown) {
+            Assert.That(BackgroundTextDefaults.ShownByDefault(id), Is.EqualTo(shown));
+        }
+    }
+
+    public class BackgroundWorldTests {
+        [TestCase("1-1", 1)]
+        [TestCase("2-T", 2)]
+        [TestCase("3-6", 3)]
+        public void 스테이지_id의_월드(string id, int world) {
+            Assert.That(BackgroundWorld.TryFromStageId(id, out var w), Is.True);
+            Assert.That(w, Is.EqualTo(world));
+        }
+
+        [TestCase("Stage1_MusicPlayer_Source", 1)]
+        [TestCase("Stage3_RecycleBin_Source", 3)]
+        public void 에셋_이름의_월드(string name, int world) {
+            Assert.That(BackgroundWorld.TryFromAssetName(name, out var w), Is.True);
+            Assert.That(w, Is.EqualTo(world));
+        }
+
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("T-1")]
+        [TestCase("0-1")]
+        public void 숫자로_시작하지_않으면_실패(string id) {
+            Assert.That(BackgroundWorld.TryFromStageId(id, out _), Is.False);
+        }
+
+        [Test]
+        public void Stage_접두사가_없으면_실패() {
+            Assert.That(BackgroundWorld.TryFromAssetName("MusicPlayer1", out _), Is.False);
         }
     }
 

@@ -1,0 +1,235 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ac57ed680c956449323c977ec38926, type: 3}
+  m_Name: Stage1_MusicPlayer_Texts
+  m_EditorClassIdentifier: LDY.Background::LDY.Background.StageBackgroundTextSet
+  entries:
+  - id: window_title
+    text: MUSIC PLAYER
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 1
+    showDecided: 1
+  - id: menu
+    text: FILE   EDIT   VIEW   PLAY   HELP
+    overrideRect: 1
+    rect:
+      serializedVersion: 2
+      x: 8
+      y: 23.5
+      width: 300
+      height: 10
+    show: 0
+    showDecided: 1
+  - id: tab_0
+    text: PLAYER
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 1
+    showDecided: 1
+  - id: tab_1
+    text: PLAYLIST
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 1
+    showDecided: 1
+  - id: tab_2
+    text: ARTIST
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 1
+    showDecided: 1
+  - id: tab_3
+    text: SONG
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 1
+    showDecided: 1
+  - id: playlist_row_0
+    text: 
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1
+  - id: playlist_row_1
+    text: 
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1
+  - id: playlist_row_2
+    text: 
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1
+  - id: playlist_row_3
+    text: 
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1
+  - id: playlist_row_4
+    text: 
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1
+  - id: playlist_row_5
+    text: 
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1
+  - id: playlist_row_6
+    text: 
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1
+  - id: playlist_row_7
+    text: 
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1
+  - id: group_playlist
+    text: PLAYLIST
+    overrideRect: 1
+    rect:
+      serializedVersion: 2
+      x: 22
+      y: 61.5
+      width: 60
+      height: 10
+    show: 0
+    showDecided: 1
+  - id: group_visualizer
+    text: VISUALIZER
+    overrideRect: 1
+    rect:
+      serializedVersion: 2
+      x: 472
+      y: 61.5
+      width: 70
+      height: 10
+    show: 0
+    showDecided: 1
+  - id: time_current
+    text: 00:13
+    overrideRect: 1
+    rect:
+      serializedVersion: 2
+      x: 206
+      y: 282
+      width: 40
+      height: 10
+    show: 0
+    showDecided: 1
+  - id: time_total
+    text: 03:56
+    overrideRect: 1
+    rect:
+      serializedVersion: 2
+      x: 394
+      y: 282
+      width: 40
+      height: 10
+    show: 0
+    showDecided: 1
+  - id: status_marquee
+    text: NOW PLAYING - MAKE ME MOVE - THE CURSORS
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1
+  - id: status_time
+    text: 00:13
+    overrideRect: 0
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    show: 0
+    showDecided: 1

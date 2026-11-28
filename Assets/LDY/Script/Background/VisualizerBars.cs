@@ -2,7 +2,7 @@ using LDY.Background.Core;
 using UnityEngine;
 
 namespace LDY.Background {
-    public sealed class VisualizerBars : MonoBehaviour {
+    public sealed class VisualizerBars : MonoBehaviour, IBackgroundDimmable {
         [SerializeField] private SpriteRenderer[] segments = new SpriteRenderer[0];
         [SerializeField] private int bars;
         [SerializeField] private int segmentsPerBar;
@@ -14,6 +14,7 @@ namespace LDY.Background {
 
         private VisualizerModel _model;
         private FrameClock _clock;
+        private float _dim;
 
         public void Configure(SpriteRenderer[] grid, int barCount, int segmentCount, Color[] colors, Color offColor,
             float milliseconds) {
@@ -23,7 +24,16 @@ namespace LDY.Background {
             ramp = colors;
             off = offColor;
             frameMs = milliseconds;
-            foreach (var segment in segments) segment.color = off;
+            ApplyDim(_dim);
+        }
+
+        public void ApplyDim(float dim) {
+            _dim = dim;
+            if (_model != null) Show(_clock.Ticks);
+            else
+                foreach (var segment in segments)
+                    if (segment != null)
+                        segment.color = DimColor.Of(off, _dim);
         }
 
         private void OnEnable() {
@@ -38,10 +48,11 @@ namespace LDY.Background {
         }
 
         private void Show(long step) {
+            var dimOff = DimColor.Of(off, _dim);
             for (var bar = 0; bar < bars; bar++) {
                 var height = _model.Height(step, bar);
                 for (var s = 0; s < segmentsPerBar; s++)
-                    segments[bar * segmentsPerBar + s].color = s < height ? ramp[s] : off;
+                    segments[bar * segmentsPerBar + s].color = s < height ? DimColor.Of(ramp[s], _dim) : dimOff;
             }
         }
     }

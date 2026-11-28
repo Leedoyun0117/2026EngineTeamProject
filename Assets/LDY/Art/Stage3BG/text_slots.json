@@ -1,0 +1,733 @@
+{
+ "canvas": [
+  640,
+  360
+ ],
+ "frames": 8,
+ "frame_ms": 120,
+ "to_unity": "unityX=(px-320)/PPU, unityY=(180-py)/PPU (centered at origin; rect=[x,y,w,h] from top-left)",
+ "texts": [
+  {
+   "id": "window_title",
+   "rect": [
+    24,
+    6,
+    300,
+    12
+   ],
+   "align": "left",
+   "default": "휴지통",
+   "color": "#FFFFFF"
+  },
+  {
+   "id": "menu",
+   "rect": [
+    8,
+    26,
+    300,
+    9
+   ],
+   "align": "left",
+   "default": "파일(F)   편집(E)   보기(V)   도움말(H)",
+   "color": "#000000"
+  },
+  {
+   "id": "address_label",
+   "rect": [
+    142,
+    45,
+    50,
+    9
+   ],
+   "align": "left",
+   "default": "주소",
+   "color": "#000000"
+  },
+  {
+   "id": "address_path",
+   "rect": [
+    214,
+    45,
+    360,
+    10
+   ],
+   "align": "left",
+   "default": "휴지통",
+   "color": "#000000"
+  },
+  {
+   "id": "side_title",
+   "rect": [
+    16,
+    148,
+    130,
+    12
+   ],
+   "align": "center",
+   "default": "휴지통",
+   "color": "#243046"
+  },
+  {
+   "id": "side_desc",
+   "rect": [
+    16,
+    178,
+    130,
+    60
+   ],
+   "align": "left",
+   "default": "삭제한 파일은 휴지통을 비울 때까지 여기에 남아 있습니다.",
+   "color": "#4A5470"
+  },
+  {
+   "id": "button_empty",
+   "rect": [
+    18,
+    250,
+    127,
+    21
+   ],
+   "align": "center",
+   "default": "휴지통 비우기",
+   "color": "#000000"
+  },
+  {
+   "id": "button_restore",
+   "rect": [
+    18,
+    276,
+    127,
+    21
+   ],
+   "align": "center",
+   "default": "모두 복원",
+   "color": "#000000"
+  },
+  {
+   "id": "col_name",
+   "rect": [
+    168,
+    67,
+    120,
+    10
+   ],
+   "align": "left",
+   "default": "NAME",
+   "color": "#000000"
+  },
+  {
+   "id": "col_original_location",
+   "rect": [
+    300,
+    67,
+    120,
+    10
+   ],
+   "align": "left",
+   "default": "ORIGINAL LOCATION",
+   "color": "#000000"
+  },
+  {
+   "id": "col_date_deleted",
+   "rect": [
+    430,
+    67,
+    120,
+    10
+   ],
+   "align": "left",
+   "default": "DATE DELETED",
+   "color": "#000000"
+  },
+  {
+   "id": "col_size",
+   "rect": [
+    540,
+    67,
+    120,
+    10
+   ],
+   "align": "left",
+   "default": "SIZE",
+   "color": "#000000"
+  },
+  {
+   "id": "row0_name",
+   "rect": [
+    190,
+    88,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "OLD_NOTES.TXT",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row0_loc",
+   "rect": [
+    300,
+    88,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\DOCS",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row0_date",
+   "rect": [
+    430,
+    88,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "11/02/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row0_size",
+   "rect": [
+    540,
+    88,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "4KB",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row1_name",
+   "rect": [
+    190,
+    112,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "STAGE_0",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row1_loc",
+   "rect": [
+    300,
+    112,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\GAME",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row1_date",
+   "rect": [
+    430,
+    112,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "10/28/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row1_size",
+   "rect": [
+    540,
+    112,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "--",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row2_name",
+   "rect": [
+    190,
+    136,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "SKY_V1.BMP",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row2_loc",
+   "rect": [
+    300,
+    136,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\GAME\\ART",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row2_date",
+   "rect": [
+    430,
+    136,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "10/21/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row2_size",
+   "rect": [
+    540,
+    136,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "120KB",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row3_name",
+   "rect": [
+    190,
+    160,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "BUG_LIST.TXT",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row3_loc",
+   "rect": [
+    300,
+    160,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\GAME",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row3_date",
+   "rect": [
+    430,
+    160,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "10/19/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row3_size",
+   "rect": [
+    540,
+    160,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "2KB",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row4_name",
+   "rect": [
+    190,
+    184,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "SETUP_OLD.EXE",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row4_loc",
+   "rect": [
+    300,
+    184,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\TEMP",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row4_date",
+   "rect": [
+    430,
+    184,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "09/30/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row4_size",
+   "rect": [
+    540,
+    184,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "880KB",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row5_name",
+   "rect": [
+    190,
+    208,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "SAVE_01.DAT",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row5_loc",
+   "rect": [
+    300,
+    208,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\GAME\\SAVE",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row5_date",
+   "rect": [
+    430,
+    208,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "09/12/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row5_size",
+   "rect": [
+    540,
+    208,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "16KB",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row6_name",
+   "rect": [
+    190,
+    232,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "README_V2.TXT",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row6_loc",
+   "rect": [
+    300,
+    232,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\GAME",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row6_date",
+   "rect": [
+    430,
+    232,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "09/03/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row6_size",
+   "rect": [
+    540,
+    232,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "3KB",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row7_name",
+   "rect": [
+    190,
+    256,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "IDEA.TXT",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row7_loc",
+   "rect": [
+    300,
+    256,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\DOCS",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row7_date",
+   "rect": [
+    430,
+    256,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "08/20/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row7_size",
+   "rect": [
+    540,
+    256,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "1KB",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row8_name",
+   "rect": [
+    190,
+    280,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "TEMP",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row8_loc",
+   "rect": [
+    300,
+    280,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row8_date",
+   "rect": [
+    430,
+    280,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "08/02/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row8_size",
+   "rect": [
+    540,
+    280,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "--",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row9_name",
+   "rect": [
+    190,
+    304,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "CURSOR.BMP",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row9_loc",
+   "rect": [
+    300,
+    304,
+    125,
+    12
+   ],
+   "align": "left",
+   "default": "C:\\GAME\\ART",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row9_date",
+   "rect": [
+    430,
+    304,
+    105,
+    12
+   ],
+   "align": "left",
+   "default": "07/14/98",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "row9_size",
+   "rect": [
+    540,
+    304,
+    70,
+    12
+   ],
+   "align": "left",
+   "default": "8KB",
+   "color": "#8A93A8",
+   "note": "faint on purpose (background)"
+  },
+  {
+   "id": "status_left",
+   "rect": [
+    10,
+    341,
+    400,
+    10
+   ],
+   "align": "left",
+   "default": "10개 개체   1.03MB",
+   "color": "#000000"
+  }
+ ],
+ "play_area_hint": "list pane x160-617, y82-330 is calm on purpose; row icons are at 45% and text should stay faint",
+ "widgets": {
+  "progress": {
+   "sheet": "progress_sheet.png",
+   "rect": [
+    442,
+    341,
+    152,
+    9
+   ],
+   "note": "emptying progress"
+  },
+  "hdd_led": {
+   "sheet": "led_sheet.png",
+   "rect": [
+    604,
+    342,
+    6,
+    6
+   ]
+  }
+ },
+ "sheets": {
+  "progress": {
+   "file": "progress_sheet.png",
+   "x": 442,
+   "y": 341,
+   "w": 149,
+   "h": 9,
+   "frames": 8
+  },
+  "led": {
+   "file": "led_sheet.png",
+   "x": 604,
+   "y": 342,
+   "w": 6,
+   "h": 6,
+   "frames": 8
+  }
+ },
+ "static": {
+  "file": "background_static.png",
+  "x": 0,
+  "y": 0,
+  "note": "includes the big bin (static)"
+ }
+}

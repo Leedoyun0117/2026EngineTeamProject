@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using LDY.StageImport.Core;
 using UnityEditor;
 using UnityEngine;
@@ -52,6 +53,8 @@ namespace LDY.StageImportEditor {
             }
 
             customs.LabelPlaceholders();
+            LinkSweep.Run(context.Scene, context.Customs.Map,
+                customs.Spawned.SelectMany(pair => pair.Value.Select(go => (pair.Key, go))), context.Log);
 
             foreach (var pair in placed)
                 context.Log.Info($"프리팹 '{pair.Key}' {pair.Value}개{StateSuffix(context, pair.Key)}");

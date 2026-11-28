@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LDY.Background;
+using LDY.Background.Core;
 using UnityEditor;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;

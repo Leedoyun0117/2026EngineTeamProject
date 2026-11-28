@@ -5,42 +5,48 @@ using UnityEngine;
 
 namespace LDY.BackgroundEditor {
     internal sealed class TextPartBuilder : IBackgroundPartBuilder {
-        private const float TmpWorldScale = 0.1f;
-
         public void Build(BackgroundBuildContext context) {
             foreach (var slot in context.Layout.Texts) BuildSlot(context, slot);
         }
 
         private static void BuildSlot(BackgroundBuildContext context, TextSlotSpec slot) {
-            var go = BackgroundObjects.Child(context.Texts, slot.Id).gameObject;
-            var text = BackgroundObjects.Ensure<TextMeshPro>(go);
-            var size = context.Size(slot.Rect);
-            var pixelSize = PixelFontSize.PixelSize(slot.Rect.Height, context.FontPixelSize);
+            if (!context.TryCreate(context.Texts, slot.Id, out var go)) return;
+            var rect = context.EffectiveRect(slot);
+            var wraps = TextFit.Wraps(rect);
+            var text = go.AddComponent<TextMeshPro>();
+            var size = context.Size(rect);
 
             text.rectTransform.sizeDelta = new Vector2(size.x, size.y);
-            text.rectTransform.localPosition = context.Center(slot.Rect);
-            if (context.Font != null) text.font = context.Font;
-            text.text = slot.DefaultText;
-            text.enableAutoSizing = false;
-            text.fontSize = context.Space.ToUnits(pixelSize) / TmpWorldScale;
+            text.rectTransform.localPosition = context.Center(rect);
+            BackgroundTextStyle.Apply(text, context.Font, context.Space);
+            text.text = context.TextOf(slot);
             text.alignment = Alignment(slot.Align);
-            text.textWrappingMode = TextWrappingModes.NoWrap;
-            text.overflowMode = TextOverflowModes.Overflow;
+            text.textWrappingMode = wraps ? TextWrappingModes.Normal : TextWrappingModes.NoWrap;
+            text.overflowMode = slot.Mask ? TextOverflowModes.Truncate : TextOverflowModes.Overflow;
+            text.sortingLayerID = SortingLayer.NameToID(context.SortingLayerName);
             text.sortingOrder = BackgroundSorting.Text;
 
-            BackgroundObjects.Ensure<StageBackgroundText>(go)
+            go.AddComponent<StageBackgroundText>()
                 .Configure(slot.Id, text, slot.Color.ToColor(), slot.SelectedColor?.ToColor());
-            ReportOverflow(context, slot, text, size, pixelSize);
+            if (slot.Mask) context.Log.Info($"{slot.Id}: mask -> Truncate (rect 밖 글자 숨김)");
+            ReportOverflow(context, slot, rect, wraps);
         }
 
-        private static void ReportOverflow(BackgroundBuildContext context, TextSlotSpec slot, TMP_Text text,
-            Vector3 size, int pixelSize) {
-            if (PixelFontSize.OverflowsHeight(slot.Rect.Height, context.FontPixelSize))
-                context.Log.Warn($"텍스트 넘침(높이) {slot.Id}: 글자 {pixelSize}px > rect {slot.Rect.Height}px");
-            if (string.IsNullOrEmpty(slot.DefaultText)) return;
-            var width = text.GetPreferredValues(slot.DefaultText).x;
-            if (width > size.x)
-                context.Log.Warn($"텍스트 넘침(너비) {slot.Id}: {width * context.Space.PixelsPerUnit:0}px > rect {slot.Rect.Width}px");
+        private static void ReportOverflow(BackgroundBuildContext context, TextSlotSpec slot, PixelRect rect, bool wraps) {
+            var value = context.TextOf(slot);
+            if (TextFit.PixelSize > rect.Height)
+                context.Log.Warn($"텍스트 넘침(높이) {slot.Id}: 글자 {TextFit.PixelSize}px > rect {rect.Height}px");
+            if (string.IsNullOrEmpty(value) || slot.Mask) return;
+            if (wraps) {
+                var height = context.Meter.WrappedHeightPixels(value, rect.Width);
+                if (height > rect.Height)
+                    context.Log.Warn($"텍스트 넘침(줄바꿈 높이) {slot.Id}: {height:0}px > rect {rect.Height}px");
+                return;
+            }
+
+            var width = context.Meter.WidthPixels(value);
+            if (width > rect.Width)
+                context.Log.Warn($"텍스트 넘침(너비) {slot.Id}: {width:0}px > rect {rect.Width}px");
         }
 
         private static TextAlignmentOptions Alignment(TextAlign align) {

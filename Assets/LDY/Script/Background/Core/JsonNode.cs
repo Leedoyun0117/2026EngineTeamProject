@@ -28,6 +28,10 @@ namespace LDY.Background.Core {
 
         public bool Has(string key) => AsObject().ContainsKey(key);
 
+        public bool HasObject(string key) => AsObject().TryGetValue(key, out var v) && v is Dictionary<string, object>;
+
+        public JsonNode ChildOrNull(string key) => Has(key) ? Child(key) : null;
+
         public IEnumerable<string> Keys => AsObject().Keys;
 
         public JsonNode Child(string key) {

@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using LDY.Background.Core;
 
-namespace LDY.Background {
+namespace LDY.Background.Core {
     public enum TextAlign {
         Left,
         Center,
@@ -16,6 +15,7 @@ namespace LDY.Background {
         public Rgba Color;
         public Rgba? SelectedColor;
         public string DefaultText;
+        public bool Mask;
     }
 
     public sealed class SheetAnimSpec {
@@ -34,6 +34,12 @@ namespace LDY.Background {
         public float RowStep;
         public int DefaultRow;
         public IReadOnlyList<string> RowTextIds;
+    }
+
+    public sealed class CaretSpec {
+        public string SheetId;
+        public string TextId;
+        public float GapPixels;
     }
 
     public sealed class ProgressSpec {
@@ -69,14 +75,19 @@ namespace LDY.Background {
     }
 
     public sealed class StageBackgroundLayout {
-        public StageBackgroundLayout(PixelSpace space, string staticFile, string referenceFile) {
+        public StageBackgroundLayout(PixelSpace space, string staticFile, float staticX, float staticY,
+            string referenceFile) {
             Space = space;
             StaticFile = staticFile;
+            StaticX = staticX;
+            StaticY = staticY;
             ReferenceFile = referenceFile;
         }
 
         public PixelSpace Space { get; }
         public string StaticFile { get; }
+        public float StaticX { get; }
+        public float StaticY { get; }
         public string ReferenceFile { get; }
         public List<TextSlotSpec> Texts { get; } = new List<TextSlotSpec>();
         public List<SheetAnimSpec> Sheets { get; } = new List<SheetAnimSpec>();
@@ -84,6 +95,7 @@ namespace LDY.Background {
         public List<ProgressSpec> ProgressBars { get; } = new List<ProgressSpec>();
         public List<VisualizerSpec> Visualizers { get; } = new List<VisualizerSpec>();
         public List<NotesSpec> Notes { get; } = new List<NotesSpec>();
+        public List<CaretSpec> Carets { get; } = new List<CaretSpec>();
         public List<string> UnsupportedWidgets { get; } = new List<string>();
 
         public IEnumerable<string> SingleSpriteFiles =>
