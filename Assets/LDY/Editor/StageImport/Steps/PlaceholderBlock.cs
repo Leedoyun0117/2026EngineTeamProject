@@ -1,14 +1,15 @@
 using LDY.Flow;
+using LDY.StageImport;
 using UnityEditor;
 using UnityEngine;
 
 namespace LDY.StageImportEditor {
-    // 대응표에 프리팹이 없는 custom 블록 자리. 분홍 사각형 + 이름표(EditorOnly), 충돌은 툴의 col 값을 따른다.
+    // 대응표에 프리팹이 없는 custom 블록 자리. 반투명 분홍 단색 사각형, 충돌은 툴의 col 값을 따른다. 이름표는 BlockLabel이 묶음마다 따로 붙인다.
     internal static class PlaceholderBlock {
         public const string NamePrefix = "Temp_";
-        private static readonly Color Pink = new Color(1f, 0.4f, 0.75f, 0.85f);
+        private static readonly Color Pink = new Color(1f, 0.4f, 0.75f, 0.5f);
 
-        public static GameObject Create(string entryName, string col, Rect area, Transform parent, bool label) {
+        public static GameObject Create(string entryName, string col, Rect area, Transform parent) {
             var root = new GameObject(NamePrefix + entryName);
             root.transform.SetParent(parent, false);
             root.transform.position = new Vector3(area.center.x, area.center.y, 0f);
@@ -21,8 +22,6 @@ namespace LDY.StageImportEditor {
             renderer.color = Pink;
             renderer.sortingOrder = 4;
             AddCollision(body, col);
-
-            if (label) BlockLabel.Attach(root.transform, entryName, Vector3.zero);
             return root;
         }
 
@@ -52,40 +51,17 @@ namespace LDY.StageImportEditor {
         }
     }
 
-    // 씬에서 보이는 이름표. EditorOnly 태그라 빌드에서 빠진다.
+    // 이름표. EditorOnly 태그(빌드 제외) + Scene 뷰 기즈모(StageLabel)로만 그린다. Game 뷰에 렌더되는 글자 컴포넌트는 쓰지 않는다.
     internal static class BlockLabel {
         private const string EditorOnlyTag = "EditorOnly";
-        private static Font _font;
 
-        public static GameObject Attach(Transform parent, string text, Vector3 localPosition) {
+        public static GameObject Attach(Transform parent, string text, Vector3 worldPosition) {
             var go = new GameObject("Label");
             go.tag = EditorOnlyTag;
             go.transform.SetParent(parent, false);
-            go.transform.localPosition = localPosition + new Vector3(0f, 0f, -0.1f);
-
-            var mesh = go.AddComponent<TextMesh>();
-            mesh.text = text;
-            mesh.anchor = TextAnchor.MiddleCenter;
-            mesh.alignment = TextAlignment.Center;
-            mesh.characterSize = 0.06f;
-            mesh.fontSize = 48;
-            mesh.color = Color.white;
-            var font = LabelFont();
-            var renderer = go.GetComponent<MeshRenderer>();
-            if (font != null) {
-                mesh.font = font;
-                renderer.sharedMaterial = font.material;
-            }
-
-            renderer.sortingOrder = 50;
+            go.transform.position = worldPosition;
+            go.AddComponent<StageLabel>().SetText(text);
             return go;
-        }
-
-        private static Font LabelFont() {
-            if (_font != null) return _font;
-            _font = AssetDatabase.LoadAssetAtPath<Font>(StageImportPaths.LabelFont);
-            if (_font == null) _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            return _font;
         }
     }
 }

@@ -51,6 +51,8 @@ namespace LDY.StageImportEditor {
                 }
             }
 
+            customs.LabelPlaceholders();
+
             foreach (var pair in placed)
                 context.Log.Info($"프리팹 '{pair.Key}' {pair.Value}개{StateSuffix(context, pair.Key)}");
             foreach (var pair in missing) context.Log.Warn($"프리팹 없음 '{pair.Key}' {pair.Value}칸 건너뜀");

@@ -7,7 +7,6 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
     private bool _canDrag;
     private float _detectRange = 2.0f;
     private GameObject _dragObj;
-    public LayerMask _targetLayer;
 
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
@@ -17,7 +16,7 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
         _joint = GetComponentInParent<FixedJoint2D>();
         _joint.enabled = false;
         _skillState = SkillState.Drag;
-        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._stateToSoDict[_skillState];
     }
 
     public bool CanUse() => _canDrag;
@@ -29,7 +28,7 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
 
         if (CanUse())
         {
-            Collider2D[] _rbColl = Physics2D.OverlapCircleAll(transform.position, _detectRange,_targetLayer);
+            Collider2D[] _rbColl = Physics2D.OverlapCircleAll(transform.position, _detectRange);
 
             foreach (Collider2D coll in _rbColl)
             {

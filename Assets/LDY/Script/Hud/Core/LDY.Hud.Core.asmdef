@@ -1,0 +1,16 @@
+{
+    "name": "LDY.Hud.Core",
+    "rootNamespace": "LDY.Hud.Core",
+    "references": [
+        "LDY.Background.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

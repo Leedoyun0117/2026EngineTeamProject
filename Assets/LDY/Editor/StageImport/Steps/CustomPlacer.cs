@@ -7,6 +7,8 @@ namespace LDY.StageImportEditor {
     // custom 대응표 블록을 놓는다. 프리팹이 있으면 묶는 방식·크기 방식대로, 장식 그림만 있으면 충돌 없는 그림, 둘 다 없으면 분홍 임시 블록.
     internal sealed class CustomPlacer {
         private readonly SceneContext _context;
+        private readonly Dictionary<(Transform parent, string name), List<GridPoint>> _placeholders =
+            new Dictionary<(Transform parent, string name), List<GridPoint>>();
 
         public CustomPlacer(SceneContext context) {
             _context = context;
@@ -38,7 +40,8 @@ namespace LDY.StageImportEditor {
             if (entry.prefab == null) {
                 if (entry.decoration != null) Decoration(entry, rect, parent);
                 else {
-                    PlaceholderBlock.Create(entry.name, col, ToRect(rect), parent, true);
+                    PlaceholderBlock.Create(entry.name, col, ToRect(rect), parent);
+                    RememberPlaceholder(entry.name, parent, Cells(rect));
                     Count(Temp, entry.name, rect.Width * rect.Height);
                 }
 
@@ -80,13 +83,10 @@ namespace LDY.StageImportEditor {
                     return;
                 }
 
-                // 이름표는 묶음마다 한 번(첫 조각)만 붙인다.
-                var label = true;
-                foreach (var rect in Pieces(entry.sizing, cells)) {
-                    PlaceholderBlock.Create(entry.name, col, ToRect(rect), holder, label);
-                    label = false;
-                }
+                foreach (var rect in Pieces(entry.sizing, cells))
+                    PlaceholderBlock.Create(entry.name, col, ToRect(rect), holder);
 
+                RememberPlaceholder(entry.name, parent, cells);
                 Count(Temp, entry.name, cells.Count);
                 return;
             }
@@ -104,6 +104,19 @@ namespace LDY.StageImportEditor {
                     foreach (var cell in cells) Spawn(entry, GridRect.Cell(cell), holder, false);
                     break;
             }
+        }
+
+        // 칸마다·가로 런·묶음으로 나뉘어 놓인 임시 블록을 이름별로 모아 4방향 묶음당 이름표 하나를 묶음 중앙 위에 붙인다.
+        public void LabelPlaceholders() {
+            foreach (var pair in _placeholders)
+            foreach (var spot in LabelSpots.PerGroup(pair.Value))
+                BlockLabel.Attach(pair.Key.parent, pair.Key.name, new Vector3(spot.X, spot.Y, 0f));
+        }
+
+        private void RememberPlaceholder(string name, Transform parent, IEnumerable<GridPoint> cells) {
+            var key = (parent, name);
+            if (!_placeholders.TryGetValue(key, out var list)) _placeholders[key] = list = new List<GridPoint>();
+            list.AddRange(cells);
         }
 
         private static bool IsOnePerGroup(CustomSizing sizing) =>

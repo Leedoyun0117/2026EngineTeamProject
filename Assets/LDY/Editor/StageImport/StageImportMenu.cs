@@ -16,6 +16,13 @@ namespace LDY.StageImportEditor {
             log.Print();
         }
 
+        [MenuItem(Root + "Refresh Temp Absorb Prefabs", priority = 10)]
+        private static void RefreshTempAbsorbPrefabs() {
+            var log = new FlowLog("[Stage Import] Refresh Temp Absorb Prefabs");
+            TempPrefabFactory.RefreshAll(log);
+            log.Print();
+        }
+
         [MenuItem(Root + "Import Selected", priority = 1)]
         private static void ImportSelected() => ImportSelectedWindow.Open();
 

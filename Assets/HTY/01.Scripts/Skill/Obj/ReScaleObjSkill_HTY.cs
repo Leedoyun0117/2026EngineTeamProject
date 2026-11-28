@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 public class ReScaleObjSkill_HTY : MonoBehaviour, ISkill_HTY
 {
     private TargetSelector_HTY _targetSelector;
-    public LayerMask _targetLayer;
     public SkillSo_HTY _skillSO { get; set; }
     public SkillState _skillState { get; set; }
 
@@ -13,7 +12,7 @@ public class ReScaleObjSkill_HTY : MonoBehaviour, ISkill_HTY
     {
         _targetSelector = GetComponentInParent<TargetSelector_HTY>();
         _skillState = SkillState.ReSizeObj;
-        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._stateToSoDict[_skillState];
     }
 
     public bool CanUse()
@@ -41,7 +40,6 @@ public class ReScaleObjSkill_HTY : MonoBehaviour, ISkill_HTY
 
     public void Enter()
     {
-        _targetSelector.ChangeLayer(_targetLayer);
     }
 
     public void UpdateState()
@@ -49,7 +47,7 @@ public class ReScaleObjSkill_HTY : MonoBehaviour, ISkill_HTY
         if(Keyboard.current.yKey.wasPressedThisFrame)
             UseSkill();
         if (Keyboard.current.rKey.wasPressedThisFrame)
-            _targetSelector.TargetDetectAndSelect();
+            _targetSelector.TargetDetectAndSelect(CanIf.CanResize);
     }
 
     public void Exit()

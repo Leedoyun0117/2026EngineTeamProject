@@ -12,7 +12,7 @@ public class CuttingSkill_HTY : MonoBehaviour, ISkill_HTY
     {
         _targetSelector = GetComponentInParent<TargetSelector_HTY>();
         _skillState = SkillState.Cutting;
-        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._stateToSoDict[_skillState];
     }
 
     public bool CanUse() => true;//나중에 연결할떄 타겟이 null이 아니면 true
@@ -22,13 +22,12 @@ public class CuttingSkill_HTY : MonoBehaviour, ISkill_HTY
         if (_targetSelector._currentTarget != null)//나중에 canskill로 이전하기
         {
             Destroy(_targetSelector._currentTarget.gameObject);
-            _targetSelector.TargetDetectAndSelect();
+            _targetSelector.TargetDetectAndSelect(CanIf.CanCut);
         }
     }
 
     public void Enter()
     {
-        //_targetSelector.ChangeLayer(_targetLayer);
     }
 
     public void UpdateState()
@@ -39,7 +38,7 @@ public class CuttingSkill_HTY : MonoBehaviour, ISkill_HTY
         }
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
-            _targetSelector.TargetDetectAndSelect();
+            _targetSelector.TargetDetectAndSelect(CanIf.CanCut);
     }
 
     public void Exit()

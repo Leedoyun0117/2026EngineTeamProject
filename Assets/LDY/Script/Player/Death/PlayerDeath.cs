@@ -34,7 +34,9 @@ namespace LDY.Script {
             else
                 StartClips();
 
+#if UNITY_EDITOR
             Debug.Log($"[PlayerDeath] {cause} (pull={_pull != null}, settings={_settings != null})", this);
+#endif
             return true;
         }
 

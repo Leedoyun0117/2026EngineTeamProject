@@ -19,6 +19,7 @@ namespace LDY.FlowEditor {
         public const string GoalVisual = "Assets/LDY/Prefabs/Stage1/Stage1_GoalMusicFile.prefab";
 
         public const string AltPlayer = "Assets/LDY/Prefab/AltPlayer.prefab";
+        public const string HudPrefab = "Assets/LDY/Prefab/UI/HUD.prefab";
 
         public static void EnsureFolder(string path) {
             if (AssetDatabase.IsValidFolder(path)) return;

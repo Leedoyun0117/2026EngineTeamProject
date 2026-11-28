@@ -28,8 +28,8 @@ namespace LDY.StageImportEditor {
                         named.TryGetValue(name, out var index);
                         named[name] = index + 1;
                         var go = Build(root, area, StageAreaKind.Custom, $"{name}_Area_{index}", name);
-                        var first = area.Rects[0];
-                        BlockLabel.Attach(go.transform, name, new Vector3(first.CenterX, first.CenterY, 0f));
+                        foreach (var spot in LabelSpots.PerGroup(area.Cells))
+                            BlockLabel.Attach(go.transform, name, new Vector3(spot.X, spot.Y, 0f));
                         break;
                 }
             }
