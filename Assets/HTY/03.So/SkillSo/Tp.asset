@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb675b60ab8837c479abad7348964d73, type: 3}
   m_Name: Tp
   m_EditorClassIdentifier: Assembly-CSharp::SkillSo_HTY
-  skillName: 
-  des: 
-  coolTime: 0
+  skillName: "\uD0ED \uC804\uD658"
+  des: "\uD3EC\uC778\uD130\uB85C \uC774\uB3D9\uAC00\uB2A5\uD55C \uBE14\uB85D\uC73C\uB85C
+    \uC774\uB3D9\uD569\uB2C8\uB2E4"
+  prefab: {fileID: 5281813240060059235, guid: c1c4acde2e1812c40bbda0f7d6477b40, type: 3}
