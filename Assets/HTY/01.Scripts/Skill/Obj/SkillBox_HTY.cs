@@ -1,6 +1,7 @@
 using JJB.Script.Player;
 using JJB.Script.Player.Interface;
 using System;
+using UnityEngine;
 
 public class SkillBox_HTY : JJBAbsorbable
 {
@@ -8,6 +9,7 @@ public class SkillBox_HTY : JJBAbsorbable
 
     public override bool Absorb(JJBPlayerAbsorb target)
     {
+        Debug.Log("사용됨");
         try
         {
             SkillManager_HTY.Instance.ChangeSkillState(_myskill);

@@ -5,7 +5,6 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 {
     private TargetSelector_HTY _targetSelector;
     private Camera _mainCam;
-    public LayerMask _targetLayer;
 
     private Rigidbody2D _otherRb;
     private bool _isStop = false;
@@ -38,7 +37,14 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
         if (_stopObj == null)//다거치고 멈춰진 개체가 없다면
             return true;
 
-        return _stopObj == currentTarget.gameObject;//멈췄던 개체라면
+        if(_stopObj != null)
+        {
+            return _stopObj == currentTarget.gameObject;
+        }
+
+
+        return true;
+        //멈췄던 개체라면
     }
 
     public void UseSkill()
@@ -99,7 +105,6 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
 
     public void Enter()
     {
-        _targetSelector.ChangeLayer(_targetLayer);
         _isStop = false;
         _stopObj = null;
         _saveType = RigidbodyType2D.Dynamic;
@@ -128,6 +133,6 @@ public class StopObjSkill_HTY : MonoBehaviour, ISkill_HTY
         }
 
         if (Keyboard.current.rKey.wasPressedThisFrame)
-            _targetSelector.TargetDetectAndSelect();
+            _targetSelector.TargetDetectAndSelect(CanIf.CanStop);
     }
 }
