@@ -16,7 +16,7 @@ public class DragSkill_HTY : MonoBehaviour, ISkill_HTY
         _joint = GetComponentInParent<FixedJoint2D>();
         _joint.enabled = false;
         _skillState = SkillState.Drag;
-        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._stateToSoDict[_skillState];
     }
 
     public bool CanUse() => _canDrag;

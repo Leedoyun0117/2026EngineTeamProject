@@ -12,7 +12,7 @@ public class ReScaleObjSkill_HTY : MonoBehaviour, ISkill_HTY
     {
         _targetSelector = GetComponentInParent<TargetSelector_HTY>();
         _skillState = SkillState.ReSizeObj;
-        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._stateToSoDict[_skillState];
     }
 
     public bool CanUse()

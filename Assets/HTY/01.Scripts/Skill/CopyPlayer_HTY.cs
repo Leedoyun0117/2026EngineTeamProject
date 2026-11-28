@@ -1,5 +1,4 @@
 using JJB.Script.Player;
-using UnityEditor.Searcher;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,7 +29,7 @@ public class CopyPlayer_HTY : MonoBehaviour, ISkill_HTY
     {
         _playerObj = transform.parent.gameObject;
         _skillState = SkillState.Copy;
-        _skillSO = SkillManager_HTY.Instance._skillSoList._skillDict[_skillState];
+        _skillSO = SkillManager_HTY.Instance._stateToSoDict[_skillState];
     }
 
     public void UseSkill()
